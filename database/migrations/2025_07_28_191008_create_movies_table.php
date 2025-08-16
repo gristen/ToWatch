@@ -26,7 +26,6 @@ return new class extends Migration
             $table->date('year');
 
             $table->foreignId('user_published')->constrained('users');
-            $table->foreignId('genres_id')->constrained('genres');
 
             $table->timestamps();
         });

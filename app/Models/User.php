@@ -4,19 +4,39 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
+
     use HasFactory, Notifiable;
 
+
+    public function reviews():HasMany
+    {
+       return $this->hasMany(Review::class);
+    }
+
+    public function movies():HasMany
+    {
+        return $this->hasMany(Movie::class,'user_published','id');
+    }
+
+    public function role(): belongsTo
+    {
+       return $this->belongsTo(Role::class);
+    }
     /**
      * The attributes that are mass assignable.
      *
      * @var list<string>
      */
+
     protected $fillable = [
         'name',
         'email',
@@ -32,6 +52,9 @@ class User extends Authenticatable
         'password',
         'remember_token',
     ];
+
+
+
 
     /**
      * Get the attributes that should be cast.
