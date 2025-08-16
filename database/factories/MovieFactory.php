@@ -24,7 +24,6 @@ class MovieFactory extends Factory
             'route_to_film' => 'path',
             'age_rating' => $this->faker->numberBetween(7,21),
             'preview_url'=> 'url',
-            'genres_id' => 1,
             'user_published'=>1,
             'description' => $this->faker->text(180),
             'preview' => 'preview',
