@@ -14,9 +14,8 @@ class MovieController extends Controller
      */
     public function index(Request $request)
     {
+        return view('index');
 
-       $user = User::query()->create($request->all());
-       return "success";
     }
 
     /**

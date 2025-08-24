@@ -33,6 +33,7 @@ class GenreSeeder extends Seeder
         "арт-хаус",
         "романтика",
         "катастрофа",
+        "мультфильм"
     ];
 
 
