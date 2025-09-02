@@ -12,7 +12,7 @@
                 <div class="movies_item">
                     <a href="/" class="card d-flex flex-row text-decoration-none movies__item">
                         <div class="movie-img  d-flex">
-                            <img src="https://avatars.mds.yandex.net/get-kinopoisk-image/1773646/21324634-7afd-4443-8ac4-5c4097ac5b6c/600x900"
+                            <img src="{{ $movie->preview_url ?? url("poster.jpg") }}"
                                  height="200px"
                                  class="card-img-top me-3"
                                  alt="...">

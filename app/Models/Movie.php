@@ -36,6 +36,7 @@ class Movie extends Model
     }
 
     protected $fillable = [
+        'kinopoisk_id',
         'name',
         'eng_name',
         'type',

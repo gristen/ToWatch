@@ -59,7 +59,7 @@ class importMovies extends Command
                     try {
 
                        $new_movie = Movie::query()->create([
-                            'id_kinopoisk' => $movie['id'],
+                            'kinopoisk_id' => $movie['id'],
                             'name' => $movie['name'],
                             'eng_name' => $movie['alternativeName'],
                             'type' => $movie['type'],
@@ -69,19 +69,21 @@ class importMovies extends Command
                             'movieLength' => $movie['movieLength'],
                             'age_rating' => $movie['ageRating'],
                             'shortDescription' => $movie['shortDescription'],
-                            'user_published' => 1
+                            'user_published' => 2
                         ]);
 
+                        if (array_key_exists('genres', $movie)){
                         $genreIds = Genre::query()->
                         whereIn('name',
                         collect($movie['genres'])
                         ->pluck('name'))
                         ->pluck('id');
+                        }
 
                         $countryIds = Country::query()->
                         whereIn('name',
                             collect($movie['countries'])
-                                ->pluck('name'))
+                            ->pluck('name'))
                             ->pluck('id');
 
 

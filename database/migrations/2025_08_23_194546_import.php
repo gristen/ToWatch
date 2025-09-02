@@ -11,7 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        //
+        Schema::create('import', function (Blueprint $table) {
+            $table->id();
+            $table->integer('last_movie_page');
+            $table->integer('last_movie_id');
+
+
+        });
     }
 
     /**

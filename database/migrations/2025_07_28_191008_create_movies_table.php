@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('movies', function (Blueprint $table) {
             $table->id();
-            $table->integer('id_kinopoisk');
+            $table->integer('kinopoisk_id');
             $table->string('name')->nullable();
             $table->string('eng_name')->nullable();
             $table->string('type');
@@ -21,10 +21,10 @@ return new class extends Migration
             $table->string("preview_url");
             $table->integer("movieLength")->nullable();
             $table->integer("age_rating")->nullable();;
-            $table->string("description")->nullable();
+            $table->text("description")->nullable();
             $table->string("shortDescription")->nullable();
             $table->string("preview");
-            $table->date('year');
+            $table->year('year');
 
             $table->foreignId('user_published')->constrained('users');
 
