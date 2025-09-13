@@ -5,6 +5,8 @@ namespace App\Console\Commands;
 use App\Models\Country;
 use App\Models\Genre;
 use App\Models\Movie;
+use App\Models\Person;
+use App\Services\ImportLoggerService;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
@@ -20,20 +22,28 @@ class importMovies extends Command
 
     protected $description = 'Импорт фильмов из API кинопоиска и добавление в БД';
 
-    protected int $totalPages = 108065; //108065 всего фильмов
+    protected int $totalPages = 11; //108065 всего фильмов todo: Захордкоженное количество страниц это конечно пиздец что могу сказать товарищи
 
-
-    public function logImport(int $movieId , int $page):void
+//$movie - пришел с апи а нев муви который только что создал
+    private function attachRelations($movie, $new_movie)
     {
-        DB::table('import')->insert([
-            'last_movie_id'   => $movieId,
-            'last_movie_page' => $page,
-        ]);
-        $this->info("В таблицу импорта добавлено last_movie_id: $movieId  , last_movie_page: $page ");
+        $relations = [
+            'genres' => Genre::class,
+            'countries' => Country::class,
+            'persons' => Person::class,
+        ];
+
+        foreach ($relations as $key => $model) {
+            if (empty($movie[$key])) continue;
+
+            $ids = $model::whereIn('name', collect($movie[$key])->pluck('name'))->pluck('id');
+            $new_movie->{$key}()->attach($ids);
+        }
     }
 
 
-    public function handle(): void
+
+    public function handle(ImportLoggerService $importService): void
     {
 
         $last_movie = null;
@@ -49,7 +59,8 @@ class importMovies extends Command
 
         for ($i = $last_imported_page + 1; $i <= $this->totalPages; $i++) {
             $response = Http::withHeaders(['X-API-KEY' => env('APP_IMPORT_KEY')])
-                ->get("https://api.kinopoisk.dev/v1.4/movie?page=" . $i);
+                ->timeout(300)
+                ->get("https://api.kinopoisk.dev/v1.4/movie?page=$i&selectFields=id&selectFields=name&selectFields=alternativeName&selectFields=year&selectFields=type&selectFields=poster&selectFields=description&selectFields=movieLength&selectFields=ageRating&selectFields=shortDescription&selectFields=persons&selectFields=genres&selectFields=countries&limit=5");
 
             if ($response->successful()) {
                 $data = $response->json();
@@ -58,7 +69,7 @@ class importMovies extends Command
 
                     try {
 
-                       $new_movie = Movie::query()->create([
+                        $new_movie = Movie::query()->create([
                             'kinopoisk_id' => $movie['id'],
                             'name' => $movie['name'],
                             'eng_name' => $movie['alternativeName'],
@@ -72,31 +83,56 @@ class importMovies extends Command
                             'user_published' => 2
                         ]);
 
-                        if (array_key_exists('genres', $movie)){
-                        $genreIds = Genre::query()->
-                        whereIn('name',
-                        collect($movie['genres'])
-                        ->pluck('name'))
-                        ->pluck('id');
+                        // актёры
+                        $personIds = [];
+
+                            foreach ($movie['persons'] as $person) {
+                                $p = Person::query()->firstOrCreate(
+                                    ['kinopoisk_id' => $person['id']],
+                                    [
+                                        'name' => $person['name'],
+                                        'eng_name' => $person['enName'],
+                                        'profession' => $person['profession'],
+                                        'photo' => $person['photo'],
+                                    ]
+                                );
+                                $personIds[] = $p->id;
+                            }
+
+                        $new_movie->persons()->sync($personIds);
+
+                        // бывает что ключа 'genres' не приходит с апи, так что делаем проверку этого ключа
+                        if (array_key_exists('genres', $movie)) {
+                            $genreIds = Genre::query()->
+                            whereIn('name',
+                                collect($movie['genres'])
+                                ->pluck('name'))
+                                ->pluck('id');
+                            $new_movie->genres()->attach($genreIds);
                         }
 
+                        if (array_key_exists('countries', $movie)) {
                         $countryIds = Country::query()->
-                        whereIn('name',
-                            collect($movie['countries'])
-                            ->pluck('name'))
-                            ->pluck('id');
+                            whereIn('name',
+                                collect($movie['countries'])
+                                    ->pluck('name'))
+                                ->pluck('id');
+                            $new_movie->countries()->attach($countryIds);
+                        }
 
-
-                        $new_movie->genres()->attach($genreIds);
-                        $new_movie->countries()->attach($countryIds);
 
 
                         $last_page = $data['page'];
                         $last_movie = $movie['id'];
 
+                        $importService->logImport($movie['id'],$data['page'],'last_movie_id','last_movie_page');
+                       // $importService->logImport($movie['persons']['id'],$data['page'],'last_person_id','last_person_page');
+
+
+
                     } catch (\Throwable $e) {
                         $this->error("Ошибка парсинга {$e->getMessage()} ");
-                        $this->logImport($movie['id'], $data['page']);
+                        //$this->logImport($movie['id'], $data['page']);
                         break 2; // разрыв двух циклов
                     }
                 }
@@ -107,8 +143,8 @@ class importMovies extends Command
 
 
             } else {
-                match ($response->status()){
-                    403=> $this->error("Превышен дневной лимит. Статус {$response->status()}"),
+                match ($response->status()) {
+                    403 => $this->error("Превышен дневной лимит. Статус {$response->status()}"),
                     default => $this->error("Ошибка для ID $i: {$response->status()} . Остановка цикла"),
                 };
 
@@ -120,4 +156,10 @@ class importMovies extends Command
         $this->info("Импорт закончился...");
     }
 }
+
+
+
+
+
+
 
