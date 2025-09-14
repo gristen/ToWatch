@@ -39,6 +39,6 @@ class MainController extends Controller
 
 
         $movies = Movie::with('countries')->paginate(15);
-        return view('index', compact('movies'));
+        return view('tasks');
     }
 }
