@@ -15,15 +15,15 @@ class MainController extends Controller
     public function index()
     {
 
-        $array = [
-            "id"=>1,
-            "name"=>"тайна хиопса",
-            "genres" => [
-                ["name" => "триллер"],
-                ["name" => "ужасы"]
-            ]
-        ];
-
+//        $array = [
+//            "id"=>1,
+//            "name"=>"тайна хиопса",
+//            "genres" => [
+//                ["name" => "триллер"],
+//                ["name" => "ужасы"]
+//            ]
+//        ];
+//
 
 
 
@@ -38,7 +38,7 @@ class MainController extends Controller
 
 
 
-        $movies = Movie::with('countries')->paginate(15);
+        //$movies = Movie::with('countries')->paginate(15);
         return view('tasks');
     }
 }

@@ -10,6 +10,12 @@ body {
     color: #2b3035;
 }
 
+.task-link{
+
+}
+
+
+
 .movies__item{
     padding: 24px 20px;
     justify-content: space-between;
@@ -84,4 +90,53 @@ body {
     margin-bottom: 10px;
     border-top-left-radius: 0;
     border-top-right-radius: 0;
+}
+/* z*/
+
+.profile-avatar {
+    object-fit: cover;
+    border: 3px solid #00f581;
+}
+.profile-header {
+    border-bottom: 1px solid #444;
+    padding-bottom: 15px;
+}
+.nav-tabs .nav-link {
+    color: #ccc;
+}
+.nav-tabs .nav-link.active {
+    color: #2b3035;
+    background: #00f581;
+    border: none;
+}
+.movie-card {
+    background: #2b3035;
+    border: none;
+    transition: 0.3s;
+}
+.movie-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 10px rgb(0, 245, 129);
+}
+.profile-bio {
+    font-style: italic;
+    color: #bbb;
+}
+.genre-badge {
+    background: #444;
+    color: #fff;
+    border-radius: 20px;
+    padding: 5px 12px;
+    margin: 3px;
+    display: inline-block;
+}
+.stats-box {
+    background: #1f2428;
+    border-radius: 10px;
+    padding: 15px;
+    text-align: center;
+}
+.stats-box h4 {
+    color: #00f581;
+    margin-bottom: 5px;
 }

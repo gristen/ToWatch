@@ -2,10 +2,9 @@
 
     @section("content")
 
-
     @dump($movies)
         <div class="container">
-            <h3 class="mt-3">Новинки</h3>
+            <h3 class="mt-3">Фильмы</h3>
             <hr>
             <div class="movies">
                 @foreach($movies as $movie)

@@ -16,6 +16,11 @@ class User extends Authenticatable
 
     use HasFactory, Notifiable;
 
+    public function tasks(): HasMany
+    {
+        return $this->hasMany(Task::class);
+    }
+
 
     public function reviews():HasMany
     {
@@ -40,6 +45,7 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'email',
+        'role_id',
         'password',
     ];
 

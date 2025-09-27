@@ -2,7 +2,7 @@
 <html lang="ru" data-bs-theme="dark">
 <head>
     <meta charset="UTF-8">
-    <title>ToWATCH - Кино</title>
+    <title>ToWATCH - @yield('title', 'Кино')</title>
     <link rel="stylesheet" href="{{ asset("assets/css/bootstrap.min.css") }}">
     <link rel="stylesheet" href="{{ asset("assets/css/app.css") }}">
     <script src="{{ asset("assets/js/color-modes.js") }}"></script>
@@ -12,11 +12,16 @@
 @include("components.header")
 
 <main class="flex-grow-1">
+    @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
     @yield("content")
 </main>
-
-
-
-
 </body>
 </html>
