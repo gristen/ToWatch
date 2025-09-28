@@ -11,7 +11,8 @@
 <body class="d-flex flex-column min-vh-100">
 @include("components.header")
 
-<main class="flex-grow-1">
+<main class=" container flex-grow-1">
+    @dump($errors)
     @if ($errors->any())
         <div class="alert alert-danger">
             <ul>

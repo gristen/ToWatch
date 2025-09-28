@@ -18,6 +18,6 @@ class Task extends Model
         'description',
         'urgency',
         'difficulty',
-
+        'completed',
     ];
 }
