@@ -12,7 +12,25 @@
 @include("components.header")
 
 <main class=" container flex-grow-1">
-    @dump($errors)
+    {{--TODO --}}
+    <audio id="backgroundAudio" loop muted>
+        <source src="{{ asset('assets/mew.mp3') }}" type="audio/mpeg">
+    </audio>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const audio = document.getElementById('backgroundAudio');
+
+            // Разблокируем автоплей после первого клика пользователя
+            document.body.addEventListener('click', function() {
+
+                console.log("123");
+                audio.play().then(() => {
+                    audio.muted = false; // Включаем звук после начала воспроизведения
+                });
+            }, { once: true }); // Срабатывает только один раз
+        });
+    </script>
     @if ($errors->any())
         <div class="alert alert-danger">
             <ul>
