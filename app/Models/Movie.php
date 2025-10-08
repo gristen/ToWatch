@@ -34,9 +34,9 @@ class Movie extends Model
         return $this->belongsToMany(Country::class);
     }
 
-    public function user(): BelongsTo
+    public function publisher(): BelongsTo
     {
-       return $this->belongsTo(User::class);
+       return $this->belongsTo(User::class,'user_published');
     }
 
     protected $fillable = [

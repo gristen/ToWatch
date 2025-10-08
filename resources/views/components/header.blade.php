@@ -35,8 +35,8 @@
                     </a>
                 </li>
             </ul>
-            @if(\Illuminate\Support\Facades\Auth::check())
-                <p>Hello {{\Illuminate\Support\Facades\Auth::user()->name}}</p>
+            @if(Auth::check())
+                <p>Hello {{Auth::user()->name}}</p>
             @else
             <div class="d-flex align-items-center text-end">
                 <a href="login.blade.php" type="button" class="btn btn-outline-light me-2 d-flex align-items-center column-gap-2">

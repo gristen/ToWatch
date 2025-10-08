@@ -19,5 +19,8 @@ class Task extends Model
         'urgency',
         'difficulty',
         'completed',
+        'user_id',
+        'link_git',
+        'comment'
     ];
 }

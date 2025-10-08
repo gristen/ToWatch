@@ -14,31 +14,8 @@ class MainController extends Controller
 
     public function index()
     {
+        $movies = Movie::with(['countries', 'publisher'])->paginate(15);
 
-//        $array = [
-//            "id"=>1,
-//            "name"=>"тайна хиопса",
-//            "genres" => [
-//                ["name" => "триллер"],
-//                ["name" => "ужасы"]
-//            ]
-//        ];
-//
-
-
-
-
-       // dump(data_get($array,"genres"));
-        /*foreach ($array['genres'] as $value) {
-            dump($value['name']);
-        }*/
-
-
-
-
-
-
-        //$movies = Movie::with('countries')->paginate(15);
-        return view('tasks');
+        return view('index', ['movies' => $movies, 'publisher']);
     }
 }
