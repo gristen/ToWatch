@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
-use Livewire\Attributes\On; // 👈 ДОБАВЬ ЭТОТ ИМПОРТ
+use Livewire\Attributes\On;
 
 class TaskList extends Component
 {
@@ -17,9 +17,15 @@ class TaskList extends Component
     public Collection $tasks; // запросы к DB вернут коллекцию моделей
 
     #[On('task-created')]
-    public function updateTaskList($task)
+    public function updateTaskList($task): void
     {
         $this->tasks->push($task);
+    }
+
+    #[On('task-closed')]
+    public function updateClosedTaskList($task): void
+    {
+        $this->tasksCompleted->push($task);
     }
 
 

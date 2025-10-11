@@ -7,6 +7,7 @@
            ];
     @endphp
     {{ session('success') }}
+    <!-- close task Modal -->
        <div class="modal fade" id="closeModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content">
@@ -15,19 +16,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form id="close-form" action="" class="form" method="POST">
-                        @csrf
-                        @method('PUT')
-                        <input type="hidden" name="task_id" id="close-task-id" value="">
-                        <label class="form-label" for="form-control">Ссылка на коммит</label>
-                        <input name="link_git" class="form-control" placeholder="Ссылка на коммит github..."
-                               type="text">
-                        <label class="form-label" for="form-control">коментарий к закрытой задачи</label>
-                        <input name="comment" class="form-control" placeholder="Коментарий..." type="text">
-                        <div class="modal-footer">
-                            <button type="submit" class="btn fw-bold btn-success">Закрыть задачу</button>
-                        </div>
-                    </form>
+                    @livewire('closed-task')
                 </div>
             </div>
         </div>
@@ -74,11 +63,12 @@
                                     class="badge bg-warning text-dark"> Сложность: {{$translate[$task->difficulty]}}</span>
                                 <span class="badge bg-danger">Срочность: {{$translate[$task->urgency]}}</span>
                             </div>
-                            <button class="btn fw-bold btn-success mb-3 w-50 m-auto"
-                                    data-bs-toggle="modal"
-                                    data-task-id="{{$task->id}}"
-                                    data-task-title="{{$task->title}}"
-                                    data-bs-target="#closeModal">
+                            <button
+                                wire:click="$dispatch('set-task-id', { id: {{ $task->id }} })"
+                                class="btn fw-bold btn-success mb-3 w-50 m-auto"
+                                data-bs-toggle="modal"
+                                data-bs-target="#closeModal"
+                            >
                                 Закрыть задачу
                             </button>
                         </div>
@@ -114,13 +104,39 @@
 
 
     <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const closeModal = document.getElementById('closeModal');
 
+            closeModal.addEventListener('show.bs.modal', function (event) {
+                const button = event.relatedTarget; // кнопка, которая открыла модал
+                const taskId = button.getAttribute('data-task-id');
+                const taskTitle = button.getAttribute('data-task-title');
+
+                closeModal.querySelector('#close-task-id').value = taskId;
+                closeModal.querySelector('#task-title').textContent = taskTitle;
+                //closeModal.querySelector('#close-form').action = `/task/${taskId}`;
+
+            });
+        });
 
         document.addEventListener('livewire:init', () => {
             Livewire.on('task-created', () => {
                 console.log('✅ Задача успешно создана!');
 
                 const modalEl = document.getElementById('createModal');
+                const modal = bootstrap.Modal.getInstance(modalEl);
+                if (modal) {
+                    modal.hide();
+                }
+
+                const toastEl = document.getElementById('successToast');
+                const toast = new bootstrap.Toast(toastEl);
+                toast.show();
+            });
+            Livewire.on('task-closed', () => {
+                console.log('✅ Задача успешно завершена!');
+
+                const modalEl = document.getElementById('closeModal');
                 const modal = bootstrap.Modal.getInstance(modalEl);
                 if (modal) {
                     modal.hide();
