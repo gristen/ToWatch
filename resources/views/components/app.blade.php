@@ -30,20 +30,20 @@
 </main>
 
 
-{{--<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const audio = document.getElementById('backgroundAudio');
+{{--<script>--}}
+{{--    document.addEventListener('DOMContentLoaded', function() {--}}
+{{--        const audio = document.getElementById('backgroundAudio');--}}
 
-        // Разблокируем автоплей после первого клика пользователя
-        document.body.addEventListener('click', function() {
+{{--        // Разблокируем автоплей после первого клика пользователя--}}
+{{--        document.body.addEventListener('click', function() {--}}
 
-            console.log("123");
-            audio.play().then(() => {
-                audio.muted = false; // Включаем звук после начала воспроизведения
-            });
-        }, { once: true }); // Срабатывает только один раз
-    });
-</script>--}}
+{{--            console.log("123");--}}
+{{--            audio.play().then(() => {--}}
+{{--                audio.muted = false; // Включаем звук после начала воспроизведения--}}
+{{--            });--}}
+{{--        }, { once: true }); // Срабатывает только один раз--}}
+{{--    });--}}
+{{--</script>--}}
 
 </body>
 </html>
