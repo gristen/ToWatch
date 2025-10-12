@@ -22,7 +22,7 @@ class importMovies extends Command
 
     protected $description = 'Импорт фильмов из API кинопоиска и добавление в БД';
 
-    protected int $totalPages = 11; //108065 всего фильмов todo: Захордкоженное количество страниц это конечно пиздец что могу сказать товарищи
+    protected int $totalPages = 541695; //108065 всего фильмов todo: Захордкоженное количество страниц это конечно пиздец что могу сказать товарищи
 
 //$movie - пришел с апи а нев муви который только что создал
     private function attachRelations($movie, $new_movie)
@@ -42,6 +42,16 @@ class importMovies extends Command
     }
 
 
+    public function logImport(int $movieId , int $page):void
+    {
+        DB::table('import')->insert([
+            'last_movie_id'   => $movieId,
+            'last_movie_page' => $page,
+        ]);
+        $this->info("В таблицу импорта добавлено last_movie_id: $movieId  , last_movie_page: $page ");
+    }
+
+
 
     public function handle(ImportLoggerService $importService): void
     {
@@ -57,18 +67,37 @@ class importMovies extends Command
         $this->info("Последняя импортированная страница: " . $last_imported_page);
         $this->info("Последний импортированный ID: " . $last_imported_id);
 
+
+
         for ($i = $last_imported_page + 1; $i <= $this->totalPages; $i++) {
+
+            try {
+                $start = microtime(true);
+
             $response = Http::withHeaders(['X-API-KEY' => env('APP_IMPORT_KEY')])
-                ->timeout(300)
-                ->get("https://api.kinopoisk.dev/v1.4/movie?page=$i&selectFields=id&selectFields=name&selectFields=alternativeName&selectFields=year&selectFields=type&selectFields=poster&selectFields=description&selectFields=movieLength&selectFields=ageRating&selectFields=shortDescription&selectFields=persons&selectFields=genres&selectFields=countries&limit=5");
+                ->timeout(5000)
+                ->connectTimeout(20) // максимум 10 секунд на установку соединения
+                ->retry(3, 5000)
+                ->get("https://api.kinopoisk.dev/v1.4/movie?page=$i&selectFields=id&selectFields=name&selectFields=alternativeName&selectFields=year&selectFields=type&selectFields=poster&selectFields=description&selectFields=movieLength&selectFields=ageRating&selectFields=shortDescription&selectFields=persons&selectFields=genres&selectFields=countries&limit=2");
+            }catch (\Illuminate\Http\Client\RequestException $e){
+                $status = $e->response->status();
+                match ($status) {
+                    403 => $this->error("Превышен дневной лимит"),
+                };
 
+                break;
+            }
             if ($response->successful()) {
-                $data = $response->json();
 
+                $data = $response->json();
+                $duration = round(microtime(true) - $start, 2); // время выполнения
+                $size = round(strlen($response->body()) / 1024, 2); // размер в КБ
+
+                $countMovies = count($data['docs']);
+                $this->info("✅ Страница {$i}: {$countMovies} фильмов, размер {$size} КБ, время {$duration} сек . ");
                 foreach ($data['docs'] as $movie) {
 
                     try {
-
                         $new_movie = Movie::query()->create([
                             'kinopoisk_id' => $movie['id'],
                             'name' => $movie['name'],
@@ -83,23 +112,23 @@ class importMovies extends Command
                             'user_published' => 2
                         ]);
 
-                        // актёры
-                        $personIds = [];
-
-                            foreach ($movie['persons'] as $person) {
-                                $p = Person::query()->firstOrCreate(
-                                    ['kinopoisk_id' => $person['id']],
+                        if (!empty($movie['persons'])) {
+                            foreach ($movie['persons'] as $personData) {
+                                // ищем по имени или создаём
+                                $person = Person::query()->firstOrCreate(
+                                    ['name' => $personData['name']],
                                     [
-                                        'name' => $person['name'],
-                                        'eng_name' => $person['enName'],
-                                        'profession' => $person['profession'],
-                                        'photo' => $person['photo'],
+                                        'photo' => $personData['photo'] ?? null,
+                                        'profession' => $personData['profession'] ?? null,
+                                        'enProfession' => $personData['enProfession'] ?? null,
+                                        'enName' => $personData['enName'] ?? null,
+                                        'description' => $personData['description'] ?? null,
                                     ]
                                 );
-                                $personIds[] = $p->id;
-                            }
 
-                        $new_movie->persons()->sync($personIds);
+                                $new_movie->persons()->attach($person->id);
+                            }
+                        }
 
                         // бывает что ключа 'genres' не приходит с апи, так что делаем проверку этого ключа
                         if (array_key_exists('genres', $movie)) {
@@ -121,11 +150,10 @@ class importMovies extends Command
                         }
 
 
-
                         $last_page = $data['page'];
                         $last_movie = $movie['id'];
 
-                        $importService->logImport($movie['id'],$data['page'],'last_movie_id','last_movie_page');
+                        //$importService->logImport($movie['id'],$data['page'],'last_movie_id','last_movie_page');
                        // $importService->logImport($movie['persons']['id'],$data['page'],'last_person_id','last_person_page');
 
 
@@ -142,13 +170,6 @@ class importMovies extends Command
                 $this->info("last_movie_id: {$last_movie} , page: {$last_page}");
 
 
-            } else {
-                match ($response->status()) {
-                    403 => $this->error("Превышен дневной лимит. Статус {$response->status()}"),
-                    default => $this->error("Ошибка для ID $i: {$response->status()} . Остановка цикла"),
-                };
-
-                break;
             }
             sleep(1);
         }
