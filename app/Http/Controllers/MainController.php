@@ -14,8 +14,9 @@ class MainController extends Controller
 
     public function index()
     {
-        $movies = Movie::with(['countries', 'publisher'])->paginate(15);
+       /* $movies = Movie::with(['countries', 'publisher'])->paginate(15);*/
 
-        return view('index', ['movies' => $movies, 'publisher']);
+        //return view('index', ['movies' => $movies, 'publisher']);
+        return view('index');
     }
 }
