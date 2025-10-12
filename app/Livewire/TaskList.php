@@ -19,13 +19,13 @@ class TaskList extends Component
     #[On('task-created')]
     public function updateTaskList($task): void
     {
-        $this->tasks->push($task);
+
     }
 
     #[On('task-closed')]
     public function updateClosedTaskList($task): void
     {
-        $this->tasksCompleted->push($task);
+
     }
 
 

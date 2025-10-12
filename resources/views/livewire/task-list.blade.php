@@ -6,7 +6,7 @@
                'low' => 'Низкая',
            ];
     @endphp
-    {{ session('success') }}
+
     <!-- close task Modal -->
        <div class="modal fade" id="closeModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
@@ -41,7 +41,7 @@
         <div class="d-flex ">
             <h2>Активные задачи </h2>
             <form class="d-flex ms-auto">
-                <input class="form-control me-2" type="search" placeholder="поиск задачи" aria-label="поиск задачи">
+                <input class="form-control disabled me-2" type="search" placeholder="поиск задачи" aria-label="поиск задачи">
             </form>
             <button class="btn btn-outline-success fw-bold ms-auto" data-bs-toggle="modal"
                     data-bs-target="#createModal "> Создать новую задачу

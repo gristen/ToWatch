@@ -11,6 +11,6 @@ class MovieSeeder extends Seeder
 
     public function run(): void
     {
-        Movie::factory(20)->create();
+        Movie::factory(50)->create();
     }
 }

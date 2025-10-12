@@ -31,6 +31,7 @@ class TaskForm extends Form
 
 
         $task = Task::query()->find($this->id);
+
         $task->update([
             'comment' => $this->comment,
             'link_git' => $this->link_git,
@@ -45,6 +46,7 @@ class TaskForm extends Form
 
     public function createTask()
     {
+
         $this->validate();
         $task = Task::create([
             'title' => $this->title,

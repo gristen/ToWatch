@@ -24,10 +24,11 @@ class MovieFactory extends Factory
             'route_to_film' => 'path',
             'age_rating' => $this->faker->numberBetween(7,21),
             'preview_url'=> 'url',
+            'kinopoisk_id' => '1',
             'user_published'=>1,
             'description' => $this->faker->text(180),
             'preview' => 'preview',
-            'year' => '2025-08-01',
+            'year' => '2025',
             'shortDescription' => $this->faker->text(20),
         ];
     }

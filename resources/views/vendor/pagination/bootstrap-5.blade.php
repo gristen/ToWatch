@@ -26,9 +26,9 @@
             </ul>
         </div>
 
-        <div class="d-none flex-sm-fill d-sm-flex align-items-sm-center justify-content-sm-between">
+        <div class="d-none flex-sm-fill d-sm-flex align-items-sm-center justify-content-sm-center">
             <div>
-                <p class="small text-muted">
+                {{--<p class="small text-muted">
                     {!! __('Showing') !!}
                     <span class="fw-semibold">{{ $paginator->firstItem() }}</span>
                     {!! __('to') !!}
@@ -36,7 +36,7 @@
                     {!! __('of') !!}
                     <span class="fw-semibold">{{ $paginator->total() }}</span>
                     {!! __('results') !!}
-                </p>
+                </p>--}}
             </div>
 
             <div>

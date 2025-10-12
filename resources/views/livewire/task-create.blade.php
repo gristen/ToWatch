@@ -1,7 +1,7 @@
 <div>
 
     <label class="form-label" for="form-control">Заголовок задачи</label>
-        <div>@error('title') {{ $message }} @enderror</div>
+        <div>@error('form.title') {{ $message }} @enderror</div>
     <input wire:model="form.title" name="title" class="form-control mt-2" placeholder="Заголовок..." type="text">
     <label class="form-label" for="form-control">Описание новой задачи</label>
     <input wire:model="form.description" name="description" class="form-control mt-2" placeholder="Описание..." type="text">
