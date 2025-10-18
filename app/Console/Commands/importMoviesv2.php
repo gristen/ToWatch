@@ -11,16 +11,21 @@ use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 
-class importMovies extends Command
+class importMoviesv2 extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'import:movies {year?}';
+    protected $signature = 'import:movies2 {year?}';
 
-    protected $description = 'Импорт фильмов из API кинопоиска и добавление в БД';
+    /**
+     * The console command description.
+     *
+     * @var string
+     */
+    protected $description = 'Command description';
 
     protected int $totalPages = 541695; // todo: Захордкоженное количество страниц это конечно пиздец что могу сказать товарищи
 
@@ -52,7 +57,9 @@ class importMovies extends Command
     }
 
 
-
+    /**
+     * Execute the console command.
+     */
     public function handle(ImportLoggerService $importService): void
     {
         $year = $this->argument('year');
@@ -71,16 +78,16 @@ class importMovies extends Command
 
         for ($i = $last_imported_page + 1; $i <= $this->totalPages; $i++) {
 
-            try {
-            $start = microtime(true);
-            if ($year){
-                dd("year {{$year}}");
-            }
-            $response = Http::withHeaders(['X-API-KEY' => env('APP_IMPORT_KEY')])
-                ->timeout(5000)
-                ->connectTimeout(20) // максимум 10 секунд на установку соединения
-                ->retry(3, 5000)
-                ->get("https://api.kinopoisk.dev/v1.4/movie",[
+
+                $start = microtime(true);
+                if ($year){
+                    dd("year {{$year}}");
+                }
+                $response = Http::withHeaders(['X-API-KEY' => env('APP_IMPORT_KEY_UN')])
+                    ->timeout(5000)
+                    ->connectTimeout(20) // максимум 10 секунд на установку соединения
+                    ->retry(3, 5000)
+                    ->get("https://kinopoiskapiunofficial.tech/api/v2.2/films",[
 
                         'page' => $i,
                         'limit' => 2,
@@ -88,25 +95,18 @@ class importMovies extends Command
                             'id', 'name', 'alternativeName', 'year', 'type',
                             'poster', 'description', 'movieLength', 'ageRating',
                             'shortDescription', 'persons', 'genres', 'countries',
-                            'ExternalId',
                         ],
                         'year' => $year ?? null,
 
 
-                ]);
+                    ]);
 
 
-            }catch (\Illuminate\Http\Client\RequestException $e){
-                $status = $e->response->status();
-                match ($status) {
-                    403 => $this->error("Превышен дневной лимит"),
-                };
 
-                break;
-            }
             if ($response->successful()) {
 
                 $data = $response->json();
+                dd($data);
                 $duration = round(microtime(true) - $start, 2); // время выполнения
                 $size = round(strlen($response->body()) / 1024, 2); // размер в КБ
 
@@ -152,13 +152,13 @@ class importMovies extends Command
                             $genreIds = Genre::query()->
                             whereIn('name',
                                 collect($movie['genres'])
-                                ->pluck('name'))
+                                    ->pluck('name'))
                                 ->pluck('id');
                             $new_movie->genres()->attach($genreIds);
                         }
 
                         if (array_key_exists('countries', $movie)) {
-                        $countryIds = Country::query()->
+                            $countryIds = Country::query()->
                             whereIn('name',
                                 collect($movie['countries'])
                                     ->pluck('name'))
@@ -171,7 +171,7 @@ class importMovies extends Command
                         $last_movie = $movie['id'];
 
                         //$importService->logImport($movie['id'],$data['page'],'last_movie_id','last_movie_page');
-                       // $importService->logImport($movie['persons']['id'],$data['page'],'last_person_id','last_person_page');
+                        // $importService->logImport($movie['persons']['id'],$data['page'],'last_person_id','last_person_page');
 
 
 
@@ -194,10 +194,3 @@ class importMovies extends Command
         $this->info("Импорт закончился...");
     }
 }
-
-
-
-
-
-
-

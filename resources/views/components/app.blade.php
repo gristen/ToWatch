@@ -15,7 +15,7 @@
 <main class=" container flex-grow-1">
     {{--TODO --}}
     <audio id="backgroundAudio" loop muted>
-        <source src="{{ asset('assets/mew.mp3') }}" type="audio/mpeg">
+        <source src="{{ asset('assets/pepsikow.ogg') }}" type="audio/mpeg">
     </audio>
     @if ($errors->any())
         <div class="alert alert-danger">
