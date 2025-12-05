@@ -26,7 +26,7 @@
                             <input name="password" type="password" class="form-control auth-input" placeholder="••••••••" required>
                         </div>
                         <div class="col">
-                            <label class="form-label">Повторите пароль </label>
+                            <label class="form-label">Повторите пароль</label>
                             <input name="password_confirmation" type="password" class="form-control auth-input" placeholder="••••••••" required>
                         </div>
                     </div>
