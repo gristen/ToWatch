@@ -22,9 +22,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        if (env('APP_ENV') === 'production' || env('APP_ENV') === 'local') {
+        /*if (env('APP_ENV') === 'production' || env('APP_ENV') === 'local') {
             URL::forceScheme('https');
-        }
+        }*/
         Schema::defaultStringLength(191);
         Paginator::useBootstrapFive();
     }

@@ -10,7 +10,7 @@ use App\Http\Controllers\TaskController;
 use Illuminate\Support\Facades\Route;
 
 
-Route::get('/', [MainController::class, 'index']);
+Route::get('/', [MainController::class, 'index'])->name('home');
 
 Route::get('/tasks', [TaskController::class, "show"])->name('tasks.show');
 

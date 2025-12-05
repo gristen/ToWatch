@@ -1,53 +1,45 @@
 @extends('components.app')
 
-
 @section('content')
+    <main>
+        <div class="d-flex justify-content-center align-items-center" style="min-height: 85vh;">
 
-<main>
-    <div class="container">
-        <h3 class="mt-3">Регистрация</h3>
-        <hr>
-    </div>
-    <div class="container d-flex justify-content-center">
+            <div class="auth-card text-white p-5 w-100" style="max-width: 480px;">
+                <h2 class="text-center mb-4 fw-bold">Создание аккаунта</h2>
 
-        <form action="{{route('register')}}" method="POST" class="d-flex flex-column justify-content-center w-50 gap-2 mt-5 mb-5">
-            @csrf
-            <div class="row g-2">
-                <div class="col-md">
-                    <div class="form-floating">
-                        <input name="email" type="email" class="form-control" id="email" placeholder="email">
-                        <label for="email">E-mail</label>
+                <form action="{{ route('register') }}" method="POST" class="d-flex flex-column gap-3">
+                    @csrf
+
+                    <div>
+                        <label class="form-label">E-mail</label>
+                        <input name="email" type="email" class="form-control auth-input" placeholder="example@mail.com" required>
                     </div>
-                </div>
-            </div>
-            <div class="row g-2">
-                <div class="col-md">
-                    <div class="form-floating">
-                        <input name="name" type="text" class="form-control" id="name" placeholder="username">
-                        <label for="name">Имя пользователя</label>
+
+                    <div>
+                        <label class="form-label">Имя пользователя</label>
+                        <input name="name" type="text" class="form-control auth-input" placeholder="Ваш никнейм" required>
                     </div>
-                </div>
-            </div>
-            <div class="row g-2">
-                <div class="col-md">
-                    <div class="form-floating">
-                        <input name="password" type="password" class="form-control" id="password" placeholder="*********">
-                        <label for="password">Пароль</label>
+
+                    <div class="row g-3">
+                        <div class="col">
+                            <label class="form-label">Пароль</label>
+                            <input name="password" type="password" class="form-control auth-input" placeholder="••••••••" required>
+                        </div>
+                        <div class="col">
+                            <label class="form-label">Повторите пароль</label>
+                            <input name="password_confirmation" type="password" class="form-control auth-input" placeholder="••••••••" required>
+                        </div>
                     </div>
-                </div>
-                <div class="col-md">
-                    <div class="form-floating">
-                        <input name="password_confirmation" type="password" class="form-control" id="password_confirmation" placeholder="*********">
-                        <label for="password_confirmation">Подтверждение пароля</label>
-                    </div>
-                </div>
+
+                    <button class="btn auth-btn w-100 fw-bold mt-3">Создать аккаунт</button>
+                </form>
+
+                <p class="text-center mt-4 opacity-75">
+                    Уже есть аккаунт?
+                    <a href="{{route('login')}}" class="reg-link">Войти →</a>
+                </p>
             </div>
-            <div class="row g-2">
-                <button class="btn btn-success text-">Создать аккаунт</button>
-            </div>
-        </form>
-    </div>
-</main>
+        </div>
+    </main>
 
 @endsection
-

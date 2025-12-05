@@ -73,33 +73,20 @@ class importMovies extends Command
 
             try {
             $start = microtime(true);
-            if ($year){
-                dd("year {{$year}}");
-            }
-            $response = Http::withHeaders(['X-API-KEY' => env('APP_IMPORT_KEY')])
-                ->timeout(5000)
-                ->connectTimeout(20) // максимум 10 секунд на установку соединения
-                ->retry(3, 5000)
-                ->get("https://api.kinopoisk.dev/v1.4/movie",[
-
-                        'page' => $i,
-                        'limit' => 2,
-                        'selectFields' => [
-                            'id', 'name', 'alternativeName', 'year', 'type',
-                            'poster', 'description', 'movieLength', 'ageRating',
-                            'shortDescription', 'persons', 'genres', 'countries',
-                            'ExternalId',
-                        ],
-                        'year' => $year ?? null,
 
 
-                ]);
-
+                $response = Http::withHeaders(['X-API-KEY' => env('APP_IMPORT_KEY')])
+                    ->timeout(5000)
+                    ->connectTimeout(20) // максимум 10 секунд на установку соединения
+                    ->retry(3, 5000)
+                    ->get("https://api.kinopoisk.dev/v1.4/movie?selectFields&selectFields=id&selectFields=externalId&selectFields=name&selectFields=enName&selectFields=alternativeName&selectFields=description&selectFields=shortDescription&selectFields=slogan&selectFields=type&selectFields=status&selectFields=year&selectFields=releaseYears&selectFields=rating&selectFields=ageRating&selectFields=votes&selectFields=movieLength&selectFields=genres&selectFields=countries&selectFields=poster&selectFields=videos&selectFields=persons&selectFields=facts&selectFields=fees&selectFields=watchability&page=$i&limit=2&notNullFields=poster.url");
 
             }catch (\Illuminate\Http\Client\RequestException $e){
                 $status = $e->response->status();
+                $body = $e->response->body();
                 match ($status) {
                     403 => $this->error("Превышен дневной лимит"),
+                    default => $this->error("Неизвестная ошибка, код: $status , тело : $body" ),
                 };
 
                 break;
@@ -107,6 +94,8 @@ class importMovies extends Command
             if ($response->successful()) {
 
                 $data = $response->json();
+
+
                 $duration = round(microtime(true) - $start, 2); // время выполнения
                 $size = round(strlen($response->body()) / 1024, 2); // размер в КБ
 
@@ -115,6 +104,7 @@ class importMovies extends Command
                 foreach ($data['docs'] as $movie) {
 
                     try {
+
                         $new_movie = Movie::query()->create([
                             'kinopoisk_id' => $movie['id'],
                             'name' => $movie['name'],
@@ -126,7 +116,10 @@ class importMovies extends Command
                             'movieLength' => $movie['movieLength'],
                             'age_rating' => $movie['ageRating'],
                             'shortDescription' => $movie['shortDescription'],
-                            'user_published' => 2
+                            'user_published' => 2,
+                            'kp_id' => $movie['ExternalId']['kpHD'] ?? null,
+                            'tmdb_id' => $movie['ExternalId']['tmdb'] ?? null,
+                            'imdb_id' => $movie['ExternalId']['imdb'] ?? null,
                         ]);
 
                         if (!empty($movie['persons'])) {
@@ -143,9 +136,10 @@ class importMovies extends Command
                                     ]
                                 );
 
-                                $new_movie->persons()->attach($person->id);
+                                $new_movie->persons()->sync($person->id);
                             }
                         }
+                        //todo: status , rating - table , votes - table ,
 
                         // бывает что ключа 'genres' не приходит с апи, так что делаем проверку этого ключа
                         if (array_key_exists('genres', $movie)) {
@@ -154,8 +148,9 @@ class importMovies extends Command
                                 collect($movie['genres'])
                                 ->pluck('name'))
                                 ->pluck('id');
-                            $new_movie->genres()->attach($genreIds);
+                            $new_movie->genres()->sync($genreIds);
                         }
+
 
                         if (array_key_exists('countries', $movie)) {
                         $countryIds = Country::query()->
@@ -163,21 +158,55 @@ class importMovies extends Command
                                 collect($movie['countries'])
                                     ->pluck('name'))
                                 ->pluck('id');
-                            $new_movie->countries()->attach($countryIds);
+                            $new_movie->countries()->sync($countryIds);
                         }
 
+                        // ИСПОЛЬЗУЙТЕ:
+                        if (isset($movie['watchability']) && !empty($movie['watchability']['items'])) {
+                            $this->info("✅ Найдено источников для просмотра: " . count($movie['watchability']['items']));
+
+                            foreach ($movie['watchability']['items'] as $item) {
+                                $new_movie->watchability()->create([
+                                    'name' => $item['name'] ?? null,
+                                    'logo_url' => $item['logo']['url'] ?? null,
+                                    'url'  => $item['url'] ?? null,
+                                ]);
+                            }
+                        }
+
+
+                        if (!empty($movie['videos']['trailers'])) {
+                            $this->info("трейлер пойман ");
+                            foreach ($movie['videos']['trailers'] as $item) {
+                                $new_movie->videos()->create([
+                                    'name' => $item['name'] ?? null,
+                                    'url'=> $item['url'] ?? null,
+                                    'site' => $item['site'] ?? null,
+                                    'type' => $item['type'] ?? null,
+                                ]);
+                            }
+                        }
+
+                        if (!empty($movie['fees'])){
+                           foreach ($movie['fees'] as $key=>$item) {
+
+                               var_dump($movie['fees']);
+                               $new_movie->fees()->create([
+                                   'name' => $key ?? null,
+                                   'value' => $item['value'] ?? null,
+                               ]);
+                           }
+                        }
 
                         $last_page = $data['page'];
                         $last_movie = $movie['id'];
 
-                        //$importService->logImport($movie['id'],$data['page'],'last_movie_id','last_movie_page');
-                       // $importService->logImport($movie['persons']['id'],$data['page'],'last_person_id','last_person_page');
+
 
 
 
                     } catch (\Throwable $e) {
                         $this->error("Ошибка парсинга {$e->getMessage()} ");
-                        //$this->logImport($movie['id'], $data['page']);
                         break 2; // разрыв двух циклов
                     }
                 }

@@ -4,7 +4,7 @@
         <div>@error('form.title') {{ $message }} @enderror</div>
     <input wire:model="form.title" name="title" class="form-control mt-2" placeholder="Заголовок..." type="text">
     <label class="form-label" for="form-control">Описание новой задачи</label>
-    <input wire:model="form.description" name="description" class="form-control mt-2" placeholder="Описание..." type="text">
+    <textarea wire:model="form.description" name="description" class="form-control mt-2" placeholder="Описание..." type="text"></textarea>
     <hr>
     <select wire:model="form.urgency" name="urgency" class="form-select mt-2" aria-label="Default select example">
         <!--TODO вынести оптионы в отдельный компонент-->

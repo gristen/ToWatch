@@ -39,6 +39,21 @@ class Movie extends Model
        return $this->belongsTo(User::class,'user_published');
     }
 
+    public function videos()
+    {
+        return $this->hasMany(Video::class);
+    }
+
+    public function fees()
+    {
+        return $this->hasMany(Fees::class);
+    }
+
+    public function watchability(): HasMany
+    {
+        return $this->hasMany(Watchability::class);
+    }
+
     protected $fillable = [
         'kinopoisk_id',
         'name',

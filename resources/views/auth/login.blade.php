@@ -1,20 +1,28 @@
 @extends('components.app')
 
 @section('content')
-<div class="form-signin w-100 m-auto">
-    <form method="POST" action="{{route('login')}}">
-        @csrf
-        <div class="d-flex" style="align-items: center; justify-content: space-between">
-            <h2>Вход</h2>
+    <div class="d-flex justify-content-center align-items-center" style="min-height: 100vh;">
+        <div class="auth-card text-white p-5">
+
+            <h2 class="text-center mb-4 fw-bold">Вход</h2>
+
+            <div class="mb-3">
+                <label class="form-label">E-mail</label>
+                <input type="email" class="form-control auth-input" placeholder="example@mail.com">
+            </div>
+
+            <div class="mb-4">
+                <label class="form-label">Пароль</label>
+                <input type="password" class="form-control auth-input" placeholder="Введите пароль">
+            </div>
+
+            <button class="btn auth-btn w-100 fw-bold">Войти</button>
+
+            <p class="text-center mt-3 opacity-75">
+                Нет аккаунта? <a href="{{route('register')}}" class="reg-link">Создать →</a>
+            </p>
         </div>
-        <div class="form-floating mt-3">
-            <input name="email" type="email" class="form-control" id="floatingInput" placeholder="email@mail.ru"> <label for="floatingInput">E-mail</label>
-        </div>
-        <div class="form-floating">
-            <input name="password" type="password" class="form-control" id="floatingPassword" placeholder="Пароль"> <label for="floatingPassword">Пароль</label>
-        </div>
-        <button class="btn btn-success w-100 py-2" type="submit">Войти</button>
-    </form>
-</div>
+    </div>
+
 
 @endsection

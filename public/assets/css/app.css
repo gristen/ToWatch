@@ -1,9 +1,106 @@
+.auth-card {
+    background: #12171d;
+    width: 420px;
+    border-radius: 14px;
+    box-shadow: 0 0 25px rgba(0, 255, 120, 0.04), 0 0 10px rgba(0,0,0,0.4);
+    animation: fadeIn .6s ease;
+}
 
-.toast{
+.auth-input {
+    background: #1b2026;
+    border: 1px solid #2a2f35;
+    color: #eaeaea;
+    padding: 10px 14px;
+    border-radius: 8px;
+    transition: .25s;
+}
+
+.auth-input:focus {
+    border-color: #1cb56c !important;
+    box-shadow: 0 0 8px rgba(0,255,141,.3);
+}
+
+.auth-btn {
+    background: #1e8a52;
+    color: white;
+    padding: 12px;
+    border-radius: 8px;
+    font-size: 17px;
+    transition: .25s;
+}
+
+.auth-btn:hover {
+    background: #27a562;
+    transform: translateY(-1px);
+    box-shadow: 0 3px 10px rgba(0,255,120,.3);
+}
+
+.reg-link {
+    color: #1cb56c;
+    text-decoration: none;
+    font-weight: 600;
+    transition: .25s;
+}
+
+.reg-link:hover {
+    color: #23d078;
+    text-shadow: 0 0 5px rgba(0,255,120,.4);
+}
+
+@keyframes fadeIn {
+    from {opacity:0; transform: translateY(10px);}
+    to   {opacity:1; transform: translateY(0);}
+}
 
 
-
-
+.auth-card {
+    background: #12171d;
+    border-radius: 14px;
+    box-shadow: 0 0 25px rgba(0,255,120,0.04), 0 0 10px rgba(0,0,0,0.45);
+    animation: fadeIn .6s ease;
+}
+.auth-input {
+    background: #1b2026;
+    border: 1px solid #2a2f35;
+    color: #eaeaea;
+    padding: 10px 14px;
+    border-radius: 8px;
+    transition: .25s;
+}
+.auth-input:focus {
+    border-color: #1cb56c !important;
+    box-shadow: 0 0 8px rgba(0,255,141,.35);
+}
+.auth-btn {
+    background: #1e8a52;
+    color:white;
+    padding: 12px;
+    border-radius: 8px;
+    font-size: 17px;
+    transition:.25s;
+}
+.auth-btn:hover {
+    background:#27a562;
+    transform:translateY(-1px);
+    box-shadow:0 3px 12px rgba(0,255,120,.35);
+}
+.reg-link {
+    color:#1cb56c;
+    font-weight:600;
+    text-decoration:none;
+    transition:.25s;
+}
+.reg-link:hover {
+    color:#23d078;
+    text-shadow:0 0 6px rgba(0,255,120,.35);
+}
+@keyframes fadeIn {
+    from {opacity:0; transform:translateY(10px);}
+    to   {opacity:1; transform:translateY(0);}
+}
+.profile_link{
+    width: 40px;
+    height: 40px;
 }
 .logo {
     margin-right: 20px;

@@ -109,10 +109,10 @@
 
             closeModal.addEventListener('show.bs.modal', function (event) {
                 const button = event.relatedTarget; // кнопка, которая открыла модал
-                const taskId = button.getAttribute('data-task-id');
+                // const taskId = button.getAttribute('data-task-id');
                 const taskTitle = button.getAttribute('data-task-title');
 
-                closeModal.querySelector('#close-task-id').value = taskId;
+                // closeModal.querySelector('#close-task-id').value = taskId;
                 closeModal.querySelector('#task-title').textContent = taskTitle;
                 //closeModal.querySelector('#close-form').action = `/task/${taskId}`;
 

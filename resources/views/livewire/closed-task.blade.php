@@ -1,6 +1,6 @@
 <div>
 
-    {{--<input wire:model="form.id" type="hidden" name="id" id="close-task-id" value="">--}}
+
         <label class="form-label" for="form-control">Ссылка на коммит</label>
         <input wire:model="form.link_git" name="link_git" class="form-control" placeholder="Ссылка на коммит github..."
                type="text">

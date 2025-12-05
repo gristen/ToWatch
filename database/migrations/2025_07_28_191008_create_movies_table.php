@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
@@ -17,6 +16,7 @@ return new class extends Migration
             $table->string('name')->nullable();
             $table->string('eng_name')->nullable();
             $table->string('type');
+            $table->enum('status', ['announced', 'completed', 'filming', 'post-production', 'pre-production'])->nullable();
             $table->string("route_to_film");
             $table->string("preview_url");
             $table->integer("movieLength")->nullable();
