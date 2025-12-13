@@ -6,7 +6,7 @@
 
             <div class="auth-card text-white p-5 w-100" style="max-width: 480px;">
                 <h2 class="text-center mb-4 fw-bold">Создание аккаунта</h2>
-
+                <x-errors/>
                 <form action="{{ route('register') }}" method="POST" class="d-flex flex-column gap-3">
                     @csrf
 

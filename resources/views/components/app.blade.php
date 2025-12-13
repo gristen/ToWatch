@@ -14,18 +14,11 @@
 
 <main class=" container flex-grow-1">
     {{--TODO --}}
-    <audio id="backgroundAudio" loop muted>
+   {{-- <audio id="backgroundAudio" loop muted>
         <source src="{{ asset('assets/pepsikow.ogg') }}" type="audio/mpeg">
-    </audio>
-    @if ($errors->any())
-        <div class="alert alert-danger">
-            <ul>
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
+    </audio>--}}
+
+
     @yield("content")
 </main>
 

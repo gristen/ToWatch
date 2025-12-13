@@ -12,24 +12,28 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [MainController::class, 'index'])->name('home');
 
-Route::get('/tasks', [TaskController::class, "show"])->name('tasks.show');
+
+
+
+Route::middleware(['auth', 'can:admin-or-moder'])->group(function () {
+    Route::get('/tasks', [TaskController::class, "show"])->name('tasks.show');
+    Route::get('/admin/main',[AdminController::class, "index"])->name('admin.index');
+    Route::get('/admin/users',[AdminController::class, "index"])->name('admin.index');
+    Route::get('/admin/films',[AdminController::class, "index"])->name('admin.index');
+    Route::get('/admin/categories',[AdminController::class, "index"])->name('admin.index');
+    Route::get('/admin/categories',[AdminController::class, "index"])->name('admin.index');
+    Route::put('/task/{task}',[TaskController::class, "update"])->name('task.update');
+    Route::post('/task/store', [TaskController::class, "store"])->name('task.store');
+});
 
 
 Route::get('/login', [LoginController::class, "index"])->name('login');
 Route::get('/register', [RegisterController::class, "show"])->name('register');
 Route::get('/profile', [ProfileController::class, "show"])->name('profile');
 
-Route::put('/task/{task}',[TaskController::class, "update"])->name('task.update');
-
-Route::post('/task/store', [TaskController::class, "store"])->name('task.store');
 
 Route::post('/register', [RegisterController::class, "store"])->name('register');
 Route::post('/login', [LoginController::class, "login"])->name('login');
 Route::get('/logout', [LogoutController::class, "logout"])->name('logout');
 
-//admin routes
-Route::get('/admin/main',[AdminController::class, "index"])->name('admin.index');
-Route::get('/admin/users',[AdminController::class, "index"])->name('admin.index');
-Route::get('/admin/films',[AdminController::class, "index"])->name('admin.index');
-Route::get('/admin/categories',[AdminController::class, "index"])->name('admin.index');
-Route::get('/admin/categories',[AdminController::class, "index"])->name('admin.index');
+

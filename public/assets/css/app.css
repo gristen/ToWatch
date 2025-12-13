@@ -1,3 +1,66 @@
+.movie-tile {
+    position: relative;
+    border-radius: 12px;
+    overflow: hidden;
+    background: #111;
+    cursor: pointer;
+}
+
+.movie-tile img {
+    width: 100%;
+    aspect-ratio: 2 / 3;
+    object-fit: cover;
+    transition: transform .3s ease;
+}
+
+.movie-tile:hover img {
+    transform: scale(1.05);
+}
+
+.movie-type {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background: rgba(0,0,0,.8);
+    padding: 2px 8px;
+    font-size: 11px;
+    border-radius: 6px;
+    z-index: 2;
+}
+
+.movie-hover {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        to top,
+        rgba(0,0,0,.9) 30%,
+        rgba(0,0,0,.3) 60%,
+        transparent
+    );
+    opacity: 0;
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    transition: opacity .25s ease;
+}
+
+.movie-tile:hover .movie-hover {
+    opacity: 1;
+}
+
+.movie-title {
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 1.2;
+}
+
+.movie-meta {
+    font-size: 12px;
+    opacity: .7;
+}
+
+
 .auth-card {
     background: #12171d;
     width: 420px;
