@@ -2,7 +2,7 @@
     <!-- Модальное окно -->
     <div class="modal fade" id="closeModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-        <div class="modal-content">
+            <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel">Подтверждение действий</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -74,7 +74,7 @@
                             {{ $movie->year ?? '—' }}
                         </div>
 
-                        <a href="#" class="btn btn-success btn-sm w-100 mt-2">
+                        <a href="{{route('movie.show', $movie)}}" class="btn btn-success btn-sm w-100 mt-2">
                             Смотреть
                         </a>
 
@@ -111,16 +111,16 @@
         });
 
         document.addEventListener('livewire:init', () => {
-        Livewire.on('movie-closed', () => {
-            console.log('✅');
+            Livewire.on('movie-closed', () => {
+                console.log('✅');
 
-            const modalEl = document.getElementById('closeModal');
-            const modal = bootstrap.Modal.getInstance(modalEl);
-            if (modal) {
-                modal.hide();
-            }
+                const modalEl = document.getElementById('closeModal');
+                const modal = bootstrap.Modal.getInstance(modalEl);
+                if (modal) {
+                    modal.hide();
+                }
 
-        });
+            });
 
             Livewire.on('toast', (data) => {
                 const toastEl = document.getElementById('livewireToast');
@@ -131,7 +131,7 @@
 
                 messageEl.textContent = data.message;
 
-                const toast = new bootstrap.Toast(toastEl, { delay: 3000 });
+                const toast = new bootstrap.Toast(toastEl, {delay: 3000});
                 toast.show();
             });
 

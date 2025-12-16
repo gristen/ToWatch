@@ -21,21 +21,56 @@ class User extends Authenticatable
         return $this->hasMany(Task::class);
     }
 
-
-    public function reviews():HasMany
+    public function following()
     {
-       return $this->hasMany(Review::class);
+        return
+            $this->belongsToMany(
+                User::class,
+                'follows',
+                'user_id',
+                'followed_user_id'
+            )->withTimestamps();
     }
 
-    public function movies():HasMany
+    public function followers()
     {
-        return $this->hasMany(Movie::class,'user_published','id');
+        return
+            $this->belongsToMany(
+                User::class,
+                'follows',
+                'followed_user_id',
+                'user_id'
+            )->withTimestamps();
+    }
+
+    public function isFollowing(User $user): bool
+    {
+        return $this->following()
+            ->where('followed_user_id', "=", $user->id)
+            ->exists();
+    }
+
+    public function reviews(): HasMany
+    {
+        return $this->hasMany(Review::class);
+    }
+
+    public static function findByUsername(string $name): ?self
+    {
+        return static::query()->where('name', $name)->first();
+    }
+
+
+    public function movies(): HasMany
+    {
+        return $this->hasMany(Movie::class, 'user_published', 'id');
     }
 
     public function role(): belongsTo
     {
-       return $this->belongsTo(Role::class);
+        return $this->belongsTo(Role::class);
     }
+
     /**
      * The attributes that are mass assignable.
      *
@@ -58,8 +93,6 @@ class User extends Authenticatable
         'password',
         'remember_token',
     ];
-
-
 
 
     /**

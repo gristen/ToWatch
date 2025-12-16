@@ -5,26 +5,40 @@
 @section('content')
 
 <div class="container mt-4 profile">
-    <!-- Шапка профиля -->
+@dump($user)
     <div class="profile-header d-flex align-items-center mb-4">
-        <img src="https://placehold.co/600x400"
-             class="rounded-circle me-3 profile-avatar"
+        <img src="{{ asset('assets/' . $user->avatar) }}"
+
+        class="rounded-circle me-3 profile-avatar"
              width="100" height="100" alt="avatar">
+
         <div>
             <h3 class="text-white">{{$user->name}}</h3>
-            <p class="text">{{$user->email}}</p>
+            <p class="text m-0">{{$user->email}}</p>
             <div class="d-flex gap-3">
-                <span><strong>123</strong> подписчиков</span>
-                <span><strong>45</strong> подписки</span>
+                <a class="text-white" href="#"><span><strong>{{$user->followers_count}}</strong> подписчиков</span></a>
+                <a class="text-white" href="#"><span><strong>{{$user->following_count}}</strong> подписки</span></a>
             </div>
         </div>
         <div class="ms-auto">
-            <button title="в работе" class="btn btn-success disabled">Подписаться</button>
+        @auth
+                @if(auth()->id() !== $user->id)
+                    <form action="{{ route('users.follow', $user) }}" method="POST">
+                        @csrf
+                        <button class="btn
+                            {{ auth()->user()->isFollowing($user) ? 'btn-secondary' : 'btn-success' }}">
+
+                            {{ auth()->user()->isFollowing($user) ? 'Отписаться' : 'Подписаться' }}
+                        </button>
+                    </form>
+                @endif
+            @endauth
+
         </div>
     </div>
-    <!-- Дополнительная инфа -->
+
     <div class="row mb-4">
-        <!-- О себе -->
+
         <div class="col-md-6">
             <h5>О себе</h5>
             <p class="profile-bio">
@@ -32,7 +46,7 @@
                 Моя цель — посмотреть 500 фильмов в этом году 🎬
             </p>
         </div>
-        <!-- Любимые жанры -->
+
         <div class="col-md-6">
             <h5>Любимые жанры</h5>
             <div>
@@ -44,7 +58,7 @@
         </div>
     </div>
 
-    <!-- Статистика -->
+
     <div class="row text-center mb-4">
         <div class="col-md-4">
             <div class="stats-box">
@@ -66,7 +80,7 @@
         </div>
     </div>
 
-    <!-- Навигация -->
+
     <ul class="nav nav-tabs mb-3">
         <li class="nav-item">
             <a class="nav-link active" data-bs-toggle="tab" href="#favorites">Избранные</a>
@@ -79,9 +93,9 @@
         </li>
     </ul>
 
-    <!-- Контент вкладок -->
+
     <div class="tab-content">
-        <!-- Избранные -->
+
         <div class="tab-pane fade show active" id="favorites">
             <div class="row">
                 <div class="col-md-3 mb-3">
