@@ -31,6 +31,12 @@
                         <span>Мультфильмы</span>
                     </a>
                 </li>
+                <li>
+                    <a href="{{route('home')}}" class="nav-link px-2 text-white d-flex align-items-center column-gap-2">
+                        💢
+                        <span>Аниме</span>
+                    </a>
+                </li>
 
             </ul>
             @if(Auth::check())

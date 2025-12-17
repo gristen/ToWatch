@@ -69,5 +69,8 @@ class Movie extends Model
         'preview',
         'year',
         'shortDescription',
+        'kp_id',
+        'tmdb_id',
+        'imdb_id',
     ];
 }

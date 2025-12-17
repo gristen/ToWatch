@@ -117,9 +117,9 @@ class importMovies extends Command
                             'age_rating' => $movie['ageRating'],
                             'shortDescription' => $movie['shortDescription'],
                             'user_published' => 2,
-                            'kp_id' => $movie['ExternalId']['kpHD'] ?? null,
-                            'tmdb_id' => $movie['ExternalId']['tmdb'] ?? null,
-                            'imdb_id' => $movie['ExternalId']['imdb'] ?? null,
+                            'kp_id' => $movie['externalId']['kpHD'] ?? null,
+                            'tmdb_id' => $movie['externalId']['tmdb'] ?? null,
+                            'imdb_id' => $movie['externalId']['imdb'] ?? null,
                         ]);
 
                         if (!empty($movie['persons'])) {
@@ -190,7 +190,7 @@ class importMovies extends Command
                         if (!empty($movie['fees'])){
                            foreach ($movie['fees'] as $key=>$item) {
 
-                               var_dump($movie['fees']);
+
                                $new_movie->fees()->create([
                                    'name' => $key ?? null,
                                    'value' => $item['value'] ?? null,

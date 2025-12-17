@@ -1,3 +1,68 @@
+
+
+
+/* hero реально на весь экран */
+.movie-hero {
+    width: 100vw;
+    height: 100vh;
+    margin-left: calc(-50vw + 50%);
+}
+
+/* слайд */
+.hero-slide {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+/* фон */
+.hero-bg {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    filter: blur(32px) brightness(0.45);
+    transform: scale(1.2);
+}
+
+/* градиент */
+.hero-slide::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        to right,
+        rgba(13,17,23,0.98) 0%,
+        rgba(13,17,23,0.9) 30%,
+        rgba(13,17,23,0.6) 55%,
+        rgba(13,17,23,0.25) 75%,
+        rgba(13,17,23,0) 100%
+    );
+    z-index: 1;
+}
+
+/* контент */
+.hero-content {
+    position: relative;
+    z-index: 2;
+    height: 100%;
+}
+
+/* заголовок */
+.hero-title {
+    font-size: clamp(2.5rem, 5vw, 4.5rem);
+    font-weight: 800;
+}
+
+/* постер */
+.hero-poster {
+    max-height: 80vh;
+    object-fit: contain;
+    border-radius: 18px;
+    box-shadow: 0 40px 80px rgba(0,0,0,.75);
+}
+
 .movie-tile {
     position: relative;
     border-radius: 12px;
@@ -15,6 +80,10 @@
 
 .movie-tile:hover img {
     transform: scale(1.05);
+}
+.movie-carousel.full-width {
+    width: 97vw;
+    margin-left: calc(-45vw + 46%);
 }
 .full-width {
     width: 100vw;
@@ -55,7 +124,7 @@
         rgba(0,0,0,1) 0%,
         rgba(13,17,23,0.98) 25%,
         rgba(13,17,23,1.9) 50%,
-        rgba(13,17,23,0.7) 70%,
+        rgba(13,17,23,1) 60%,
         rgba(13,17,23,0.5) 85%
     );
 
