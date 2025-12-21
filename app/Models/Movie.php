@@ -49,6 +49,11 @@ class Movie extends Model
         return $this->hasMany(Fees::class);
     }
 
+    public function ratings()
+    {
+        return $this->hasMany(Rating::class);
+    }
+
     public function watchability(): HasMany
     {
         return $this->hasMany(Watchability::class);
@@ -72,5 +77,8 @@ class Movie extends Model
         'kp_id',
         'tmdb_id',
         'imdb_id',
+        'kp_rating',
+        'imdb_rating',
+        'film_critics_rating',
     ];
 }

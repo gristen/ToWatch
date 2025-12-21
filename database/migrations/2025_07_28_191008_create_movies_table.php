@@ -18,6 +18,7 @@ return new class extends Migration {
             $table->string('type');
             $table->enum('status', ['announced', 'completed', 'filming', 'post-production', 'pre-production'])->nullable();
             $table->string("route_to_film");
+            $table->string('slug')->unique()->after('name');
             $table->string("preview_url");
             $table->integer("movieLength")->nullable();
             $table->integer("age_rating")->nullable();;

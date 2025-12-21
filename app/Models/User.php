@@ -21,6 +21,11 @@ class User extends Authenticatable
         return $this->hasMany(Task::class);
     }
 
+    public function ratings(): HasMany
+    {
+        return $this->hasMany(Rating::class);
+    }
+
     public function following()
     {
         return

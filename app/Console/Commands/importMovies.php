@@ -105,8 +105,9 @@ class importMovies extends Command
 
                     try {
 
-                        $new_movie = Movie::query()->create([
-                            'kinopoisk_id' => $movie['id'],
+                        $new_movie = Movie::query()->updateOrCreate(
+                            ['kinopoisk_id'=>$movie['id']],
+                            ['kinopoisk_id' => $movie['id'],
                             'name' => $movie['name'],
                             'eng_name' => $movie['alternativeName'],
                             'type' => $movie['type'],
@@ -120,8 +121,10 @@ class importMovies extends Command
                             'kp_id' => $movie['externalId']['kpHD'] ?? null,
                             'tmdb_id' => $movie['externalId']['tmdb'] ?? null,
                             'imdb_id' => $movie['externalId']['imdb'] ?? null,
+                            'kp_rating' => $movie['rating']['kp'] ?? null,
+                            'imdb_rating' => $movie['rating']['imdb'] ?? null,
+                            'film_critics_rating' => $movie['rating']['filmCritics'] ?? null,
                         ]);
-
                         if (!empty($movie['persons'])) {
                             foreach ($movie['persons'] as $personData) {
                                 // ищем по имени или создаём
@@ -139,7 +142,7 @@ class importMovies extends Command
                                 $new_movie->persons()->sync($person->id);
                             }
                         }
-                        //todo: status , rating - table , votes - table ,
+
 
                         // бывает что ключа 'genres' не приходит с апи, так что делаем проверку этого ключа
                         if (array_key_exists('genres', $movie)) {
@@ -161,12 +164,13 @@ class importMovies extends Command
                             $new_movie->countries()->sync($countryIds);
                         }
 
-                        // ИСПОЛЬЗУЙТЕ:
+
                         if (isset($movie['watchability']) && !empty($movie['watchability']['items'])) {
                             $this->info("✅ Найдено источников для просмотра: " . count($movie['watchability']['items']));
 
                             foreach ($movie['watchability']['items'] as $item) {
-                                $new_movie->watchability()->create([
+                                $new_movie->watchability()->updateOrCreate(
+                                    [
                                     'name' => $item['name'] ?? null,
                                     'logo_url' => $item['logo']['url'] ?? null,
                                     'url'  => $item['url'] ?? null,

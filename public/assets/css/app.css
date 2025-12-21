@@ -107,7 +107,9 @@
     z-index: 1;
 }
 
-
+.movie_info{
+    height: 90%;
+}
 .one-movie__hero {
     position: relative;
     height: 90%;
