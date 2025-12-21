@@ -59,9 +59,12 @@ class Movie extends Model
         return $this->hasMany(Watchability::class);
     }
 
+
+
     protected $fillable = [
         'kinopoisk_id',
         'name',
+        'slug',
         'eng_name',
         'type',
         'movieLength',

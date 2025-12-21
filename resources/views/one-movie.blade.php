@@ -56,7 +56,7 @@
         </div>
 
     </div>
-  {{--  <div class="movie_info mt-5 ">
+    <div class="movie_info mt-5 ">
         <p class="text-white">123</p>
-    </div>--}}
+    </div>
 @endsection

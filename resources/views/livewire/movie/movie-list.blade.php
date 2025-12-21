@@ -128,7 +128,7 @@
                             {{ $movie->year ?? '—' }}
                         </div>
 
-                        <a href="{{route('movie.show', $movie)}}" class="btn btn-success btn-sm w-100 mt-2">
+                        <a href="{{route('movie.show', [$movie, $movie->slug])}}" class="btn btn-success btn-sm w-100 mt-2">
                             Смотреть
                         </a>
 

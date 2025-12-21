@@ -38,8 +38,9 @@ class MovieController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Movie $movie)
+    public function show(Movie $movie, ?string $slug = null)
     {
+
         return view('one-movie', ['movie' => $movie]);
     }
 

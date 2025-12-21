@@ -10,6 +10,7 @@ use App\Services\ImportLoggerService;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Str;
 
 class importMovies extends Command
 {
@@ -42,15 +43,14 @@ class importMovies extends Command
     }
 
 
-    public function logImport(int $movieId , int $page):void
+    public function logImport(int $movieId, int $page): void
     {
         DB::table('import')->insert([
-            'last_movie_id'   => $movieId,
+            'last_movie_id' => $movieId,
             'last_movie_page' => $page,
         ]);
         $this->info("В таблицу импорта добавлено last_movie_id: $movieId  , last_movie_page: $page ");
     }
-
 
 
     public function handle(ImportLoggerService $importService): void
@@ -68,11 +68,10 @@ class importMovies extends Command
         $this->info("Последний импортированный ID: " . $last_imported_id);
 
 
-
         for ($i = $last_imported_page + 1; $i <= $this->totalPages; $i++) {
 
             try {
-            $start = microtime(true);
+                $start = microtime(true);
 
 
                 $response = Http::withHeaders(['X-API-KEY' => env('APP_IMPORT_KEY')])
@@ -81,12 +80,12 @@ class importMovies extends Command
                     ->retry(3, 5000)
                     ->get("https://api.kinopoisk.dev/v1.4/movie?selectFields&selectFields=id&selectFields=externalId&selectFields=name&selectFields=enName&selectFields=alternativeName&selectFields=description&selectFields=shortDescription&selectFields=slogan&selectFields=type&selectFields=status&selectFields=year&selectFields=releaseYears&selectFields=rating&selectFields=ageRating&selectFields=votes&selectFields=movieLength&selectFields=genres&selectFields=countries&selectFields=poster&selectFields=videos&selectFields=persons&selectFields=facts&selectFields=fees&selectFields=watchability&page=$i&limit=2&notNullFields=poster.url");
 
-            }catch (\Illuminate\Http\Client\RequestException $e){
+            } catch (\Illuminate\Http\Client\RequestException $e) {
                 $status = $e->response->status();
                 $body = $e->response->body();
                 match ($status) {
                     403 => $this->error("Превышен дневной лимит"),
-                    default => $this->error("Неизвестная ошибка, код: $status , тело : $body" ),
+                    default => $this->error("Неизвестная ошибка, код: $status , тело : $body"),
                 };
 
                 break;
@@ -104,27 +103,28 @@ class importMovies extends Command
                 foreach ($data['docs'] as $movie) {
 
                     try {
-
                         $new_movie = Movie::query()->updateOrCreate(
-                            ['kinopoisk_id'=>$movie['id']],
+                            ['kinopoisk_id' => $movie['id']],
                             ['kinopoisk_id' => $movie['id'],
-                            'name' => $movie['name'],
-                            'eng_name' => $movie['alternativeName'],
-                            'type' => $movie['type'],
-                            'year' => $movie['year'],
-                            'preview_url' => data_get($movie, 'poster.url'),
-                            'description' => $movie['description'],
-                            'movieLength' => $movie['movieLength'],
-                            'age_rating' => $movie['ageRating'],
-                            'shortDescription' => $movie['shortDescription'],
-                            'user_published' => 2,
-                            'kp_id' => $movie['externalId']['kpHD'] ?? null,
-                            'tmdb_id' => $movie['externalId']['tmdb'] ?? null,
-                            'imdb_id' => $movie['externalId']['imdb'] ?? null,
-                            'kp_rating' => $movie['rating']['kp'] ?? null,
-                            'imdb_rating' => $movie['rating']['imdb'] ?? null,
-                            'film_critics_rating' => $movie['rating']['filmCritics'] ?? null,
-                        ]);
+                                'name' => $movie['name'],
+                                "slug"=>    Str::slug($movie['name']),
+                                'eng_name' => $movie['alternativeName'],
+                                'type' => $movie['type'],
+                                'year' => $movie['year'],
+                                'preview_url' => data_get($movie, 'poster.url'),
+                                'description' => $movie['description'],
+                                'movieLength' => $movie['movieLength'],
+                                'age_rating' => $movie['ageRating'],
+                                'shortDescription' => $movie['shortDescription'],
+                                'user_published' => 2,
+                                'kp_id' => $movie['externalId']['kpHD'] ?? null,
+                                'tmdb_id' => $movie['externalId']['tmdb'] ?? null,
+                                'imdb_id' => $movie['externalId']['imdb'] ?? null,
+                                'kp_rating' => $movie['rating']['kp'] ?? null,
+                                'imdb_rating' => $movie['rating']['imdb'] ?? null,
+                                'film_critics_rating' => $movie['rating']['filmCritics'] ?? null,
+                            ]);
+
                         if (!empty($movie['persons'])) {
                             foreach ($movie['persons'] as $personData) {
                                 // ищем по имени или создаём
@@ -149,14 +149,14 @@ class importMovies extends Command
                             $genreIds = Genre::query()->
                             whereIn('name',
                                 collect($movie['genres'])
-                                ->pluck('name'))
+                                    ->pluck('name'))
                                 ->pluck('id');
                             $new_movie->genres()->sync($genreIds);
                         }
 
 
                         if (array_key_exists('countries', $movie)) {
-                        $countryIds = Country::query()->
+                            $countryIds = Country::query()->
                             whereIn('name',
                                 collect($movie['countries'])
                                     ->pluck('name'))
@@ -170,46 +170,46 @@ class importMovies extends Command
 
                             foreach ($movie['watchability']['items'] as $item) {
                                 $new_movie->watchability()->updateOrCreate(
+                                    ['url' => $item['url']],
                                     [
-                                    'name' => $item['name'] ?? null,
-                                    'logo_url' => $item['logo']['url'] ?? null,
-                                    'url'  => $item['url'] ?? null,
-                                ]);
+                                        'name' => $item['name'] ?? null,
+                                        'logo_url' => $item['logo']['url'] ?? null,
+                                        'url' => $item['url'] ?? null,
+                                    ]);
                             }
                         }
 
 
                         if (!empty($movie['videos']['trailers'])) {
-                            $this->info("трейлер пойман ");
                             foreach ($movie['videos']['trailers'] as $item) {
-                                $new_movie->videos()->create([
+                                $new_movie->videos()->updateOrCreate(
+                                    ['url' => $item['url']],
+                                    [
                                     'name' => $item['name'] ?? null,
-                                    'url'=> $item['url'] ?? null,
+                                    'url' => $item['url'] ?? null,
                                     'site' => $item['site'] ?? null,
                                     'type' => $item['type'] ?? null,
                                 ]);
                             }
                         }
 
-                        if (!empty($movie['fees'])){
-                           foreach ($movie['fees'] as $key=>$item) {
+                        if (!empty($movie['fees'])) {
+                            foreach ($movie['fees'] as $key => $item) {
 
 
-                               $new_movie->fees()->create([
-                                   'name' => $key ?? null,
-                                   'value' => $item['value'] ?? null,
-                               ]);
-                           }
+                                $new_movie->fees()->create([
+                                    'name' => $key ?? null,
+                                    'value' => $item['value'] ?? null,
+                                ]);
+                            }
                         }
 
                         $last_page = $data['page'];
                         $last_movie = $movie['id'];
 
 
-
-
-
                     } catch (\Throwable $e) {
+
                         $this->error("Ошибка парсинга {$e->getMessage()} ");
                         break 2; // разрыв двух циклов
                     }

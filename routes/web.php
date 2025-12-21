@@ -28,7 +28,7 @@ Route::middleware(['auth', 'can:admin-or-moder'])->group(function () {
     Route::post('/task/store', [TaskController::class, "store"])->name('task.store');
 });
 
-Route::get('/movie/{movie}',[MovieController::class, "show"])->name('movie.show');
+Route::get('/movie/{movie}/{slug?}',[MovieController::class, "show"])->name('movie.show');
 
 Route::post('/users/{user}/follow', [FollowController::class, 'toggle'])
     ->middleware('auth')
