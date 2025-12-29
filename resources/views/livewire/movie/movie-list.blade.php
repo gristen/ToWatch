@@ -26,54 +26,29 @@
 
 
 
-    <div class="container-fluid px-0"> <!-- Убираем горизонтальные паддинги -->
-        <div class="movie-carousel full-width mb-5">
-        <div id="moviesCarousel" class="carousel slide" data-bs-ride="carousel">
+    <div class="container-fluid carousel px-0">
+
+        <div id="carouselExampleFade" class="carousel slide carousel-fade">
             <div class="carousel-inner">
-
-                @foreach($movies->take(5) as $index => $movie)
-                    <div class="carousel-item {{ $index === 0 ? 'active' : '' }}">
-                        <div class="hero-slide">
-
-                            <!-- BLUR BACKGROUND -->
-                            <div
-                                class="hero-bg"
-                                style="background-image:url('{{ $movie->preview_url }}')"
-                            ></div>
-
-                            <!-- CONTENT -->
-                            <div class="hero-content">
-                                <div class="row align-items-center h-100">
-
-                                    <div class="col-md-6 text-light">
-                                        <h1 class="fw-bold">{{ $movie->name }}</h1>
-                                        <p class="text-secondary">{{ $movie->year }}</p>
-
-                                        <a href="{{ route('movie.show', $movie) }}"
-                                           class="btn btn-success fw-bold px-4">
-                                            Смотреть
-                                        </a>
-                                    </div>
-
-                                    <!-- POSTER -->
-                                    <div class="col-md-6 text-end d-none d-md-block">
-                                        <img
-                                            src="{{ $movie->preview_url }}"
-                                            class="hero-poster"
-                                            alt="{{ $movie->name }}"
-                                        >
-                                    </div>
-
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
-                @endforeach
-
+                <div class="carousel-item active">
+                    <img src="https://s2.fotokto.ru/photo/full/864/8649015.jpg" class="d-block w-100" alt="...">
+                </div>
+                <div class="carousel-item">
+                    <img src="https://s1.fotokto.ru/photo/full/864/8649014.jpg" class="d-block w-100" alt="...">
+                </div>
+                <div class="carousel-item">
+                    <img src="https://s4.fotokto.ru/photo/full/864/8649013.jpg" class="d-block w-100" alt="...">
+                </div>
             </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleFade" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleFade" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
         </div>
-    </div>
     </div>
 
     <div class="mb-4">
