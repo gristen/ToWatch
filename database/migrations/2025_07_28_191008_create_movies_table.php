@@ -16,6 +16,7 @@ return new class extends Migration {
             $table->string('name')->nullable();
             $table->string('eng_name')->nullable();
             $table->string('type');
+            $table->enum('hot', [0, 1])->default(0);
             $table->enum('status', ['announced', 'completed', 'filming', 'post-production', 'pre-production'])->nullable();
             $table->string("route_to_film");
             $table->string('slug')->unique()->after('name');

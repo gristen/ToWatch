@@ -12,10 +12,9 @@ use App\Http\Controllers\TaskController;
 use Illuminate\Support\Facades\Route;
 
 
-Route::get('/', [MainController::class, 'index'])->name('home');
-
-
-
+Route::get('/{type?}', [MainController::class, 'index'])
+    ->where('type', 'tv-series|cartoon|anime|movie')
+    ->name('home');
 
 Route::middleware(['auth', 'can:admin-or-moder'])->group(function () {
     Route::get('/tasks', [TaskController::class, "show"])->name('tasks.show');

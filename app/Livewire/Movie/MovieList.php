@@ -12,16 +12,21 @@ class MovieList extends Component
 {
     use WithPagination;
 
-    #[On('movie-closed')]
-    public function updateClosedMovieList(): void
-    {
+    public string $type = 'all';
 
-    }
 
     public function render()
     {
-        $movies = Movie::with(['countries', 'publisher'])->paginate(50);
 
-        return view('livewire.movie.movie-list',['movies' => $movies]);
+        $query = Movie::with(['countries', 'publisher'])->orderByDesc('imdb_rating');
+
+
+        if ($this->type !== 'all') {
+            $query->where('type', $this->type);
+        }
+
+        return view('livewire.movie.movie-list', [
+            'movies' => $query->paginate(50),
+        ]);
     }
 }

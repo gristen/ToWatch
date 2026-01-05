@@ -12,13 +12,9 @@ class MainController extends Controller
 {
 
 
-    public function index()
+    public function index(string $type = 'movie')
     {
 
-
-       /* $movies = Movie::with(['countries', 'publisher'])->paginate(15);*/
-
-        //return view('index', ['movies' => $movies, 'publisher']);
-        return view('index');
+        return view('index',compact('type'));
     }
 }
