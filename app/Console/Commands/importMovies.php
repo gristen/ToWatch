@@ -19,11 +19,11 @@ class importMovies extends Command
      *
      * @var string
      */
-    protected $signature = 'import:movies {year?}';
+    protected $signature = 'import:movies {--fresh}';
 
     protected $description = 'Импорт фильмов из API кинопоиска и добавление в БД';
 
-    protected int $totalPages = 541695; // todo: Захордкоженное количество страниц это конечно пиздец что могу сказать товарищи
+    protected int $totalPages = 299743; // todo: Захордкоженное количество страниц это конечно пиздец что могу сказать товарищи
 
     //$movie - пришел с апи а нев муви который только что создал
     private function attachRelations($movie, $new_movie)
@@ -45,7 +45,9 @@ class importMovies extends Command
 
     public function logImport(int $movieId, int $page): void
     {
-        DB::table('import')->insert([
+        DB::table('import')->updateOrInsert(
+            ['id' => 1],
+            [
             'last_movie_id' => $movieId,
             'last_movie_page' => $page,
         ]);
@@ -55,14 +57,20 @@ class importMovies extends Command
 
     public function handle(ImportLoggerService $importService): void
     {
-        $year = $this->argument('year');
+        $fresh = $this->option('fresh');
         $last_movie = null;
         $last_page = null;
 
         $this->info("Импорт начался...");
+        if ($fresh != null){
+            $last_imported_page = 1;
+            $last_imported_id = 1;
+            $this->warn('⚠ Импорт начат С НУЛЯ');
+        }else{
+            $last_imported_page = DB::table('import')->orderByDesc('last_movie_page')->value('last_movie_page');
+            $last_imported_id = DB::table('import')->orderByDesc('last_movie_id')->value('last_movie_id');
+        }
 
-        $last_imported_page = DB::table('import')->orderByDesc('last_movie_page')->value('last_movie_page');
-        $last_imported_id = DB::table('import')->orderByDesc('last_movie_id')->value('last_movie_id');
 
         $this->info("Последняя импортированная страница: " . $last_imported_page);
         $this->info("Последний импортированный ID: " . $last_imported_id);
@@ -73,12 +81,11 @@ class importMovies extends Command
             try {
                 $start = microtime(true);
 
-
                 $response = Http::withHeaders(['X-API-KEY' => env('APP_IMPORT_KEY')])
-                    ->timeout(5000)
-                    ->connectTimeout(20) // максимум 10 секунд на установку соединения
-                    ->retry(3, 5000)
-                    ->get("https://api.kinopoisk.dev/v1.4/movie?selectFields&selectFields=id&selectFields=externalId&selectFields=name&selectFields=enName&selectFields=alternativeName&selectFields=description&selectFields=shortDescription&selectFields=slogan&selectFields=type&selectFields=status&selectFields=year&selectFields=releaseYears&selectFields=rating&selectFields=ageRating&selectFields=votes&selectFields=movieLength&selectFields=genres&selectFields=countries&selectFields=poster&selectFields=videos&selectFields=persons&selectFields=facts&selectFields=fees&selectFields=watchability&page=$i&limit=2&notNullFields=poster.url");
+                    ->timeout(200)          // 20 секунд
+                    ->connectTimeout(10)   // 10 секунд на TCP
+                    ->retry(2, 1000)       // 2 ретрая, пауза 1 сек
+                    ->get("https://api.kinopoisk.dev/v1.4/movie?selectFields&selectFields=id&selectFields=externalId&selectFields=name&selectFields=enName&selectFields=alternativeName&selectFields=description&selectFields=shortDescription&selectFields=slogan&selectFields=type&selectFields=status&selectFields=year&selectFields=releaseYears&selectFields=rating&selectFields=ageRating&selectFields=votes&selectFields=movieLength&selectFields=genres&selectFields=countries&selectFields=poster&selectFields=videos&selectFields=persons&selectFields=facts&selectFields=fees&selectFields=watchability&page=$i&limit=1&notNullFields=poster.url");
 
             } catch (\Illuminate\Http\Client\RequestException $e) {
                 $status = $e->response->status();
@@ -93,7 +100,6 @@ class importMovies extends Command
             if ($response->successful()) {
 
                 $data = $response->json();
-
 
                 $duration = round(microtime(true) - $start, 2); // время выполнения
                 $size = round(strlen($response->body()) / 1024, 2); // размер в КБ
@@ -126,12 +132,13 @@ class importMovies extends Command
                             ]);
 
                         if (!empty($movie['persons'])) {
+                            $personIds = [];
+
                             foreach ($movie['persons'] as $personData) {
-                                // ищем по имени или создаём
-                                $person = Person::query()->firstOrCreate(
+                                $person = Person::query()->updateOrCreate(
                                     ['name' => $personData['name']],
                                     [
-                                        'photo' => $personData['photo'] ?? null,
+                                        'photo_url' => $personData['photo'] ?? null,
                                         'profession' => $personData['profession'] ?? null,
                                         'enProfession' => $personData['enProfession'] ?? null,
                                         'enName' => $personData['enName'] ?? null,
@@ -139,8 +146,10 @@ class importMovies extends Command
                                     ]
                                 );
 
-                                $new_movie->persons()->sync($person->id);
+                                $personIds[] = $person->id;
                             }
+
+                            $new_movie->persons()->sync($personIds);
                         }
 
 
@@ -195,12 +204,10 @@ class importMovies extends Command
 
                         if (!empty($movie['fees'])) {
                             foreach ($movie['fees'] as $key => $item) {
-
-
-                                $new_movie->fees()->create([
-                                    'name' => $key ?? null,
-                                    'value' => $item['value'] ?? null,
-                                ]);
+                                $new_movie->fees()->updateOrCreate(
+                                    ['movie_id' => $new_movie->id, 'name' => $key],
+                                    ['value' => $item['value']]
+                                );
                             }
                         }
 
@@ -225,6 +232,7 @@ class importMovies extends Command
         }
 
         $this->info("Импорт закончился...");
+
     }
 }
 

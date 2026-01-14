@@ -38,10 +38,16 @@ class MovieController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Movie $movie, ?string $slug = null)
+    public function show(Movie $movie)
     {
 
-        return view('one-movie', ['movie' => $movie]);
+        $actors = $movie->actors;
+        $limit = 5;
+        $hasMore = $actors->count() > $limit;
+        $moreCount = $actors->count() - $limit;
+
+        $movie->load('directors');
+        return view('one-movie', compact('movie', 'actors', 'hasMore', 'moreCount','limit'));
     }
 
     /**

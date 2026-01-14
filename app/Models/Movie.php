@@ -13,7 +13,29 @@ class Movie extends Model
     use HasFactory;
 
     protected $table = "movies";
-
+    protected $fillable = [
+        'kinopoisk_id',
+        'name',
+        'slug',
+        'eng_name',
+        'type',
+        'movieLength',
+        'route_to_film',
+        'age_rating',
+        'preview_url',
+        'genres_id',
+        'user_published',
+        'description',
+        'preview',
+        'year',
+        'shortDescription',
+        'kp_id',
+        'tmdb_id',
+        'imdb_id',
+        'kp_rating',
+        'imdb_rating',
+        'film_critics_rating',
+    ];
 
     public function reviews(): HasMany
     {
@@ -39,17 +61,17 @@ class Movie extends Model
        return $this->belongsTo(User::class,'user_published');
     }
 
-    public function videos()
+    public function videos(): HasMany
     {
         return $this->hasMany(Video::class);
     }
 
-    public function fees()
+    public function fees(): HasMany
     {
         return $this->hasMany(Fees::class);
     }
 
-    public function ratings()
+    public function ratings(): HasMany
     {
         return $this->hasMany(Rating::class);
     }
@@ -59,29 +81,24 @@ class Movie extends Model
         return $this->hasMany(Watchability::class);
     }
 
+    public function actors(): BelongsToMany
+    {
+        return $this->belongsToMany(Person::class)
+            ->where('profession','=','актеры');
+    }
+
+    public function artists(): BelongsToMany
+    {
+        return $this->belongsToMany(Person::class)
+            ->where('profession','=','художники');
+    }
+
+    public function directors(): BelongsToMany
+    {
+        return $this->belongsToMany(Person::class)
+            ->where('profession','=','режиссеры');
+    }
 
 
-    protected $fillable = [
-        'kinopoisk_id',
-        'name',
-        'slug',
-        'eng_name',
-        'type',
-        'movieLength',
-        'route_to_film',
-        'age_rating',
-        'preview_url',
-        'genres_id',
-        'user_published',
-        'description',
-        'preview',
-        'year',
-        'shortDescription',
-        'kp_id',
-        'tmdb_id',
-        'imdb_id',
-        'kp_rating',
-        'imdb_rating',
-        'film_critics_rating',
-    ];
+
 }

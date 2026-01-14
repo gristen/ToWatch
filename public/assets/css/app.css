@@ -1,7 +1,4 @@
 
-
-
-/* hero реально на весь экран */
 .movie-hero {
     width: 100vw;
     height: 100vh;
@@ -19,7 +16,13 @@
     background-size: cover;
     background-position: center;
 }
-
+:root {
+    --text-success: #00f581;
+}
+.text-success{
+    color: var(--text-success) !important;
+    text-shadow: 0 0 5px var(--text-success);
+}
 /* слайд */
 .hero-slide {
     position: relative;
@@ -41,10 +44,51 @@
 
 [data-bs-theme=dark] .carousel .carousel-control-prev-icon,
 [data-bs-theme=dark] .carousel .carousel-control-next-icon {
-    filter: none; /* убираем серость */
+    filter: none;
 
 }
 
+
+.watchability_link{
+    display: inline-block;
+}
+
+.watchability_link img{
+    transition: .25s ease;
+}
+
+.watchability_link:hover img{
+    transform: scale(1.2);
+}
+
+.watchability_services img{
+    width: 50px;
+}
+
+/* ===== ACTORS ===== */
+.actor-chip {
+    display: inline-block;
+    padding: 4px 8px;
+    font-size: 13px;
+    border-radius: 6px;
+    background: rgba(0,245,129,.08);
+    color: var(--text-success);
+}
+/* ===== GENRES ===== */
+.genre-pill {
+    background: rgba(0,245,129,.08);
+    color: var(--text-success);
+    border: 1px solid rgba(0,245,129,.35);
+    font-size: 12px;
+    letter-spacing: 1px;
+    font-weight: 500;
+}
+.film_info span{
+    color: white;
+}
+.film_info p {
+    margin-bottom: 5px;
+}
 /* фон */
 .hero-bg {
     position: absolute;
