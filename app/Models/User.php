@@ -5,6 +5,7 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -26,18 +27,19 @@ class User extends Authenticatable
         return $this->hasMany(Rating::class);
     }
 
-    public function following()
+    public function following() :BelongsToMany // на кого я подписался
     {
         return
             $this->belongsToMany(
                 User::class,
                 'follows',
                 'user_id',
-                'followed_user_id'
-            )->withTimestamps();
+                'following_user_id'
+            );
+
     }
 
-    public function followers()
+    public function followers() // кто на меня подписался
     {
         return
             $this->belongsToMany(

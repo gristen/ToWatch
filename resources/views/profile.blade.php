@@ -8,10 +8,8 @@
 @dump($user)
     <div class="profile-header d-flex align-items-center mb-4">
         <img src="{{ asset('assets/' . $user->avatar) }}"
-
         class="rounded-circle me-3 profile-avatar"
              width="100" height="100" alt="avatar">
-
         <div>
             <h3 class="text-white">{{$user->name}}</h3>
             <p class="text m-0">{{$user->email}}</p>
