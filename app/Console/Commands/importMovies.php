@@ -45,13 +45,15 @@ class importMovies extends Command
 
     public function logImport(int $movieId, int $page): void
     {
+
         DB::table('import')->updateOrInsert(
             ['id' => 1],
             [
             'last_movie_id' => $movieId,
             'last_movie_page' => $page,
         ]);
-        $this->info("В таблицу импорта добавлено last_movie_id: $movieId  , last_movie_page: $page ");
+
+        $this->info("✅ В таблицу импорта добавлен KinopoiskId = {$movieId} ,  страница: {$page}");
     }
 
 
@@ -62,15 +64,18 @@ class importMovies extends Command
         $last_page = null;
 
         $this->info("Импорт начался...");
-        if ($fresh != null){
-            $last_imported_page = 1;
-            $last_imported_id = 1;
-            $this->warn('⚠ Импорт начат С НУЛЯ');
+        if ($fresh != null) {
+
+            $last_imported_page = DB::table('import')->orderByDesc('last_movie_page')->value('last_updated_page');
+            $last_imported_id = DB::table('import')->orderByDesc('last_movie_id')->value('last_updated_movie_id');
+            $this->warn('⚠️ Fresh-режим ⚠️' );
+
         }else{
+
             $last_imported_page = DB::table('import')->orderByDesc('last_movie_page')->value('last_movie_page');
             $last_imported_id = DB::table('import')->orderByDesc('last_movie_id')->value('last_movie_id');
-        }
 
+        }
 
         $this->info("Последняя импортированная страница: " . $last_imported_page);
         $this->info("Последний импортированный ID: " . $last_imported_id);
@@ -79,7 +84,6 @@ class importMovies extends Command
         for ($i = $last_imported_page + 1; $i <= $this->totalPages; $i++) {
 
             try {
-                $start = microtime(true);
 
                 $response = Http::withHeaders(['X-API-KEY' => env('APP_IMPORT_KEY')])
                     ->timeout(200)          // 20 секунд
@@ -101,13 +105,7 @@ class importMovies extends Command
 
                 $data = $response->json();
 
-                $duration = round(microtime(true) - $start, 2); // время выполнения
-                $size = round(strlen($response->body()) / 1024, 2); // размер в КБ
-
-                $countMovies = count($data['docs']);
-                $this->info("✅ Страница {$i}: {$countMovies} фильмов, размер {$size} КБ, время {$duration} сек . ");
                 foreach ($data['docs'] as $movie) {
-
                     try {
                         $new_movie = Movie::query()->updateOrCreate(
                             ['kinopoisk_id' => $movie['id']],
@@ -131,10 +129,13 @@ class importMovies extends Command
                                 'film_critics_rating' => $movie['rating']['filmCritics'] ?? null,
                             ]);
 
+                        $this->info("✅ ID добавленного фильма = {$new_movie->id}, название = {$movie['name']} ");
+
                         if (!empty($movie['persons'])) {
                             $personIds = [];
 
                             foreach ($movie['persons'] as $personData) {
+
                                 $person = Person::query()->updateOrCreate(
                                     ['name' => $personData['name']],
                                     [
@@ -147,9 +148,13 @@ class importMovies extends Command
                                 );
 
                                 $personIds[] = $person->id;
+
+
                             }
 
                             $new_movie->persons()->sync($personIds);
+
+                            $this->info( " ✅ Колличество актеров пришедшые с API = " . count($personIds));
                         }
 
 
@@ -161,6 +166,7 @@ class importMovies extends Command
                                     ->pluck('name'))
                                 ->pluck('id');
                             $new_movie->genres()->sync($genreIds);
+
                         }
 
 
@@ -190,6 +196,7 @@ class importMovies extends Command
 
 
                         if (!empty($movie['videos']['trailers'])) {
+                            $this->info("✅ Найдено трейлеров для просмотра: " . count($movie['videos']['trailers']));
                             foreach ($movie['videos']['trailers'] as $item) {
                                 $new_movie->videos()->updateOrCreate(
                                     ['url' => $item['url']],
@@ -206,7 +213,7 @@ class importMovies extends Command
                             foreach ($movie['fees'] as $key => $item) {
                                 $new_movie->fees()->updateOrCreate(
                                     ['movie_id' => $new_movie->id, 'name' => $key],
-                                    ['value' => $item['value']]
+                                    ['value' => $item['value'] ?? null]
                                 );
                             }
                         }

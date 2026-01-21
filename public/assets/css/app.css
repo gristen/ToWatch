@@ -19,6 +19,9 @@
 :root {
     --text-success: #00f581;
 }
+.cursor-pointer {
+    cursor: pointer;
+}
 .text-success{
     color: var(--text-success) !important;
     text-shadow: 0 0 5px var(--text-success);

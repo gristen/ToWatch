@@ -59,6 +59,12 @@ return [
             'throw' => false,
             'report' => false,
         ],
+        'laravel_logs' => [
+            'driver' => 'local',
+            'root' => storage_path('logs'),
+            'url' => env('APP_URL').'/laravel-logs',
+            'visibility' => 'private',
+        ],
 
     ],
 

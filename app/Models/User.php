@@ -39,6 +39,11 @@ class User extends Authenticatable
 
     }
 
+    public function isStaff(): bool
+    {
+        return $this->role_id >= 2;
+    }
+
     public function followers() // кто на меня подписался
     {
         return

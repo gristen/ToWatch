@@ -122,7 +122,15 @@
 
                     <div class="d-flex flex-wrap gap-1 mb-2">
                         @foreach($actors->take($limit) as $actor)
-                            <span class="actor-chip">{{ $actor->name }}</span>
+
+                            <span class=" actor-chip d-inline-block text-success cursor-pointer "
+                                  tabindex="0"
+                                  data-bs-toggle="popover"
+                                  data-bs-trigger="hover focus"
+                                  data-bs-html="true"
+                                  data-bs-content="<img src='{{ $actor->photo_url }}' width='150' class='img-fluid rounded mb-2'><div>{{ $actor->name }}</div>">
+                                        {{ $actor->name }}@if(!$loop->last),@endif
+                                    </span>
                         @endforeach
                     </div>
 
@@ -140,6 +148,11 @@
                                 @endforeach
                             </div>
                         </div>
+                    @endif
+
+                    @if()
+
+
                     @endif
             </div>
         </div>
