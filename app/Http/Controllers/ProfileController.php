@@ -21,6 +21,8 @@ class ProfileController extends Controller
         return view('profile', ['user' => $user]);
     }
 
+
+
     /**
      * Display the specified resource.
      */
@@ -28,7 +30,11 @@ class ProfileController extends Controller
     {
 
         if (Auth::user()) {
-            $user = User::query()->withCount(['followers', 'following'])->find(Auth::user()->id);
+
+            $user = User::query()
+                ->withCount(['followers', 'following'])
+                ->find(Auth::user()->id);
+
             return view('profile', compact('user'));
         }
 

@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
+use Illuminate\View\View;
 
 class MovieController extends Controller
 {
@@ -16,12 +17,9 @@ class MovieController extends Controller
     public function index(Request $request)
     {
         return view('index');
-
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
+
     public function create()
     {
         //

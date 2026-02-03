@@ -22,6 +22,50 @@ class User extends Authenticatable
         return $this->hasMany(Task::class);
     }
 
+    public function likesMovies()
+    {
+        return $this->belongsToMany(
+            Movie::class,
+            'movie_likes',
+            'user_id',
+            'movie_id',
+        );
+    }
+
+    public function isLiked(int $movieId): bool
+    {
+        return $this->likesMovies()->where('movie_id', $movieId)->exists();
+    }
+
+
+    public function watchLater() :BelongsToMany
+    {
+        return $this->belongsToMany(
+            Movie::class,
+            'movie_watch_later',
+            'user_id',
+            'movie_id',
+        );
+    }
+
+    public function favoritesMovies() :BelongsToMany
+    {
+        return $this->belongsToMany(
+            Movie::class,
+            'favorite_movie_user',
+            'user_id',
+            'movie_id',
+        );
+    }
+
+    public function isFavorited(int $movieId): bool
+    {
+        return $this->favoritesMovies()->where('movie_id', $movieId)->exists();
+    }
+
+
+
+
     public function ratings(): HasMany
     {
         return $this->hasMany(Rating::class);
@@ -34,14 +78,14 @@ class User extends Authenticatable
                 User::class,
                 'follows',
                 'user_id',
-                'following_user_id'
+                'followed_user_id'
             );
 
     }
 
     public function isStaff(): bool
     {
-        return $this->role_id >= 2;
+        return $this->role_id < 3;
     }
 
     public function followers() // кто на меня подписался

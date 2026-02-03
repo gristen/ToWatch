@@ -40,15 +40,12 @@
                     @if($movie->film_critics_rating !== "0.00")
                         <div>
                             <strong>Рейтинг критиков:</strong>
-                            <span class="badge bg-warning text-dark ms-1">{{ $movie->film_critics_rating ?? "—"  }}</span>
+                            <span
+                                class="badge bg-warning text-dark ms-1">{{ $movie->film_critics_rating ?? "—"  }}</span>
                         </div>
                     @endif
                 </div>
 
-                <div>
-                        <strong>Описание:</strong>
-                        <p style="line-height: 1.4;">{{ $movie->description ?? "—" }}</p>
-                </div>
             </div>
         </div>
     </div>
@@ -57,29 +54,96 @@
     <div class="container vh-100">
         <div class="row">
             <div class="movie_info d-flex mt-5 ">
-                <div class="col-md-5">
-                    <div class="film_img text-white-50">
-                        <img style="width: 400px" src="{{$movie->preview_url ?? "—"}}" alt="">
+                <div class="col-md-4 ">
+                    <div class="film_img position-relative">
+                        <img src="{{ $movie->preview_url }}" class="img-fluid rounded">
                     </div>
+
+                    @auth
+                        <div class="film_actions ">
+                            <form class=" film_form_actions d-flex justify-content-center  " id="favorite-form" method="POST">
+                                @csrf
+                                <button
+                                    id="favorite-btn"
+                                    type="button"
+                                    data-action="favorite"
+                                    data-bs-toggle="tooltip"
+                                    data-bs-placement="bottom"
+                                    data-url="{{ route('movie.action', ['id'=>$movie->id]) }}"
+                                    title="Добавить в избранное"
+                                    class="btn  mt-2  mx-3
+
+                                    {{ auth()->user()->isFavorited($movie->id)
+                                    ? 'btn-success'
+                                    : 'btn-outline-success'
+                                    }}">
+
+                                    {!! auth()->user()->isFavorited($movie->id)
+                                    ? '<i class="bi bi-bookmark-star"></i>'
+                                    : '<i class="bi bi-bookmark-star-fill"></i>' !!}
+                                </button>
+
+                                <button
+                                    data-action="like"
+                                    data-url="{{ route('movie.action', ['id'=>$movie->id]) }}"
+                                    data-bs-toggle="tooltip"
+                                    data-bs-placement="bottom"
+                                    title="Любимые"
+                                    class="btn  mt-2  mx-3
+
+                                    {{auth()->user()->isLiked($movie->id)
+                                    ? 'btn-success'
+                                    : 'btn-outline-success'
+                                    }}">
+
+                                    {!! auth()->user()->isLiked($movie->id)
+                                    ? '<i class="bi bi-heart"></i>'
+                                    : '<i class="bi bi-heart-fill"></i>' !!}
+                                </button>
+
+                                <button
+                                    data-action="watchLater"
+                                    data-bs-toggle="tooltip"
+                                    data-bs-placement="bottom"
+                                    title="Смотреть позже"
+                                    class="btn  mt-2  mx-3
+
+                                    {{auth()->user()->isFavorited($movie->id)
+                                    ? 'btn-outline-success'
+                                    : 'btn-success'
+                                    }}">
+
+                                    {!! auth()->user()->isFavorited($movie->id)
+                                    ? '<i class="bi bi-stopwatch"></i>'
+                                    : '<i class="bi bi-stopwatch-fill"></i>' !!}
+                                </button>
+
+
+
+                            </form>
+                        </div>
+                    @endAuth
                 </div>
-                <div class="col-md-4">
+
+                <div class="col-md-4 offset-1">
                     <div class="film_info text-white-50">
                         <h4 class="color-white mb-3">О фильме:</h4>
 
-                        <p class=""> <i class="bi bi-film  me-1"></i>Название <span class="text-success">{{$movie->name ?? "—"}}</span></p>
-                        <p>  <i class="bi bi-calendar-event  me-1"></i> Год произодства <span class="text-success">{{$movie->year ?? "—"}}</span></p>
-                        <p> <i class="bi bi-cast"></i> Жанры:
+                        <p class=""><i class="bi bi-film  me-1"></i>Название <span
+                                class="text-success">{{$movie->name ?? "—"}}</span></p>
+                        <p><i class="bi bi-calendar-event  me-1"></i> Год произодства <span
+                                class="text-success">{{$movie->year ?? "—"}}</span></p>
+                        <p><i class="bi bi-cast"></i> Жанры:
                         <div class="d-flex flex-wrap gap-1">
                             @foreach($movie->genres as $genre)
                                 <span class="badge rounded-pill genre-pill ">{{ $genre->name }}</span>
                             @endforeach
                         </div>
                         </p>
-
-                        <p> <i class="bi bi-translate"></i> Название на английском <span class="text-success">{{$movie->eng_name ?? "—"}}</span></p>
-                        <p> <i class="bi bi-card-text"></i> Описание <span class="text-success">{{$movie->discription ?? "—" }}</span></p>
-                        <p> <i class="bi bi-camera-reels"></i>
-                             Режиссеры:
+                        <p><i class="bi bi-translate"></i> Название на английском <span
+                                class="text-success">{{$movie->eng_name ?? "—"}}</span></p>
+                        <p><i class="bi bi-camera-reels"></i>
+                            Режиссеры:
                             @forelse($movie->directors as $director)
                                 <a class="text-decoration-none" href="#">
                         <span class="d-inline-block text-success"
@@ -88,7 +152,9 @@
                               data-bs-trigger="hover focus"
                               data-bs-html="true"
                               data-bs-content="<img src='{{ $director->photo_url }}' width='150' class='img-fluid rounded mb-2'><div>{{ $director->name }}</div>">
-                            {{ $director->name }}@if(!$loop->last),@endif
+                            {{ $director->name }}@if(!$loop->last)
+                                ,
+                            @endif
                         </span>
                                 </a>
                             @empty
@@ -96,7 +162,7 @@
                             @endforelse
                         </p>
 
-                        <p> <i class="bi bi-brush"></i> Художники:
+                        <p><i class="bi bi-brush"></i> Художники:
                             @forelse($movie->artists as $artist)
                                 <a class="text-decoration-none" href="#">
                                     <span class="d-inline-block text-success"
@@ -105,16 +171,35 @@
                                           data-bs-trigger="hover focus"
                                           data-bs-html="true"
                                           data-bs-content="<img src='{{ $artist->photo_url }}' width='150' class='img-fluid rounded mb-2'><div>{{ $artist->name }}</div>">
-                                        {{ $artist->name }}@if(!$loop->last),@endif
+                                        {{ $artist->name }}@if(!$loop->last)
+                                            ,
+                                        @endif
                                     </span>
                                 </a>
                             @empty
                                 <span class="text-success">—</span>
                             @endforelse
                         </p>
-                        <p> <i class="bi bi-alarm"></i> Время: <span class="text-success">{{$movie->movieLength ?? "—"}}</span> мин.</p>
+                        <p>
+                            <i class="bi bi-card-text text-justify "></i> Описание <span
+                                class="text-success">{{$movie->description ?? "—" }}</span></p>
+
+                        {{--Информация для администратора--}}
+                        <p><i class="bi bi-alarm"></i> Время: <span
+                                class="text-success">{{$movie->movieLength ?? "—"}}</span> мин.</p>
+                        @if(auth()->check() && auth()->user()->isStaff())
+                            <p class="text-danger mt-5">Информация для администратора</p>
+                            <span class="text-success ">
+                                время добавления в бд -
+                                {{$movie->created_at}}
+                            </span>
+                        @endif
+
+
                     </div>
                 </div>
+
+
                 {{-- ACTORS + SERVICES --}}
                 <div class="col-md-3">
 
@@ -129,7 +214,8 @@
                                   data-bs-trigger="hover focus"
                                   data-bs-html="true"
                                   data-bs-content="<img src='{{ $actor->photo_url }}' width='150' class='img-fluid rounded mb-2'><div>{{ $actor->name }}</div>">
-                                        {{ $actor->name }}@if(!$loop->last),@endif
+                                        {{ $actor->name }}@if(!$loop->last)
+                                @endif
                                     </span>
                         @endforeach
                     </div>
@@ -150,12 +236,97 @@
                         </div>
                     @endif
 
-                    @if()
 
-
-                    @endif
+                </div>
             </div>
         </div>
-    </div>
+
+            <script>
+                $(document).ready(function() {
+                    /*tooltips*/
+
+                    const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+                    const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+
+                    /*отправка формы*/
+
+                    $('#favorite-form button').on('click',function (e) {
+                        e.preventDefault();
+                        let $btn = $(this)
+                        let url = $btn.data('url')
+                        let action = $btn.data('action')
+
+                        $.ajax({
+                            url: url,
+                            method:'POST',
+                            data:{
+                                _token: $('input[name="_token"]').val(),
+                                'action_type':action
+                            },
+                            success: function (response) {
+                                console.log(response)
+                                if (response.status) {
+                                    $btn
+                                .removeClass('btn-outline-success')
+                                        .addClass('btn-success')
+                                    toggleIcon($btn, true)
+                                }else{
+                                    $btn
+                                        .removeClass('btn-success')
+                                        .addClass('btn-outline-success')
+                                    toggleIcon($btn, false)
+                                }
+
+                            },
+                        })
+                    })
+                    function toggleIcon($btn, active) {
+
+                        let icons = {
+                            favorite: ['bi-bookmark-star', 'bi-bookmark-star-fill'],
+                            like: ['bi-heart', 'bi-heart-fill'],
+                            watchLater: ['bi-stopwatch', 'bi-stopwatch-fill'],
+                        };
+
+                        let action = $btn.data('action');
+                        let icon = active ? icons[action][0] : icons[action][1]
+
+                        $btn.html(`<i class="bi ${icon}"></i>`)
+                    }
+
+
+               /* $('#favorite-form').on('submit', function(e) {
+                    e.preventDefault();
+
+                    let $form = $(this);
+                    let $button = $('#favorite-btn');
+
+                    $.ajax({
+                        url: $form.attr('action'),
+                        method: 'POST',
+                        data: $form.serialize(),
+                        success: function(response) {
+
+                            console.log(response)
+
+                            if (response.favorited) {
+
+                                $button.html('<i class="bi bi-bookmark-star-fill"></i>');
+                                $button.removeClass('btn-outline-success').addClass('btn-success');
+
+                            } else {
+
+                                $button.html('<i class="bi bi-bookmark-star"></i>')
+                                $button.removeClass(' btn-success').addClass('btn-outline-success');
+
+                            }
+                        },
+                        error: function() {
+                            alert('Ошибка! Попробуйте позже.');
+                        }
+                    });
+                });*/
+            });
+        </script>
 
 @endsection

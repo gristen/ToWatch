@@ -4,6 +4,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\FavoriteMovieController;
 use App\Http\Controllers\FollowController;
 use App\Http\Controllers\MainController;
 use App\Http\Controllers\MovieController;
@@ -12,9 +13,7 @@ use App\Http\Controllers\TaskController;
 use Illuminate\Support\Facades\Route;
 
 
-Route::get('/{type?}', [MainController::class, 'index'])
-    ->where('type', 'tv-series|cartoon|anime|movie')
-    ->name('home');
+
 
 Route::middleware(['auth', 'can:admin-or-moder'])->group(function () {
     Route::get('/tasks', [TaskController::class, "show"])->name('tasks.show');
@@ -43,4 +42,9 @@ Route::post('/register', [RegisterController::class, "store"])->name('register')
 Route::post('/login', [LoginController::class, "login"])->name('login');
 Route::get('/logout', [LogoutController::class, "logout"])->name('logout');
 
+Route::post('/movie/{id}/action', FavoriteMovieController::class)->name('movie.action');
 
+
+Route::get('/{type?}', [MainController::class, 'index'])
+    ->where('type', 'tv-series|cartoon|anime|movie')
+    ->name('home');

@@ -11,6 +11,8 @@
     <script src="{{ asset("assets/js/color-modes.js") }}"></script>
     <script src="{{ asset("assets/js/bootstrap.bundle.min.js") }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 </head>
 <body class="d-flex flex-column min-vh-100">
     @include("components.header")

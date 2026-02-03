@@ -40,6 +40,13 @@
     <div class="container mt-4">
         <div class="d-flex ">
             <h2>Активные задачи </h2>
+        @dump(session('success'))
+            @if(session('success'))
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    {{ session('success') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            @endif
             <form class="d-flex ms-auto">
                 <input class="form-control disabled me-2" type="search" placeholder="поиск задачи" aria-label="поиск задачи">
             </form>

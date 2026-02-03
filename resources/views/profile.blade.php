@@ -5,7 +5,7 @@
 @section('content')
 
 <div class="container mt-4 profile">
-@dump($user)
+    @dump($user->toArray())
     <div class="profile-header d-flex align-items-center mb-4">
         <img src="{{ asset('assets/' . $user->avatar) }}"
         class="rounded-circle me-3 profile-avatar"
@@ -48,10 +48,10 @@
         <div class="col-md-6">
             <h5>Любимые жанры</h5>
             <div>
-                <span class="genre-badge">Фантастика</span>
-                <span class="genre-badge">Драма</span>
-                <span class="genre-badge">Триллер</span>
-                <span class="genre-badge">Комедия</span>
+                <span class="badge rounded-pill genre-pill">Фантастика</span>
+                <span class="badge rounded-pill genre-pill">Драма</span>
+                <span class="badge rounded-pill genre-pill">Триллер</span>
+                <span class="badge rounded-pill genre-pill">Комедия</span>
             </div>
         </div>
     </div>
@@ -102,15 +102,6 @@
                         <div class="card-body">
                             <h6 class="card-title text-white">Фильм 1</h6>
                             <span class="badge bg-warning">⭐ 8.1</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3 mb-3">
-                    <div class="card movie-card h-100">
-                        <img src="https://placehold.co/600x400" class="card-img-top" alt="poster">
-                        <div class="card-body">
-                            <h6 class="card-title text-white">Фильм 2</h6>
-                            <span class="badge bg-warning">⭐ 7.5</span>
                         </div>
                     </div>
                 </div>

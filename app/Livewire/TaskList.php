@@ -19,7 +19,7 @@ class TaskList extends Component
     #[On('task-created')]
     public function updateTaskList($task): void
     {
-
+        /*session()->flash('success', 'User created successfully');*/
     }
 
     #[On('task-closed')]

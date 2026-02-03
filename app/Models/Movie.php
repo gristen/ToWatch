@@ -81,6 +81,11 @@ class Movie extends Model
         return $this->hasMany(Watchability::class);
     }
 
+    public function favoritedByUser()
+    {
+        return $this->belongsToMany(User::class,'favorite_movie_user');
+    }
+
     public function actors(): BelongsToMany
     {
         return $this->belongsToMany(Person::class)
