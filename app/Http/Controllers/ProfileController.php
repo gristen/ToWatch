@@ -32,7 +32,7 @@ class ProfileController extends Controller
         if (Auth::user()) {
 
             $user = User::query()
-                ->withCount(['followers', 'following'])
+                ->withCount(['followers', 'following','likesMovies','favoritesMovies','viewedMovies'])
                 ->find(Auth::user()->id);
 
             return view('profile', compact('user'));

@@ -7,7 +7,11 @@
     <link rel="stylesheet" href="{{ asset("assets/css/bootstrap.min.css") }}">
     <link rel="stylesheet" href="{{ asset("assets/css/app.css") }}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
-
+    {{--fonts --}}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    {{----}}
     <script src="{{ asset("assets/js/color-modes.js") }}"></script>
     <script src="{{ asset("assets/js/bootstrap.bundle.min.js") }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>

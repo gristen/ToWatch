@@ -1,11 +1,35 @@
-@extends('.components.app')
+@extends('components.app')
 
 
 
 @section('content')
 
-<div class="container mt-4 profile">
-    @dump($user->toArray())
+
+    <div class="modal fade " id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class=" modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Редактирование профиля</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+                </div>
+                <div class="modal-body">
+                   <p class="text-danger"> Тут будет редактирование профиля...позже</p>
+                    <form action="#" method="#">
+                        <input name  disabled class="form-control input-group" placeholder="какой-то текст">
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+                    <button type="button" class="btn btn-success">Сохранить изменения</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <div class="container mt-4 profile">
+
     <div class="profile-header d-flex align-items-center mb-4">
         <img src="{{ asset('assets/' . $user->avatar) }}"
         class="rounded-circle me-3 profile-avatar"
@@ -29,6 +53,12 @@
                             {{ auth()->user()->isFollowing($user) ? 'Отписаться' : 'Подписаться' }}
                         </button>
                     </form>
+                @else
+                    <!-- Кнопка-триггер модального окна -->
+                    <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                        Редактировать профиль
+                    </button>
+
                 @endif
             @endauth
 
@@ -60,20 +90,20 @@
     <div class="row text-center mb-4">
         <div class="col-md-4">
             <div class="stats-box">
-                <h4>248</h4>
+                <h4>{{$user->viewed_movies_count}}</h4>
                 <p>Фильмов посмотрено</p>
             </div>
         </div>
         <div class="col-md-4">
             <div class="stats-box">
-                <h4>36</h4>
-                <p>Рецензий</p>
+                <h4>{{$user->favorites_movies_count}}</h4>
+                <p>Отзывов</p>
             </div>
         </div>
         <div class="col-md-4">
             <div class="stats-box">
-                <h4>7.8</h4>
-                <p>Средняя оценка</p>
+                <h4>{{$user->likes_movies_count}}</h4>
+                <p>Понравившиеся</p>
             </div>
         </div>
     </div>
@@ -87,7 +117,7 @@
             <a class="nav-link" data-bs-toggle="tab" href="#liked">Лайки</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" data-bs-toggle="tab" href="#reviews">Рецензии</a>
+            <a class="nav-link" data-bs-toggle="tab" href="#reviews">Отзывы</a>
         </li>
     </ul>
 
@@ -96,15 +126,9 @@
 
         <div class="tab-pane fade show active" id="favorites">
             <div class="row">
-                <div class="col-md-3 mb-3">
-                    <div class="card movie-card h-100">
-                        <img src="https://placehold.co/600x400" class="card-img-top" alt="poster">
-                        <div class="card-body">
-                            <h6 class="card-title text-white">Фильм 1</h6>
-                            <span class="badge bg-warning">⭐ 8.1</span>
-                        </div>
-                    </div>
-                </div>
+                @foreach($user->favoritesMovies as $movie)
+                  <x-movie.card :movie="$movie" mode="favorite" />
+                @endforeach
             </div>
         </div>
 

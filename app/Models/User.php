@@ -32,6 +32,20 @@ class User extends Authenticatable
         );
     }
 
+    public function viewedMovies():BelongsToMany
+    {
+        return $this->belongsToMany(
+            Movie::class,
+            'movie_viewed',
+            'user_id',
+            'movie_id',
+        );
+    }
+    public function isViewed(int $movieId): bool
+    {
+        return $this->viewedMovies()->where('movie_id', $movieId)->exists();
+    }
+
     public function isLiked(int $movieId): bool
     {
         return $this->likesMovies()->where('movie_id', $movieId)->exists();

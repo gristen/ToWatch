@@ -1,20 +1,7 @@
 <div class="">
     <!-- Модальное окно -->
 
-    <div class="modal fade hero-slide" id="closeModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Подтверждение действий</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    @livewire('Movie.MovieCloseConfirm')
-                </div>
 
-            </div>
-        </div>
-    </div>
     <div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 9999" wire:ignore>
         <div id="livewireToast" class="toast align-items-center text-bg-success border-0" role="alert">
             <div class="d-flex">
@@ -24,7 +11,19 @@
         </div>
     </div>
 
-
+    <div class="modal fade " id="closeModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Подтверждение действий</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    @livewire('Movie.MovieCloseConfirm')
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="mb-4">
         <div class="d-flex flex-wrap gap-2 align-items-center">
 
@@ -121,7 +120,6 @@
         document.addEventListener('livewire:init', () => {
             Livewire.on('movie-closed', () => {
                 console.log('✅');
-
                 const modalEl = document.getElementById('closeModal');
                 const modal = bootstrap.Modal.getInstance(modalEl);
                 if (modal) {

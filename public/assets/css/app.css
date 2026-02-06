@@ -1,4 +1,6 @@
-.tooltip-inner{
+
+
+tooltip-inner{
     background-color: #00f581;!important;
 }
 
@@ -52,7 +54,6 @@
 [data-bs-theme=dark] .carousel .carousel-control-prev-icon,
 [data-bs-theme=dark] .carousel .carousel-control-next-icon {
     filter: none;
-
 }
 
 
@@ -105,7 +106,7 @@
     filter: blur(32px) brightness(0.45);
     transform: scale(1.2);
 }
-
+.stats-box
 /* градиент */
 .hero-slide::after {
     content: '';
@@ -446,6 +447,10 @@
 html,
 body {
     height: 100%;
+    font-family: "Roboto", sans-serif;
+    background-color: #0d1117;
+    color: #e6edf3;
+
 }
 
 .form-signin {
@@ -509,6 +514,11 @@ body {
     border-radius: 10px;
     padding: 15px;
     text-align: center;
+    transition: all 0.3s linear;
+}
+
+.stats-box:hover{
+    transform: translateY(-10px);
 }
 .stats-box h4 {
     color: #00f581;
@@ -516,10 +526,7 @@ body {
 }
 
 
-body {
-    background-color: #0d1117;
-    color: #e6edf3;
-}
+
 
 .movie-card {
     transition: all 0.3s ease;

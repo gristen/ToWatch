@@ -14,6 +14,11 @@ class MovieList extends Component
 
     public string $type = 'all';
 
+    #[On('movie-closed')]
+    public function updateMovieList()
+    {
+
+    }
 
     public function render()
     {

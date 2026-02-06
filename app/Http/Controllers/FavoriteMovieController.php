@@ -17,6 +17,8 @@ class FavoriteMovieController extends Controller
         $result = match ($action) {
             'favorite' => $authUser->favoritesMovies()->toggle($id),
             'like'=>$authUser->likesMovies()->toggle($id),
+            'viewed'=>$authUser->viewedMovies()->toggle($id),
+
         };
 
         $active = !empty($result['attached']);

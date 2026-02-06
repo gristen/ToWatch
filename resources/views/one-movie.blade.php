@@ -61,8 +61,26 @@
 
                     @auth
                         <div class="film_actions ">
-                            <form class=" film_form_actions d-flex justify-content-center  " id="favorite-form" method="POST">
+                            <form class=" film_form_actions d-flex justify-content-center" id="favorite-form" method="POST">
                                 @csrf
+                                <button
+                                    type="button"
+                                    data-action="viewed"
+                                    data-bs-toggle="tooltip"
+                                    data-bs-placement="bottom"
+                                    data-url="{{ route('movie.action', ['id'=>$movie->id]) }}"
+                                    title="Просмотрено"
+                                    class="btn  mt-2  mx-3
+
+                                    {{auth()->user()->isViewed($movie->id)
+                                    ? 'btn-success '
+                                    : 'btn-outline-success'
+                                    }}">
+
+                                    {!! auth()->user()->isViewed($movie->id)
+                                    ? '<i class="bi bi-check2-all"></i>'
+                                    : '<i class="bi bi-check2"></i>' !!}
+                                </button>
                                 <button
                                     id="favorite-btn"
                                     type="button"
@@ -256,6 +274,12 @@
                         let url = $btn.data('url')
                         let action = $btn.data('action')
 
+
+                        let tooltipInstance = bootstrap.Tooltip.getInstance($btn[0]);
+                        if (tooltipInstance) {
+                            tooltipInstance.hide();
+                        }
+                        console.log($btn[0])
                         $.ajax({
                             url: url,
                             method:'POST',
@@ -283,9 +307,10 @@
                     function toggleIcon($btn, active) {
 
                         let icons = {
-                            favorite: ['bi-bookmark-star', 'bi-bookmark-star-fill'],
-                            like: ['bi-heart', 'bi-heart-fill'],
-                            watchLater: ['bi-stopwatch', 'bi-stopwatch-fill'],
+                            favorite: ['bi-bookmark-star', 'bi-bookmark-star-fill',],
+                            like: ['bi-heart', 'bi-heart-fill',],
+                            viewed:[ 'bi-check2-all', 'bi-check2',],
+                            watchLater: ['bi-stopwatch', 'bi-stopwatch-fill',],
                         };
 
                         let action = $btn.data('action');
@@ -295,37 +320,6 @@
                     }
 
 
-               /* $('#favorite-form').on('submit', function(e) {
-                    e.preventDefault();
-
-                    let $form = $(this);
-                    let $button = $('#favorite-btn');
-
-                    $.ajax({
-                        url: $form.attr('action'),
-                        method: 'POST',
-                        data: $form.serialize(),
-                        success: function(response) {
-
-                            console.log(response)
-
-                            if (response.favorited) {
-
-                                $button.html('<i class="bi bi-bookmark-star-fill"></i>');
-                                $button.removeClass('btn-outline-success').addClass('btn-success');
-
-                            } else {
-
-                                $button.html('<i class="bi bi-bookmark-star"></i>')
-                                $button.removeClass(' btn-success').addClass('btn-outline-success');
-
-                            }
-                        },
-                        error: function() {
-                            alert('Ошибка! Попробуйте позже.');
-                        }
-                    });
-                });*/
             });
         </script>
 
