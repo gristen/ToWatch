@@ -9,7 +9,7 @@
         @endif
 
 
-            <livewire:movie.movie-list :type="$type" />
+            <livewire:movie.movie-list :type="$type" />]
 
     </div>
 @endsection
