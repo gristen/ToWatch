@@ -1,4 +1,5 @@
 <div>
+
     @php
         $translate = [
                'high' => 'Высокая',
@@ -39,8 +40,8 @@
 
     <div class="container mt-4">
         <div class="d-flex ">
-            <h2>Активные задачи </h2>
-        @dump(session('success'))
+            <h2>Активные задачи -> <span class="text-success">{{$type}}</span> направления </h2>
+
             @if(session('success'))
                 <div class="alert alert-success alert-dismissible fade show" role="alert">
                     {{ session('success') }}

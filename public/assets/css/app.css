@@ -452,6 +452,12 @@ body {
     color: #e6edf3;
 
 }
+.genre-pill{
+    transition: linear 0.1s ;
+}
+.genre-pill:hover{
+    transform: scale(120%);
+}
 
 .form-signin {
     max-width: 330px;
@@ -515,8 +521,27 @@ body {
     padding: 15px;
     text-align: center;
     transition: all 0.3s linear;
+    cursor: pointer;
 }
 
+.form-filter{
+    padding: 10px;
+}
+
+.form-filter select, input {
+    height: 50px;
+    border-radius: 30px;
+    padding-left: 16px;
+    appearance: none;
+    -webkit-appearance: none;
+    background-image: url("data:image/svg+xml;utf8,<svg ...>");
+    background-repeat: no-repeat;
+    background-position: right 16px center;
+}
+.form-filter input {
+    border-radius: 30px;
+
+}
 .stats-box:hover{
     transform: translateY(-10px);
 }

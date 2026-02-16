@@ -24,36 +24,11 @@
             </div>
         </div>
     </div>
-    <div class="mb-4">
-        <div class="d-flex flex-wrap gap-2 align-items-center">
 
-            <input
-                type="text"
-                class="form-control form-control-sm bg-dark text-white border-0"
-                style="max-width: 260px"
-                placeholder="Поиск..."
-            >
-
-            <select class="form-select form-select-sm bg-dark text-white border-0" style="max-width: 160px">
-                <option>Все</option>
-                <option>Фильмы</option>
-                <option>Сериалы</option>
-            </select>
-
-            <select class="form-select form-select-sm bg-dark text-white border-0" style="max-width: 140px">
-                <option>Год</option>
-                <option>2025</option>
-                <option>2024</option>
-            </select>
-
-            <button class="btn btn-success btn-sm fw-bold px-3">
-                OK
-            </button>
-
-        </div>
-    </div>
     <h2 class="fw-bold mb-4 text-light">🎬 Каталог фильмов</h2>
+    @livewire('movie.MovieFilter')
     <div class="row g-4">
+
         @foreach($movies as $movie)
             <div class="col-xl-2 col-lg-3 col-md-4 col-6">
                 <div class="movie-tile">

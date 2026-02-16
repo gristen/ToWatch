@@ -32,6 +32,16 @@ class User extends Authenticatable
         );
     }
 
+    public function favoriteGenres()
+    {
+        return $this->belongsToMany(
+            Genre::class,
+            'genres_user',
+            'user_id',
+            'genre_id',
+        );
+    }
+
     public function viewedMovies():BelongsToMany
     {
         return $this->belongsToMany(
@@ -149,6 +159,7 @@ class User extends Authenticatable
 
     protected $fillable = [
         'name',
+        'about',
         'email',
         'role_id',
         'password',

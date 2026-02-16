@@ -13,10 +13,8 @@ use Illuminate\Support\Facades\Storage;
 class MainController extends Controller
 {
 
-
     public function index(string $type = 'movie')
     {
-
-        return view('index',compact('type'));
+        return view('index', compact('type'));
     }
 }

@@ -10,6 +10,8 @@ use Livewire\Component;
 class Profile extends Component
 {
 
+    public  $about;
+
     #[On('remove-favorite')]
     public function removeFavorite(int $userId, int $movieId)
     {
@@ -22,7 +24,6 @@ class Profile extends Component
             message: 'Фильм удалён из избранного'
         );
     }
-
 
     public function render(?string $username = null)
     {

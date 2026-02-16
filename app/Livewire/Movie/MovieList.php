@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Movie;
 
+use App\Models\Genre;
 use App\Models\Movie;
 use App\Models\Task;
 use Livewire\Attributes\On;
@@ -12,6 +13,7 @@ class MovieList extends Component
 {
     use WithPagination;
 
+    public ?int $genre = null;
     public string $type = 'all';
 
     #[On('movie-closed')]
@@ -19,19 +21,29 @@ class MovieList extends Component
     {
 
     }
+    #[On('filter-changed')]
+    public function applyFilter($genre = null)
+    {
+
+        $this->genre = $genre;
+        $this->resetPage();
+
+    }
 
     public function render()
     {
 
-        $query = Movie::with(['countries', 'publisher'])->orderByDesc('imdb_rating');
-
-
-        if ($this->type !== 'all') {
-            $query->where('type', $this->type);
-        }
+        $movies = Movie::query()
+            ->when($this->genre,
+                fn($query) => $query->whereHas('genres',
+                fn($query) => $query->where('genre_id', $this->genre)))
+            ->where('type', $this->type)
+            ->with('countries','publisher')
+            ->orderByDesc('imdb_rating')
+            ->paginate(15);
 
         return view('livewire.movie.movie-list', [
-            'movies' => $query->paginate(50),
+            'movies' => $movies,
         ]);
     }
 }

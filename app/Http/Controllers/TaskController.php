@@ -9,23 +9,36 @@ use Illuminate\Support\Facades\Auth;
 
 class TaskController extends Controller
 {
-    public function show()
+    public function showIndex()
     {
 
-        $tasks = Task::query()->orderByRaw(
+        return view('index-tasks');
+    }
+
+
+    public function showTaskList(string $type= 'all')
+    {
+       /* $tasks = Task::query()->orderByRaw(
             "
             CASE urgency
                 WHEN 'high' THEN 1
                 WHEN 'medium' THEN 2
                 WHEN 'low' THEN 3
                 ELSE 4
-            END")->where('completed','!=', '1')->get();
+            END")
+            ->when($type !== 'all', function ($query) use ($type) {
+                $query->where('urgency', $type);
+            })
+            ->where('completed','!=', '1')
+            ->get();
 
 
-        $tasksCompleted = Task::query()->where('completed', '=', "1")->orderByDesc('id')->get();
+        $tasksCompleted = Task::query()->where('completed', '=', "1")->orderByDesc('id')->get();*/
 
-        return view('tasks', ['tasks' => $tasks, 'tasksCompleted' => $tasksCompleted]);
+        return view('tasks-list',['type'=>$type]);
     }
+
+
 
     public function store(Request $request)
     {

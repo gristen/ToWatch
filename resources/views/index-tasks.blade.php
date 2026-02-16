@@ -12,5 +12,6 @@
             </div>
         </div>
     </div>
-    @livewire('task-list')
+    @livewire('task-index')
+
 @endsection

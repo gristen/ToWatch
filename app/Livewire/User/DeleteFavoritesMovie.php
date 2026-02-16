@@ -17,7 +17,6 @@ class DeleteFavoritesMovie extends Component
 
     public function deleteFavoritesMovies()
     {
-
         $this->dispatch('movie-deleted');
     }
 

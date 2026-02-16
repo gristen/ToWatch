@@ -10,7 +10,7 @@
         </div>
     </div>
 
-    <div class="modal fade " id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade " id="createModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class=" modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
@@ -18,14 +18,9 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
                 </div>
                 <div class="modal-body">
-                    <p class="text-danger"> Тут будет редактирование профиля...позже</p>
-                    <form action="#" method="#">
-                        <input name  disabled class="form-control input-group" placeholder="какой-то текст">
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
-                    <button type="button" class="btn btn-success">Сохранить изменения</button>
+                    <h6 class="mb-3">Выберите любимые жанры</h6>
+
+                    @livewire('user.favorite-genres')
                 </div>
             </div>
         </div>
@@ -60,7 +55,7 @@
                         </form>
                     @else
                         <!-- Кнопка-триггер модального окна -->
-                        <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                        <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#createModal">
                             Редактировать профиль
                         </button>
 
@@ -83,10 +78,9 @@
             <div class="col-md-6">
                 <h5>Любимые жанры</h5>
                 <div>
-                    <span class="badge rounded-pill genre-pill">Фантастика</span>
-                    <span class="badge rounded-pill genre-pill">Драма</span>
-                    <span class="badge rounded-pill genre-pill">Триллер</span>
-                    <span class="badge rounded-pill genre-pill">Комедия</span>
+                    @foreach($user->favoriteGenres as $genre)
+                        <span class="badge rounded-pill cursor-pointer genre-pill">{{$genre->name}}</span>
+                    @endforeach
                 </div>
             </div>
         </div>
@@ -94,7 +88,7 @@
 
         <div class="row text-center mb-4">
             <div class="col-md-4">
-                <div class="stats-box">
+                <div class=" stats-box">
                     <h4>{{$user->viewed_movies_count}}</h4>
                     <p>Фильмов посмотрено</p>
                 </div>
@@ -190,10 +184,18 @@
 
             });
 
-            Livewire.on('toast', (data) => {
+
+
+            Livewire.on('profile-updated', (data) => {
+                console.log('✅ Задача успешно создана!');
                 const toastEl = document.getElementById('livewireToast');
                 const messageEl = document.getElementById('toastMessage');
 
+                const modalEl = document.getElementById('createModal');
+                const modal = bootstrap.Modal.getInstance(modalEl);
+                if (modal) {
+                    modal.hide();
+                }
                 toastEl.className = 'toast align-items-center border-0';
                 toastEl.classList.add(`text-bg-${data.type}`);
 

@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::middleware(['auth', 'can:admin-or-moder'])->group(function () {
-    Route::get('/tasks', [TaskController::class, "show"])->name('tasks.show');
+    Route::get('/tasks', [TaskController::class, "showIndex"])->name('tasks.show');
     Route::get('/admin/main',[AdminController::class, "index"])->name('admin.index');
     Route::get('/admin/users',[AdminController::class, "index"])->name('admin.index');
     Route::get('/admin/films',[AdminController::class, "index"])->name('admin.index');
@@ -44,6 +44,10 @@ Route::get('/logout', [LogoutController::class, "logout"])->name('logout');
 
 Route::post('/movie/{id}/action', FavoriteMovieController::class)->name('movie.action');
 
+
+Route::get('/tasks/{type?}', [TaskController::class, 'showTaskList'])
+    ->where('type', 'backend|frontend|all')
+    ->name('showTaskList');
 
 Route::get('/{type?}', [MainController::class, 'index'])
     ->where('type', 'tv-series|cartoon|anime|movie')

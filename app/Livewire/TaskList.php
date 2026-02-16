@@ -15,6 +15,7 @@ class TaskList extends Component
     public Collection $tasksCompleted;
 
     public Collection $tasks; // запросы к DB вернут коллекцию моделей
+    public ?string $type = null;
 
     #[On('task-created')]
     public function updateTaskList($task): void
@@ -39,10 +40,16 @@ class TaskList extends Component
                 WHEN 'medium' THEN 2
                 WHEN 'low' THEN 3
                 ELSE 4
-            END")->where('completed','!=', '1')->get();
+            END")
+
+            ->when($this->type !== 'all', function ($query)  {
+                $query->where('type', $this->type);
+            })
+            ->where('completed','!=', '1')
+            ->get();
 
         $this->tasksCompleted = Task::query()->where('completed', '=', "1")->orderByDesc('id')->get();
 
-        return view('livewire.task-list',['tasks' => $this->tasks,'tasksCompleted' => $this->tasksCompleted]);
+        return view('livewire.task-list',['tasks'=> $this->tasks]);
     }
 }
