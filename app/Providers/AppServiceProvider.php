@@ -19,11 +19,12 @@ class AppServiceProvider extends ServiceProvider
         //
     }
 
-    /**
-     * Bootstrap any application services.
-     */
     public function boot(): void
     {
+        /*if (env('APP_ENV') === 'production' || env('APP_ENV') === 'local') {
+            URL::forceScheme('https');
+        }*/
+
         Gate::define('admin-only', function (User $user) {
             return $user->role->name === 'admin';
         });
@@ -32,19 +33,13 @@ class AppServiceProvider extends ServiceProvider
             return in_array($user->role->name, ['admin', 'moderator']);
         });
 
-
-
         Gate::define('any-auth', function ($user) {
             return in_array($user->role->name, ['admin', 'moder', 'user']);
         });
 
 
-
-
-        /*if (env('APP_ENV') === 'production' || env('APP_ENV') === 'local') {
-            URL::forceScheme('https');
-        }*/
         Schema::defaultStringLength(191);
+
         Paginator::useBootstrapFive();
     }
 }

@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Livewire;
+namespace App\Livewire\Tasks;
 
 use App\Livewire\Forms\TaskForm;
-use Livewire\Component;
 use Livewire\Attributes\On;
-class ClosedTask extends Component
+use Livewire\Component;
+
+class Close extends Component
 {
     public TaskForm $form;
 
@@ -26,6 +27,6 @@ class ClosedTask extends Component
 
     public function render()
     {
-        return view('livewire.closed-task');
+        return view('livewire.tasks.close');
     }
 }

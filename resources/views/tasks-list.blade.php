@@ -1,6 +1,6 @@
 @extends('components.app')
 @section('content')
 
-    @livewire('task-list',['type'=>$type])
+    @livewire('tasks.taskList',['type'=>$type])
 
 @endsection

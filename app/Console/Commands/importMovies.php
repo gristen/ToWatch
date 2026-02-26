@@ -110,16 +110,16 @@ class importMovies extends Command
                         $new_movie = Movie::query()->updateOrCreate(
                             ['kinopoisk_id' => $movie['id']],
                             ['kinopoisk_id' => $movie['id'],
-                                'name' => $movie['name'],
-                                "slug"=>    Str::slug($movie['name']),
-                                'eng_name' => $movie['alternativeName'],
-                                'type' => $movie['type'],
-                                'year' => $movie['year'],
-                                'preview_url' => data_get($movie, 'poster.url'),
-                                'description' => $movie['description'],
-                                'movieLength' => $movie['movieLength'],
-                                'age_rating' => $movie['ageRating'],
-                                'shortDescription' => $movie['shortDescription'],
+                                'name' => $movie['name'] ?? null,
+                                "slug"=>    Str::slug($movie['name'] ?? null ) ,
+                                'eng_name' => $movie['alternativeName']?? null,
+                                'type' => $movie['type']?? null,
+                                'year' => $movie['year']?? null,
+                                'preview_url' => data_get($movie, 'poster.url')?? null,
+                                'description' => $movie['description']?? null,
+                                'movieLength' => $movie['movieLength']?? null,
+                                'age_rating' => $movie['ageRating'] ?? null,
+                                'shortDescription' => $movie['shortDescription']?? null,
                                 'user_published' => 2,
                                 'kp_id' => $movie['externalId']['kpHD'] ?? null,
                                 'tmdb_id' => $movie['externalId']['tmdb'] ?? null,
@@ -128,8 +128,9 @@ class importMovies extends Command
                                 'imdb_rating' => $movie['rating']['imdb'] ?? null,
                                 'film_critics_rating' => $movie['rating']['filmCritics'] ?? null,
                             ]);
+                        $name = data_get($movie, 'name', 'NULL');
+                        $this->info("✅ ID добавленного фильма = {$new_movie->id}, название = {$name}");
 
-                        $this->info("✅ ID добавленного фильма = {$new_movie->id}, название = {$movie['name']} ");
 
                         if (!empty($movie['persons'])) {
                             $personIds = [];
@@ -137,7 +138,7 @@ class importMovies extends Command
                             foreach ($movie['persons'] as $personData) {
 
                                 $person = Person::query()->updateOrCreate(
-                                    ['name' => $personData['name']],
+                                    ['name' => $personData['name']  ?? null ],
                                     [
                                         'photo_url' => $personData['photo'] ?? null,
                                         'profession' => $personData['profession'] ?? null,
@@ -154,7 +155,8 @@ class importMovies extends Command
 
                             $new_movie->persons()->sync($personIds);
 
-                            $this->info( " ✅ Колличество актеров пришедшые с API = " . count($personIds));
+                            $this->info( "✅ Колличество актеров пришедшые с API = " . count($personIds));
+
                         }
 
 
@@ -180,7 +182,7 @@ class importMovies extends Command
                         }
 
 
-                        if (isset($movie['watchability']) && !empty($movie['watchability']['items'])) {
+                        if (!empty($movie['watchability']['items'])) {
                             $this->info("✅ Найдено источников для просмотра: " . count($movie['watchability']['items']));
 
                             foreach ($movie['watchability']['items'] as $item) {
@@ -220,6 +222,7 @@ class importMovies extends Command
 
                         $last_page = $data['page'];
                         $last_movie = $movie['id'];
+                        $this->info("-----------------------------------------------------------------------------");
 
 
                     } catch (\Throwable $e) {

@@ -11,14 +11,14 @@ class FavoriteMovieController extends Controller
 {
     public function __invoke(Request $request, int $id)
     {
-        $action = $request->input('action_type');
         $authUser = Auth::user();
+
+        $action = $request->input('action_type');
 
         $result = match ($action) {
             'favorite' => $authUser->favoritesMovies()->toggle($id),
             'like'=>$authUser->likesMovies()->toggle($id),
             'viewed'=>$authUser->viewedMovies()->toggle($id),
-
         };
 
         $active = !empty($result['attached']);

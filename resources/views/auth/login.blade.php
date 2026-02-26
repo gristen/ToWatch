@@ -4,8 +4,8 @@
     <form action="{{route('login')}}" method="POST">
 
         @csrf
-        <div class="d-flex justify-content-center align-items-center" style="min-height: 100vh;">
-            <div class="auth-card text-white p-5">
+        <div class="d-flex justify-content-center align-items-center" style="min-height: 85vh;">
+            <div class="auth-card text-white p-5 w-100" style="max-width: 480px;">
                 <h2 class="text-center mb-4 fw-bold">Вход</h2>
                 <x-errors/>
                 <div class="mb-3">

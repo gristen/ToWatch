@@ -1,0 +1,85 @@
+<?php
+
+namespace App\Services;
+
+use App\Models\User;
+use Carbon\Carbon;
+
+class DashboardService
+{
+
+
+    public function getUsersStats()
+    {
+        return  [
+            'total' => User::query()->count(),
+            'year' => $this->getYearTest(),
+
+        ];
+    }
+
+    public function countForPeriod(string $model, string $period)
+    {
+        $now = Carbon::now();
+       $dates = match ($period) {
+            "year" => [
+                $now->copy()->startOfYear(),
+                $now->copy()->endOfYear(),
+            ],
+            "month" => [
+                $now->copy()->startOfMonth(),
+                $now->copy()->endOfMonth(),
+            ],
+            "week" => [
+                $now->copy()->startOfWeek(),
+                $now->copy()->endOfWeek(),
+            ],
+            "day" => [
+                $now->copy()->startOfDay(),
+                $now->copy()->endOfDay(),
+            ],
+            default => 0
+        };
+
+       $result = $model::whereBetween('created_at', $dates)->count();
+
+    }
+
+    public function getUserYear()
+    {
+
+    }
+    public function getMonthlyRegistrations():array
+    {
+
+        $currentYear = Carbon::now()->year;
+
+        $months = [
+            1 => 'Январь',
+            2 => 'Февраль',
+            3 => 'Март',
+            4 => 'Апрель',
+            5 => 'Май',
+            6 => 'Июнь',
+            7 => 'Июль',
+            8 => 'Август',
+            9 => 'Сентябрь',
+            10 => 'Октябрь',
+            11 => 'Ноябрь',
+            12 => 'Декабрь'
+        ];
+
+        $stats = [];
+
+        foreach ($months as $monthNumber => $monthName) {
+            $count = User::whereYear('created_at', $currentYear)
+                ->whereMonth('created_at', $monthNumber)
+                ->count();
+
+
+            $stats[$monthName] = $count;
+        }
+        return $stats;
+    }
+
+}

@@ -12,6 +12,7 @@
             </div>
         </div>
     </div>
-    @livewire('task-index')
+
+    @livewire('tasks.index')
 
 @endsection

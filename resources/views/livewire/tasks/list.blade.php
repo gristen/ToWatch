@@ -17,7 +17,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    @livewire('closed-task')
+                    @livewire('tasks.close')
                 </div>
             </div>
         </div>
@@ -32,7 +32,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                @livewire('task-create')
+                @livewire('tasks.create')
                 </div>
             </div>
         </div>
@@ -40,7 +40,7 @@
 
     <div class="container mt-4">
         <div class="d-flex ">
-            <h2>Активные задачи -> <span class="text-success">{{$type}}</span> направления </h2>
+            <h2>Активные задачи <i class="bi bi-arrow-right"></i> <span class="text-success">{{$type}}</span> направления </h2>
 
             @if(session('success'))
                 <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -116,13 +116,13 @@
             const closeModal = document.getElementById('closeModal');
 
             closeModal.addEventListener('show.bs.modal', function (event) {
+
                 const button = event.relatedTarget; // кнопка, которая открыла модал
-                // const taskId = button.getAttribute('data-task-id');
+
                 const taskTitle = button.getAttribute('data-task-title');
 
-                // closeModal.querySelector('#close-task-id').value = taskId;
                 closeModal.querySelector('#task-title').textContent = taskTitle;
-                //closeModal.querySelector('#close-form').action = `/task/${taskId}`;
+
 
             });
         });

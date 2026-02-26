@@ -1,17 +1,17 @@
 <?php
 
-namespace App\Livewire;
+namespace App\Livewire\Tasks;
 
 use App\Livewire\Forms\TaskForm;
-use App\Models\Task;
-use Illuminate\Support\Facades\Auth;
-use Livewire\Attributes\Validate;
 use Livewire\Component;
 
-class TaskCreate extends Component
+class Create extends Component
 {
 
     public TaskForm $form;
+
+
+
 
     public function store()
     {
@@ -23,6 +23,6 @@ class TaskCreate extends Component
 
     public function render()
     {
-        return view('livewire.task-create');
+        return view('livewire.tasks.create');
     }
 }

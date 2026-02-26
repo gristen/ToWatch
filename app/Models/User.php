@@ -3,6 +3,7 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -16,6 +17,7 @@ class User extends Authenticatable
     /** @use HasFactory<\Database\Factories\UserFactory> */
 
     use HasFactory, Notifiable;
+
 
     public function tasks(): HasMany
     {
@@ -86,8 +88,6 @@ class User extends Authenticatable
     {
         return $this->favoritesMovies()->where('movie_id', $movieId)->exists();
     }
-
-
 
 
     public function ratings(): HasMany

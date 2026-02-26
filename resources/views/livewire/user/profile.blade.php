@@ -88,7 +88,7 @@
 
         <div class="row text-center mb-4">
             <div class="col-md-4">
-                <div class=" stats-box">
+                <div class=" stats-box ">
                     <h4>{{$user->viewed_movies_count}}</h4>
                     <p>Фильмов посмотрено</p>
                 </div>

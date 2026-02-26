@@ -21,7 +21,6 @@ class MovieFilter extends Component
 
     public function updated($name, $value): void
     {
-        dump($name, $value);
         $this->dispatch(
             'filter-changed',
             $value,

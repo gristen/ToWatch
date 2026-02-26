@@ -12,11 +12,13 @@
                 <div class=" movie_tags mb-3">
                     <span class="badge bg-success text-uppercase fs-6">{{ $movie->type }}</span>
                     <span class="badge bg-info fs-6  ms-2">{{ $movie->movieLength }} мин</span>
-                    <span class="badge bg-danger fs-6  ms-2">+{{ $movie->age_rating }}</span>
+                      @if(!empty($movie->age_rating))
+                            <span class="badge bg-danger fs-6  ms-2">+{{ $movie->age_rating }}</span>
+                      @endif
                 </div>
 
 
-                <p class="mb-4" style="line-height: 1.4;">{{ $movie->shortDescription }}</p>
+                <p class="mb-4" style="line-height: 1.4;">{{ $movie->description }}</p>
 
                 <div class="mb-3">
                     @if(!$movie->ratings)
@@ -154,7 +156,7 @@
                         <p><i class="bi bi-cast"></i> Жанры:
                         <div class="d-flex flex-wrap gap-1">
                             @foreach($movie->genres as $genre)
-                                <span class="badge rounded-pill genre-pill ">{{ $genre->name }}</span>
+                                <span class="badge rounded-pill genre-pill cursor-pointer ">{{ $genre->name }}</span>
                             @endforeach
                         </div>
                         </p>
@@ -253,14 +255,102 @@
                             </div>
                         </div>
                     @endif
+                </div>
+            </div>
+            <div class="reviews-carousel-container ">
+                <div class="reviews-carousel-header d-flex justify-content-between align-items-center mb-3">
+                    <div>
+                        <button class="btn btn-dark btn-sm active">Отзывы 7</button>
+                        <button class="btn btn-dark btn-sm">Рецензии 2</button>
+                    </div>
+                    <div class="carousel-nav">
+                        <button class="prev">&larr;</button>
+                        <button class="next">&rarr;</button>
+                    </div>
+                </div>
 
+                <div class="reviews-carousel-wrapper">
+                    <div class="reviews-carousel">
 
+                        <div class="review-card">
+                            <div class="review-author">lapka.alexandrova</div>
+                            <div class="review-text">
+                                Очень хороший фильм, душевный, с классным юмором, поднимает настроение и сюжет интересный
+                            </div>
+                            <div class="review-footer">
+                                <span class="review-date">25 июня 2020</span>
+                                <div class="review-actions">
+                                    <span class="like">👍 7</span>
+                                    <span class="dislike">👎</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="review-card">
+                            <div class="review-author">elkelk</div>
+                            <div class="review-text">
+                                отличный фильм, поднял настроение! здорово, что на французском!
+                            </div>
+                            <div class="review-footer">
+                                <span class="review-date">15 апреля 2020</span>
+                                <div class="review-actions">
+                                    <span class="like">👍 5</span>
+                                    <span class="dislike">👎</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="review-card">
+                            <div class="review-author">АНЯ</div>
+                            <div class="review-text">
+                                Посмеялись от души! Рекомендую к просмотру
+                            </div>
+                            <div class="review-footer">
+                                <span class="review-date">13 июля 2020</span>
+                                <div class="review-actions">
+                                    <span class="like">👍 4</span>
+                                    <span class="dislike">👎</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="review-card">
+                            <div class="review-author">Аккаунт</div>
+                            <div class="review-text">
+                                Как негритянка родила, если у неё не было живота?
+                            </div>
+                            <div class="review-footer">
+                                <span class="review-date">30 декабря 2020</span>
+                                <div class="review-actions">
+                                    <span class="like">👍 1</span>
+                                    <span class="dislike">👎</span>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
                 </div>
             </div>
         </div>
 
             <script>
                 $(document).ready(function() {
+                    /*corousel*/
+                    const carousel = document.querySelector('.reviews-carousel');
+                    let offset = 0;
+
+                    document.querySelector('.next').addEventListener('click', () => {
+                        const maxOffset = carousel.scrollWidth - carousel.parentElement.offsetWidth;
+                        offset += 260; // ширина карточки + gap
+                        if(offset > maxOffset) offset = maxOffset;
+                        carousel.style.transform = `translateX(-${offset}px)`;
+                    });
+
+                    document.querySelector('.prev').addEventListener('click', () => {
+                        offset -= 260;
+                        if(offset < 0) offset = 0;
+                        carousel.style.transform = `translateX(-${offset}px)`;
+                    });
                     /*отправка формы*/
 
                     $('#favorite-form button').on('click',function (e) {
