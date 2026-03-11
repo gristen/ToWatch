@@ -44,7 +44,7 @@
                                     </div>
                                     <div class="stat-content">
                                         <span class="stat-label">Пользователи</span>
-                                        <h3 class="stat-value">1,234</h3>
+                                        <h3 class="stat-value">{{$DashboardData['totalUsers']}}</h3>
                                         <span class="stat-change positive">
                                         <i class="fas fa-arrow-up"></i> +12.5%
                                     </span>
@@ -152,42 +152,18 @@
                                 </div>
                                 <div class="card-body p-0">
                                     <div class="activity-timeline">
+
+                                       @foreach($DashboardData['activities'] as $activity)
                                         <div class="timeline-item">
                                             <div class="timeline-icon bg-primary">
-                                                <i class="fas fa-user-plus"></i>
+                                                <i class="fas {{$activity->getIcon()}} "></i>
                                             </div>
                                             <div class="timeline-content">
-                                                <p class="mb-1"><strong>Новый пользователь</strong> зарегистрировался</p>
+                                                <p class="mb-1"> {{$activity->description}}</p>
                                                 <small class="text-muted"><i class="far fa-clock me-1"></i>5 минут назад</small>
                                             </div>
                                         </div>
-                                        <div class="timeline-item">
-                                            <div class="timeline-icon bg-success">
-                                                <i class="fas fa-film"></i>
-                                            </div>
-                                            <div class="timeline-content">
-                                                <p class="mb-1"><strong>Добавлен фильм</strong> "Дюна: Часть вторая"</p>
-                                                <small class="text-muted"><i class="far fa-clock me-1"></i>15 минут назад</small>
-                                            </div>
-                                        </div>
-                                        <div class="timeline-item">
-                                            <div class="timeline-icon bg-info">
-                                                <i class="fas fa-comment"></i>
-                                            </div>
-                                            <div class="timeline-content">
-                                                <p class="mb-1"><strong>Новый комментарий</strong> от Алексей Петров</p>
-                                                <small class="text-muted"><i class="far fa-clock me-1"></i>1 час назад</small>
-                                            </div>
-                                        </div>
-                                        <div class="timeline-item">
-                                            <div class="timeline-icon bg-warning">
-                                                <i class="fas fa-star"></i>
-                                            </div>
-                                            <div class="timeline-content">
-                                                <p class="mb-1"><strong>Обновлен рейтинг</strong> фильма "Оппенгеймер"</p>
-                                                <small class="text-muted"><i class="far fa-clock me-1"></i>3 часа назад</small>
-                                            </div>
-                                        </div>
+                                        @endforeach
                                     </div>
                                 </div>
                                 <div class="card-footer bg-transparent text-center">
@@ -438,14 +414,16 @@
                 gradient.addColorStop(0, 'rgba(78, 115, 223, 0.3)');
                 gradient.addColorStop(1, 'rgba(78, 115, 223, 0)');
 
-                // Создаем график
+                const monthlyData = @json(array_values($DashboardData['monthlyRegistration']));
+
+
                 new Chart(ctx, {
                     type: 'line',
                     data: {
                         labels: ['Янв', 'Фев', 'Мар', 'Апр', 'Май', 'Июн', 'Июл', 'Авг', 'Сен', 'Окт', 'Ноя', 'Дек'],
                         datasets: [{
                             label: 'Регистрации',
-                            data: [12, 19, 3, 55, 21, 33, 45, 62, 78, 91, 105, 123],
+                            data: monthlyData,
                             borderColor: '#4e73df',
                             backgroundColor: gradient,
                             borderWidth: 3,

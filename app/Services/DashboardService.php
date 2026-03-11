@@ -8,19 +8,22 @@ use Carbon\Carbon;
 class DashboardService
 {
 
+    public function __construct(protected ActivityService $activityService)
+    {}
 
-    public function getUsersStats()
+    public function getDashboardData()
     {
         return  [
-            'total' => User::query()->count(),
-            'year' => $this->getYearTest(),
-
-        ];
+            'totalUsers' => User::query()->count(),
+            'year' => $this->countForPeriod(User::class,'year'),
+            'monthlyRegistration' => $this->getMonthlyRegistrations(),
+            'activities' => $this->activityService->getActivity(),
+            ];
     }
 
     public function countForPeriod(string $model, string $period)
     {
-        $now = Carbon::now();
+       $now = Carbon::now();
        $dates = match ($period) {
             "year" => [
                 $now->copy()->startOfYear(),
@@ -42,13 +45,11 @@ class DashboardService
         };
 
        $result = $model::whereBetween('created_at', $dates)->count();
-
+        return $result;
     }
 
-    public function getUserYear()
-    {
 
-    }
+
     public function getMonthlyRegistrations():array
     {
 

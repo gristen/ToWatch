@@ -37,6 +37,10 @@ class Movie extends Model
         'film_critics_rating',
     ];
 
+    public function getActivityName()
+    {
+        return $this->name;
+    }
     public function reviews(): HasMany
     {
         return $this->hasMany(Review::class);

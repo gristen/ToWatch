@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Movie;
 use App\Models\User;
+use App\Services\ActivityService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
@@ -40,9 +41,21 @@ class MovieController extends Controller
     {
 
         $actors = $movie->actors;
+        $actor = auth()->user();
         $limit = 5;
         $hasMore = $actors->count() > $limit;
         $moreCount = $actors->count() - $limit;
+        $limitSeconds = 15;
+
+        $lastActivity = $actor->activities()
+            ->where('action','=','view')
+            ->where('subject_id','=',$movie->id)
+            ->latest()
+            ->first();
+
+        if (!$lastActivity || $lastActivity->created_at->diffInSeconds() > $limitSeconds) {
+            app(ActivityService::class)->log('view', $movie, $actor);
+        }
 
         return view('one-movie', compact('movie', 'actors', 'hasMore', 'moreCount','limit'));
     }

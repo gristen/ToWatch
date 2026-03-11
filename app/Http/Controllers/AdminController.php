@@ -4,20 +4,20 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Services\DashboardService;
+use DebugBar\DebugBar;
 use Illuminate\Http\Request;
 
 
 class AdminController extends Controller
 {
-    private DashboardService $dashboardService;
-    public function __construct(DashboardService $dashboardService)
-    {
-        $this->dashboardService = new DashboardService();
-    }
+
+    public function __construct(private DashboardService $dashboardService)
+    {}
 
     public function index()
     {
-        $this->dashboardService->countForPeriod(User::class,'year');
-        return view('admin.index');
+       $DashboardData = $this->dashboardService->getDashboardData();
+       debug($DashboardData);
+       return view('admin.index', compact('DashboardData'));
     }
 }

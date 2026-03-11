@@ -24,6 +24,11 @@ class User extends Authenticatable
         return $this->hasMany(Task::class);
     }
 
+    public function activities():HasMany
+    {
+        return $this->hasMany(Activity::class);
+    }
+
     public function likesMovies()
     {
         return $this->belongsToMany(
