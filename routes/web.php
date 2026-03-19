@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\admin\RoleController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\LogoutController;
@@ -17,13 +18,13 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth', 'can:admin-or-moder'])->group(function () {
     Route::get('/tasks', [TaskController::class, "showIndex"])->name('tasks.show');
-    Route::get('/admin/main',[AdminController::class, "index"])->name('admin.index');
-    Route::get('/admin/users',[AdminController::class, "index"])->name('admin.index');
-    Route::get('/admin/films',[AdminController::class, "index"])->name('admin.index');
-    Route::get('/admin/categories',[AdminController::class, "index"])->name('admin.index');
-    Route::get('/admin/categories',[AdminController::class, "index"])->name('admin.index');
     Route::put('/task/{task}',[TaskController::class, "update"])->name('task.update');
     Route::post('/task/store', [TaskController::class, "store"])->name('task.store');
+});
+
+Route::prefix('admin')->name('admin.')->middleware(['auth', 'can:admin-or-moder'])->group(function () {
+    Route::get('main',[AdminController::class, "index"])->name('dashboard');
+    Route::resource('roles', RoleController::class)->except(['create','show']);
 });
 
 Route::get('/movie/{movie}/{slug?}',[MovieController::class, "show"])->name('movie.show');

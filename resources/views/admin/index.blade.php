@@ -160,7 +160,7 @@
                                             </div>
                                             <div class="timeline-content">
                                                 <p class="mb-1"> {{$activity->description}}</p>
-                                                <small class="text-muted"><i class="far fa-clock me-1"></i>5 минут назад</small>
+                                                <small class="text-muted"><i class="far fa-clock me-1"></i>{{$activity->created_at->diffForHumans()}}</small>
                                             </div>
                                         </div>
                                         @endforeach

@@ -39,6 +39,10 @@ class User extends Authenticatable
         );
     }
 
+    public function hasPermission($permission): bool
+    {
+        return $this->role->permissions()->pluck('name')->contains($permission);
+    }
     public function favoriteGenres()
     {
         return $this->belongsToMany(

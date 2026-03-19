@@ -13,7 +13,7 @@ class DashboardService
 
     public function getDashboardData()
     {
-        return  [
+        return [
             'totalUsers' => User::query()->count(),
             'year' => $this->countForPeriod(User::class,'year'),
             'monthlyRegistration' => $this->getMonthlyRegistrations(),

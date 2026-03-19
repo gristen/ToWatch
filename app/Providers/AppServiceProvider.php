@@ -37,8 +37,11 @@ class AppServiceProvider extends ServiceProvider
         Gate::define('any-auth', function ($user) {
             return in_array($user->role->name, ['admin', 'moder', 'user']);
         });
-
-
+        /*actions*/
+        Gate::define('user-action', function (User $user, string $action) {
+            return $user->hasPermission($action);
+        });
+        /*end actions*/
         Schema::defaultStringLength(191);
         User::observe(UserObserver::class);
         Paginator::useBootstrapFive();
