@@ -42,6 +42,8 @@ class AppServiceProvider extends ServiceProvider
             return $user->hasPermission($action);
         });
         /*end actions*/
+
+
         Schema::defaultStringLength(191);
         User::observe(UserObserver::class);
         Paginator::useBootstrapFive();

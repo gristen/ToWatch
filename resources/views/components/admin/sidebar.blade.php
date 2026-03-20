@@ -3,7 +3,7 @@
         ['title' => 'Главная', 'icon' => 'feather-home', 'route' => 'admin.dashboard'],
         ['title' => 'Пользователи', 'icon' => 'feather-users', 'route' => 'admin.dashboard'],
         ['title' => 'Фильмы', 'icon' => 'feather-shopping-cart', 'route' => 'admin.dashboard'],
-        ['title' => 'Роли', 'icon' => 'feather-shield', 'route' => 'admin.roles.index'],
+        ['title' => 'Роли', 'icon' => 'feather-shield', 'route' => 'admin.roles.index','active_routes' => 'admin.roles.*'],
     ];
 @endphp
 
@@ -14,9 +14,8 @@
 
             @foreach($menu as $item)
                 <li class="nav-item">
-                    <a class="nav-link {{Route::is($item['route']) ? 'active' : ''}} " aria-current="page" href="{{route($item['route'])}}">
-                       <i class="{{$item['icon']}}"></i>
-                        {{$item['title']}}
+                    <a class="nav-link {{ request()->routeIs($item['active_routes'] ?? $item['route']) ? 'active' : '' }}" href="{{ route($item['route']) }}">
+                    {{$item['title']}}
                     </a>
                 </li>
             @endforeach

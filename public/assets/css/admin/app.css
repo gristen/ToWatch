@@ -18,7 +18,7 @@
     --gray-600: #6c757d;
     --gray-800: #343a40;
     --light: #ffffff;
-    --sidebar-width: 280px;
+    --sidebar-width: 250px;
     --border-radius: 16px;
     --box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
     --box-shadow-hover: 0 15px 40px rgba(67, 97, 238, 0.15);
@@ -705,6 +705,7 @@ body {
 
 /* Сайдбар стили (добавьте если нужно) */
 .sidebar {
+    z-index: 1030; /* bootstrap dropdown, toast и т.д. обычно 1050+ */
     width: var(--sidebar-width);
     background: rgba(255, 255, 255, 0.95);
     backdrop-filter: blur(10px);
@@ -722,7 +723,7 @@ body {
 .sidebar .nav-link {
     padding: 1rem 1.5rem;
     border-radius: 12px;
-    color: var(--dark);
+    color: var(--gray-600); /* серый для неактивных */
     font-weight: 500;
     transition: var(--transition);
     margin-bottom: 0.5rem;
@@ -746,4 +747,31 @@ body {
 .sidebar .nav-link svg {
     width: 20px;
     height: 20px;
+}
+@media (max-width: 768px) {
+    .main-content {
+        padding-left: 1rem; /* или 0 если sidebar превращается в бургер-меню */
+    }
+
+    .sidebar {
+        width: 100%; /* или меньше, если делаем мобильное меню */
+        position: relative; /* чтобы не перекрывал контент */
+        height: auto;
+    }
+}
+@media (max-width: 768px) {
+    .sidebar {
+        position: absolute;
+        width: 100%;
+        left: -100%; /* прячем */
+        transition: left 0.3s;
+    }
+
+    .sidebar.active {
+        left: 0; /* показываем */
+    }
+
+    .main-content {
+        padding-left: 1rem;
+    }
 }

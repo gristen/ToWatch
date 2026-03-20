@@ -1,16 +1,16 @@
 @extends('components.admin.app')
 
 @section('content')
-    @include('components.admin.sidebar')
     <div class="container py-4">
         <x-admin.header title="Роли проекта"></x-admin.header>
-
+        @include('components.admin.sidebar')
         {{-- Флеш сообщение --}}
-        @if(session('success'))
+    @if(session('success'))
             <div class="alert alert-success">{{ session('success') }}</div>
         @endif
 
         <div class="row mb-4">
+
             <div class="col-md-6">
                 <div class="card shadow-sm">
                     <div class="card-body d-flex gap-2 align-items-center">
@@ -41,7 +41,7 @@
                             <td>{{ $role->id }}</td>
                             <td>{{ $role->name }}</td>
                             <td class="text-end d-flex gap-2 justify-content-end">
-                                <a href="" class="btn btn-sm btn-outline-warning">
+                                <a href="{{route('admin.roles.edit',$role)}}" class="btn btn-sm btn-outline-warning">
                                     <i class="fas fa-edit"></i> Редактировать
                                 </a>
                                 <form action="" method="POST" onsubmit="return confirm('Удалить роль?');">
