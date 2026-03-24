@@ -60,7 +60,7 @@
                         @endcan
                         @can('admin-or-moder')
                             <li>
-                                <a href="{{route('admin.index')}}" class="dropdown-item px-2 text-white d-flex align-items-center column-gap-2">
+                                <a href="{{route('admin.dashboard')}}" class="dropdown-item px-2 text-white d-flex align-items-center column-gap-2">
                                     <i class="bi bi-lock"></i>
                                     <span>Панель администрации*</span>
                                 </a>

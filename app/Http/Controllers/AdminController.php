@@ -17,7 +17,8 @@ class AdminController extends Controller
     public function index()
     {
        $DashboardData = $this->dashboardService->getDashboardData();
-       debug($DashboardData);
-       return view('admin.index', compact('DashboardData'));
+       $users = User::query()->paginate('5');
+       debug($DashboardData,$users);
+       return view('admin.index', compact('DashboardData','users'));
     }
 }

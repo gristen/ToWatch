@@ -18,6 +18,7 @@
                         <div>
                             <h1 class="h2 mb-1">
                                 <i class="fas fa-chart-pie me-2"></i>
+
                                 Приборная панель
                             </h1>
 
@@ -63,9 +64,9 @@
                                     </div>
                                     <div class="stat-content">
                                         <span class="stat-label">Фильмы</span>
-                                        <h3 class="stat-value">856</h3>
+                                        <h3 class="stat-value">{{$DashboardData['totalMovies']}}</h3>
                                         <span class="stat-change positive">
-                                        <i class="fas fa-arrow-up"></i> +5.2%
+
                                     </span>
                                     </div>
                                 </div>
@@ -82,7 +83,7 @@
                                     </div>
                                     <div class="stat-content">
                                         <span class="stat-label">Комментарии</span>
-                                        <h3 class="stat-value">3,421</h3>
+                                        <h3 class="stat-value">{{$DashboardData['totalReviews']}}</h3>
                                         <span class="stat-change positive">
                                         <i class="fas fa-arrow-up"></i> +23%
                                     </span>
@@ -101,7 +102,7 @@
                                     </div>
                                     <div class="stat-content">
                                         <span class="stat-label">Рейтинги</span>
-                                        <h3 class="stat-value">4.8</h3>
+                                        <h3 class="stat-value">{{$DashboardData['avgRating'] ?? '0'}}</h3>
                                         <span class="stat-change positive">
                                         <i class="fas fa-arrow-up"></i> +0.3
                                     </span>
@@ -198,28 +199,36 @@
                                         <th>ID</th>
                                         <th>Email</th>
                                         <th>Username</th>
+                                        <th>Role</th>
                                         <th>Дата регистрации</th>
                                         <th>Статус</th>
                                         <th class="text-end pe-4">Действия</th>
                                     </tr>
                                     </thead>
                                     <tbody>
+                                    @foreach($users as $user)
                                     <tr>
                                         <td class="ps-4">1</td>
-                                        <td><span class="badge bg-secondary">233</span></td>
+                                        <td><span class="badge bg-secondary">{{$user->id}}</span></td>
                                         <td>
                                             <div class="d-flex align-items-center">
-                                                <div class="avatar-initial bg-primary rounded-circle me-2">E</div>
-                                                example@mail.ru
+                                                <div class="avatar-initial bg-primary rounded-circle me-2">a</div>
+                                                {{$user->email}}
                                             </div>
                                         </td>
                                         <td>
                                             <div class="d-flex align-items-center">
-                                                <span class="user-status online me-2"></span>
-                                                gristen
+
+                                                {{$user->name}}
                                             </div>
                                         </td>
-                                        <td>12-02-2025</td>
+                                        <td>
+                                            <div class="d-flex align-items-center">
+
+                                                {{$user->role->name}}
+                                            </div>
+                                        </td>
+                                        <td>{{$user->created_at}}</td>
                                         <td><span class="badge badge-soft-success">Активен</span></td>
                                         <td class="text-end pe-4">
                                             <button class="btn btn-sm btn-icon btn-outline-primary" title="Редактировать">
@@ -233,93 +242,8 @@
                                             </button>
                                         </td>
                                     </tr>
-                                    <tr>
-                                        <td class="ps-4">2</td>
-                                        <td><span class="badge bg-secondary">234</span></td>
-                                        <td>
-                                            <div class="d-flex align-items-center">
-                                                <div class="avatar-initial bg-success rounded-circle me-2">J</div>
-                                                john@example.com
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="d-flex align-items-center">
-                                                <span class="user-status online me-2"></span>
-                                                john_doe
-                                            </div>
-                                        </td>
-                                        <td>11-02-2025</td>
-                                        <td><span class="badge badge-soft-success">Активен</span></td>
-                                        <td class="text-end pe-4">
-                                            <button class="btn btn-sm btn-icon btn-outline-primary">
-                                                <i class="fas fa-edit"></i>
-                                            </button>
-                                            <button class="btn btn-sm btn-icon btn-outline-info">
-                                                <i class="fas fa-eye"></i>
-                                            </button>
-                                            <button class="btn btn-sm btn-icon btn-outline-danger">
-                                                <i class="fas fa-trash"></i>
-                                            </button>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="ps-4">3</td>
-                                        <td><span class="badge bg-secondary">235</span></td>
-                                        <td>
-                                            <div class="d-flex align-items-center">
-                                                <div class="avatar-initial bg-warning rounded-circle me-2">J</div>
-                                                jane@example.com
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="d-flex align-items-center">
-                                                <span class="user-status offline me-2"></span>
-                                                jane_smith
-                                            </div>
-                                        </td>
-                                        <td>10-02-2025</td>
-                                        <td><span class="badge badge-soft-warning">Ожидает</span></td>
-                                        <td class="text-end pe-4">
-                                            <button class="btn btn-sm btn-icon btn-outline-primary">
-                                                <i class="fas fa-edit"></i>
-                                            </button>
-                                            <button class="btn btn-sm btn-icon btn-outline-info">
-                                                <i class="fas fa-eye"></i>
-                                            </button>
-                                            <button class="btn btn-sm btn-icon btn-outline-danger">
-                                                <i class="fas fa-trash"></i>
-                                            </button>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="ps-4">4</td>
-                                        <td><span class="badge bg-secondary">236</span></td>
-                                        <td>
-                                            <div class="d-flex align-items-center">
-                                                <div class="avatar-initial bg-info rounded-circle me-2">M</div>
-                                                mike@example.com
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="d-flex align-items-center">
-                                                <span class="user-status busy me-2"></span>
-                                                mike_wilson
-                                            </div>
-                                        </td>
-                                        <td>09-02-2025</td>
-                                        <td><span class="badge badge-soft-success">Активен</span></td>
-                                        <td class="text-end pe-4">
-                                            <button class="btn btn-sm btn-icon btn-outline-primary">
-                                                <i class="fas fa-edit"></i>
-                                            </button>
-                                            <button class="btn btn-sm btn-icon btn-outline-info">
-                                                <i class="fas fa-eye"></i>
-                                            </button>
-                                            <button class="btn btn-sm btn-icon btn-outline-danger">
-                                                <i class="fas fa-trash"></i>
-                                            </button>
-                                        </td>
-                                    </tr>
+                                    @endforeach
+
                                     </tbody>
                                 </table>
                             </div>
@@ -327,17 +251,7 @@
                         <div class="card-footer bg-transparent">
                             <nav aria-label="Page navigation">
                                 <ul class="pagination pagination-sm justify-content-center mb-0">
-                                    <li class="page-item disabled">
-                                        <a class="page-link" href="#" tabindex="-1"><i class="fas fa-chevron-left"></i></a>
-                                    </li>
-                                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">4</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">5</a></li>
-                                    <li class="page-item">
-                                        <a class="page-link" href="#"><i class="fas fa-chevron-right"></i></a>
-                                    </li>
+                                    {{$users->links()}}
                                 </ul>
                             </nav>
                         </div>

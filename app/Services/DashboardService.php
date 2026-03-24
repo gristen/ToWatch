@@ -2,6 +2,8 @@
 
 namespace App\Services;
 
+use App\Models\Movie;
+use App\Models\Review;
 use App\Models\User;
 use Carbon\Carbon;
 
@@ -13,8 +15,12 @@ class DashboardService
 
     public function getDashboardData()
     {
+
         return [
             'totalUsers' => User::query()->count(),
+            'totalMovies' => Movie::query()->count(),
+            'totalReviews' => Review::query()->count(),
+            'avgRating' => Review::query()->avg('rating'),
             'year' => $this->countForPeriod(User::class,'year'),
             'monthlyRegistration' => $this->getMonthlyRegistrations(),
             'activities' => $this->activityService->getActivity(),
