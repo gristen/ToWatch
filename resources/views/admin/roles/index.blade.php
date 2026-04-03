@@ -3,7 +3,7 @@
 @section('content')
     <div class="container py-4">
         <x-admin.header title="Роли проекта"></x-admin.header>
-        @include('components.admin.sidebar')
+
         {{-- Флеш сообщение --}}
     @if(session('success'))
             <div class="alert alert-success">{{ session('success') }}</div>

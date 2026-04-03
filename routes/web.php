@@ -23,7 +23,7 @@ Route::middleware(['auth', 'can:admin-or-moder'])->group(function () {
 });
 
 Route::prefix('admin')->name('admin.')->middleware(['auth', 'can:admin-or-moder'])->group(function () {
-    Route::get('main',[AdminController::class, "index"])->name('dashboard');
+    Route::get('dashboard',[AdminController::class, "index"])->name('dashboard');
     Route::resource('roles', RoleController::class)->except(['create','show']);
 });
 

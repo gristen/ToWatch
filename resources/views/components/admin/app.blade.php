@@ -20,7 +20,7 @@
 <body>
 
 @yield('content')
-
+<livewire:sidebar-menu />
 @stack('scripts')
 </body>
 </html>
