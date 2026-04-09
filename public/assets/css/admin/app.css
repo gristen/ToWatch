@@ -23,6 +23,7 @@
     --box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
     --box-shadow-hover: 0 15px 40px rgba(67, 97, 238, 0.15);
     --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --text-success: #00f581;
 }
 
 /* Основные стили */
@@ -31,7 +32,10 @@
     padding: 0;
     box-sizing: border-box;
 }
-
+::selection {
+    background-color: #ffb7c5;
+    color: #4a4a4a;
+}
 body {
     background: linear-gradient(135deg, #f5f7ff 0%, #f0f3ff 100%);
     font-family: 'Inter', sans-serif;
@@ -281,6 +285,9 @@ body {
     gap: 0.5rem;
 }
 
+
+
+
 /* Таймлайн активности */
 .activity-timeline {
     padding: 0;
@@ -425,7 +432,6 @@ body {
     padding: 0.6rem 1.2rem;
     font-weight: 500;
     transition: var(--transition);
-    border: none;
     font-size: 0.9rem;
     letter-spacing: 0.3px;
 }
@@ -775,3 +781,5 @@ body {
         padding-left: 1rem;
     }
 }
+
+

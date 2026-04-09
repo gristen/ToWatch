@@ -32,7 +32,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                @livewire('tasks.create')
+                @livewire('tasks.create',['type'=>$type])
                 </div>
             </div>
         </div>
@@ -48,9 +48,9 @@
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
             @endif
-            <form class="d-flex ms-auto">
+           {{-- <form class="d-flex ms-auto">
                 <input class="form-control disabled me-2" type="search" placeholder="поиск задачи" aria-label="поиск задачи">
-            </form>
+            </form>--}}
             <button class="btn btn-outline-success fw-bold ms-auto" data-bs-toggle="modal"
                     data-bs-target="#createModal "> Создать новую задачу
             </button>
@@ -58,7 +58,8 @@
 
         <hr>
         <div class="row g-4">
-            @if(isset($tasks))
+
+            @if(!$tasks->isEmpty())
                 @foreach($tasks as $task)
                     <div class="col-md-4">
                         <div class="card border-dark shadow-sm h-100">
@@ -83,16 +84,16 @@
                     </div>
                 @endforeach
             @else
-                <p>Активных задач нет , отдыхай дружок</p>
+                <p class="fw-bold">Активных задач нет , отдыхай дружок :)</p>
             @endif
         </div>
 
-        <h2 class="mt-5 mb-3">Завершенные задачи</h2>
+        <h2 class="mt-5 mb-3">Завершенные задачи <span class="badge text-bg-secondary  bg-success">{{$tasksCompleted->count()}}</span> </h2>
         <hr class="mb-3">
         <div class="row">
             @foreach($tasksCompleted as $taskCompleted)
                 <div class="col-md-4 mt-3">
-                    <div class="card border-success shadow-sm h-100">
+                    <div class="card shadow-sm h-100">
                         <div class="card-body">
                             <h5 class="card-title">{{$taskCompleted->title}}</h5>
                             <p class="card-text">{{$taskCompleted->description}}</p>
@@ -138,11 +139,17 @@
                 }
 
                 const toastEl = document.getElementById('successToast');
+
                 const toast = new bootstrap.Toast(toastEl);
+                const toastBody = toastEl.querySelector('.toast-body');
+                if (toastBody) {
+                    toastBody.innerHTML = "✅ Задача успешно создана";
+                }
+
                 toast.show();
             });
             Livewire.on('task-closed', () => {
-                console.log('✅ Задача успешно завершена!');
+                console.log('✅ Задача успешно закрыта!');
 
                 const modalEl = document.getElementById('closeModal');
                 const modal = bootstrap.Modal.getInstance(modalEl);
@@ -152,6 +159,10 @@
 
                 const toastEl = document.getElementById('successToast');
                 const toast = new bootstrap.Toast(toastEl);
+                const toastBody = toastEl.querySelector('.toast-body');
+                if (toastBody) {
+                    toastBody.innerHTML = "✅ Задача успешно завершена!";
+                }
                 toast.show();
             });
         });

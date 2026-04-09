@@ -1,10 +1,11 @@
 <div>
+
     <div>
         <div class="container mt-4">
+            <x-admin.header title="Задачи проекта"></x-admin.header>
             <div class="text-center mb-5">
                 <h1>Выберите тип задач</h1>
             </div>
-
             <div class="row justify-content-center g-4">
                 <!-- Кнопка Frontend -->
                 <div class="col-md-5">
@@ -37,7 +38,7 @@
 
             <!-- Кнопка "Все задачи" -->
             <div class="text-center mt-5">
-                <a href="/tasks/all" class="btn btn-outline-secondary btn-lg">
+                <a href="#" class="btn btn-outline-success btn-lg">
                     Показать все задачи
                 </a>
             </div>

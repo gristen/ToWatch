@@ -22,6 +22,7 @@ class TaskList extends Component
     public function mount(string $type)
     {
         $this->type = $type;
+
     }
 
     #[On('task-created')]

@@ -33,6 +33,7 @@
 
                         <div class="row">
                             @foreach($permissions as $group => $groupPermissions)
+
                                 <h6 class="mb-2">{{ __('permissions.groups.' . $group) }}</h6>
                                 @foreach($groupPermissions as $permission)
                                     <div class="col-md-3 mb-3">

@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Auth;
 
 class TaskController extends Controller
 {
-    public function showIndex()
+    public function index()
     {
 
         return view('index-tasks');
@@ -35,7 +35,7 @@ class TaskController extends Controller
 
         $tasksCompleted = Task::query()->where('completed', '=', "1")->orderByDesc('id')->get();*/
 
-        return view('tasks-list',['type'=>$type]);
+        return view('tasks-list', ['type' => $type]);
     }
 
 

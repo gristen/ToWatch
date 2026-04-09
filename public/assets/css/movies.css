@@ -1,0 +1,119 @@
+/* ================= MOVIE TILE ================= */
+.movie-tile {
+    position: relative;
+    border-radius: 12px;
+    overflow: hidden;
+    background: #111;
+    cursor: pointer;
+}
+
+.movie-tile img {
+    width: 100%;
+    aspect-ratio: 2 / 3;
+    object-fit: cover;
+    transition: transform .3s ease;
+}
+
+.movie-tile:hover img { transform: scale(1.05); }
+
+.movie-hover {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        to top,
+        rgba(0,0,0,.9) 30%,
+        rgba(0,0,0,.3) 60%,
+        transparent
+    );
+    opacity: 0;
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    transition: opacity .25s ease;
+}
+
+.movie-tile:hover .movie-hover { opacity: 1; }
+
+.movie-title {
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 1.2;
+}
+
+.movie-meta {
+    font-size: 12px;
+    opacity: .7;
+}
+
+.movie-type,
+.movie-rating {
+    position: absolute;
+    top: 8px;
+    padding: 2px 8px;
+    font-size: 11px;
+    border-radius: 6px;
+    z-index: 2;
+}
+
+.movie-type {
+    right: 8px;
+    background: rgba(0,0,0,.8);
+}
+
+.movie-rating {
+    left: 8px;
+    background: rgba(25,135,84,.8);
+}
+
+/* ================= PAGINATION ================= */
+.pagination {
+    gap: 6px;
+}
+
+.page-item .page-link {
+    background: #161b22;
+    border: 1px solid #30363d;
+    color: #e6edf3;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+}
+
+/* hover */
+.page-item .page-link:hover {
+    background: #00f581;
+    color: #000;
+    border-color: #00f581;
+    box-shadow: 0 0 10px #00f58155;
+}
+
+/* active */
+.page-item.active .page-link {
+    background: #00f581;
+    border-color: #00f581;
+    color: #000;
+    font-weight: bold;
+    box-shadow: 0 0 12px #00f581aa;
+}
+
+/* disabled */
+.page-item.disabled .page-link {
+    background: #0d1117;
+    color: #6e7681;
+    border-color: #21262d;
+    cursor: not-allowed;
+}
+
+/* стрелки */
+.page-link svg {
+    width: 16px;
+    height: 16px;
+}
+
+/* mobile адаптация */
+@media (max-width: 576px) {
+    .pagination {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+}

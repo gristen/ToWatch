@@ -3,7 +3,7 @@
         <div>
             <h1 class="h2 mb-1">
                 <i class="fas fa-chart-pie me-2"></i>
-                Роли проекта
+                {{$title ?? 'null'}}
             </h1>
 
         </div>

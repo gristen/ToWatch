@@ -12,13 +12,14 @@ class Permission extends Model
     /*аксесор*/
     public function getNameAttribute($value)
     {
-
         $key = 'permissions.' . $value;
 
         return Lang::has($key) ? __($key) : $value;
     }
+
     public function roles()
     {
         return $this->belongsToMany(Role::class,'role_permissions');
     }
+
 }

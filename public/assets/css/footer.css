@@ -1,0 +1,72 @@
+/* ================= FOOTER ================= */
+.site-footer {
+    background: #0d1117;
+    border-top: 1px solid rgba(255,255,255,0.05);
+}
+
+.footer-logo {
+    color: #e6edf3;
+    font-weight: 600;
+}
+
+.footer-text {
+    font-size: 14px;
+    opacity: 0.6;
+}
+
+/* Заголовки */
+.footer-title {
+    font-size: 14px;
+    margin-bottom: 12px;
+    color: #e6edf3;
+}
+
+/* Ссылки */
+.footer-links {
+    list-style: none;
+    padding: 0;
+}
+
+.footer-links li {
+    margin-bottom: 6px;
+}
+
+.footer-links a {
+    text-decoration: none;
+    color: #e6edf3;
+    opacity: 0.7;
+    transition: all 0.2s ease;
+}
+
+.footer-links a:hover {
+    color: var(--text-success);
+    opacity: 1;
+    text-shadow: 0 0 6px var(--text-success);
+}
+
+/* Соц иконки */
+.footer-social a {
+    display: inline-block;
+    margin-right: 12px;
+    font-size: 18px;
+    color: #e6edf3;
+    opacity: 0.7;
+    transition: all 0.2s ease;
+}
+
+.footer-social a:hover {
+    color: var(--text-success);
+    transform: translateY(-2px);
+    text-shadow: 0 0 8px var(--text-success);
+}
+
+/* Divider */
+.footer-divider {
+    border-color: rgba(255,255,255,0.05);
+}
+
+/* Нижний текст */
+.footer-bottom {
+    font-size: 13px;
+    opacity: 0.5;
+}

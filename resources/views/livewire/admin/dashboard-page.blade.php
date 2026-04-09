@@ -41,9 +41,9 @@
                                     </div>
                                     <div class="stat-content">
                                         <span class="stat-label">Пользователи</span>
-                                        <h3 class="stat-value">{{$DashboardData['totalUsers']}}</h3>
+                                        <h3 class="stat-value">{{$DashboardData['currentMonthUser']['current']}}</h3>
                                         <span class="stat-change positive">
-                                        <i class="fas fa-arrow-up"></i> +12.5%
+                                        <i class="fas fa-arrow-up"></i> {{$DashboardData['currentMonthUser']['percent']}} %
                                     </span>
                                     </div>
                                 </div>

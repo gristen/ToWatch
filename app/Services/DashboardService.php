@@ -15,9 +15,8 @@ class DashboardService
 
     public function getDashboardData()
     {
-
         return [
-            'totalUsers' => User::query()->count(),
+            'currentMonthUser' => $this->getGrowth(User::class), //User::class return string - "App\Models\user;"
             'totalMovies' => Movie::query()->count(),
             'totalReviews' => Review::query()->count(),
             'avgRating' => Review::query()->avg('rating'),
@@ -54,8 +53,6 @@ class DashboardService
         return $result;
     }
 
-
-
     public function getMonthlyRegistrations():array
     {
 
@@ -89,4 +86,39 @@ class DashboardService
         return $stats;
     }
 
+    public function getGrowth(string $model, ?string $period = 'month'): array
+    {
+        $now = now();
+
+        [$currentStart, $currentEnd, $prevStart, $prevEnd] = match ($period) {
+            'month' => [
+                $now->copy()->startOfMonth(),
+                $now->copy()->endOfMonth(),
+                $now->copy()->subMonth()->startOfMonth(),
+                $now->copy()->subMonth()->endOfMonth(),
+            ],
+            'week' => [
+                $now->copy()->startOfWeek(),
+                $now->copy()->endOfWeek(),
+                $now->copy()->subWeek()->startOfWeek(),
+                $now->copy()->subWeek()->endOfWeek(),
+            ],
+            default => throw new \Exception('Unsupported period'),
+        };
+
+        $current = $model::whereBetween('created_at', [$currentStart, $currentEnd])->count();
+        $previous = $model::whereBetween('created_at', [$prevStart, $prevEnd])->count();
+
+        if ($previous == 0) {
+            $percent = $current > 0 ? 100 : 0;
+        } else {
+            $percent = (($current - $previous) / $previous) * 100;
+        }
+
+        return [
+            'current' => $current,
+            'previous' => $previous,
+            'percent' => round($percent, 1),
+        ];
+    }
 }

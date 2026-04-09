@@ -16,16 +16,17 @@ use Illuminate\Support\Facades\Route;
 
 
 
-Route::middleware(['auth', 'can:admin-or-moder'])->group(function () {
-    Route::get('/tasks', [TaskController::class, "showIndex"])->name('tasks.show');
-    Route::put('/task/{task}',[TaskController::class, "update"])->name('task.update');
-    Route::post('/task/store', [TaskController::class, "store"])->name('task.store');
-});
 
 Route::prefix('admin')->name('admin.')->middleware(['auth', 'can:admin-or-moder'])->group(function () {
     Route::get('dashboard',[AdminController::class, "index"])->name('dashboard');
     Route::resource('roles', RoleController::class)->except(['create','show']);
+
+    Route::get('tasks', [TaskController::class, "index"])->name('tasks.index');
+    Route::put('/task/{task}',[TaskController::class, "update"])->name('task.update');
+    Route::post('/task/store', [TaskController::class, "store"])->name('task.store');
+
 });
+
 
 Route::get('/movie/{movie}/{slug?}',[MovieController::class, "show"])->name('movie.show');
 
@@ -46,7 +47,7 @@ Route::get('/logout', [LogoutController::class, "logout"])->name('logout');
 Route::post('/movie/{id}/action', FavoriteMovieController::class)->name('movie.action');
 
 
-Route::get('/tasks/{type?}', [TaskController::class, 'showTaskList'])
+Route::get('/admin/tasks/{type?}', [TaskController::class, 'showTaskList'])
     ->where('type', 'backend|frontend|all')
     ->name('showTaskList');
 

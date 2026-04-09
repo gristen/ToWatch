@@ -26,6 +26,9 @@ class TaskForm extends Form
 
     public string $link_git = '';
 
+    #[Validate('required|in:backend,frontend,all')]
+    public string $type = '';
+
     public function closeTask()
     {
 
@@ -36,7 +39,6 @@ class TaskForm extends Form
             'comment' => $this->comment,
             'link_git' => $this->link_git,
             'completed' => '1',
-
         ]);
 
         $this->reset('comment', 'link_git');
@@ -48,15 +50,17 @@ class TaskForm extends Form
     {
 
         $this->validate();
+
         $task = Task::create([
             'title' => $this->title,
             'description' => $this->description,
             'urgency' => $this->urgency,
             'difficulty' => $this->difficulty,
             'user_id' => Auth::id(),
+            'type' => $this->type,
         ]);
 
-        session()->flash('success', 'User created successfully');
+        session()->flash('success', 'Task created successfully');
         return $task;
 
     }

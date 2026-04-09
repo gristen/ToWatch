@@ -51,8 +51,6 @@
             </div>
         </div>
     </div>
-
-
     <div class="container vh-100">
         <div class="row">
             <div class="movie_info d-flex mt-5 ">

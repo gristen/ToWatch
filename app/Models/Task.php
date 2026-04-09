@@ -21,6 +21,7 @@ class Task extends Model
         'completed',
         'user_id',
         'link_git',
-        'comment'
+        'comment',
+        'type',
     ];
 }

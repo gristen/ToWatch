@@ -23,6 +23,7 @@ class DashboardPage extends Component
     public function mount()
     {
         $this->DashboardData = $this->dashboardService->getDashboardData();
+        debugbar()->info($this->DashboardData);
     }
 
     public function render()
