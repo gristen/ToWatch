@@ -61,7 +61,7 @@
 
                     @auth
                         <div class="film_actions ">
-                            <form class=" film_form_actions d-flex justify-content-center" id="favorite-form" method="POST">
+                            <form class="film_form_actions d-flex justify-content-center" id="favorite-form" method="POST">
                                 @csrf
                                 <button
                                     type="button"
@@ -121,23 +121,19 @@
 
                                 <button
                                     data-action="watchLater"
+                                    data-url="{{route('movie.action',['id'=>$movie->id])}}"
                                     data-bs-toggle="tooltip"
                                     data-bs-placement="bottom"
                                     title="Смотреть позже"
                                     class="btn  mt-2  mx-3
-
-                                    {{auth()->user()->isFavorited($movie->id)
-                                    ? 'btn-outline-success'
-                                    : 'btn-success'
+                                    {{auth()->user()->isWatched($movie->id)
+                                    ? 'btn-success'
+                                    : 'btn-outline-success'
                                     }}">
-
-                                    {!! auth()->user()->isFavorited($movie->id)
+                                    {!! auth()->user()->isWatched($movie->id)
                                     ? '<i class="bi bi-stopwatch"></i>'
                                     : '<i class="bi bi-stopwatch-fill"></i>' !!}
                                 </button>
-
-
-
                             </form>
                         </div>
                     @endAuth

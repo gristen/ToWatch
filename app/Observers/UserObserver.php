@@ -8,14 +8,15 @@ use App\Services\ActivityService;
 class UserObserver
 {
     public function __construct(protected ActivityService $activityService)
-    {}
+    {
+    }
 
     /**
      * Handle the User "created" event.
      */
     public function created(User $user): void
     {
-        $this->activityService->log('register',$user,$user);
+        $this->activityService->log('register', $user, $user);
     }
 
     /**

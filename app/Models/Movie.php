@@ -13,6 +13,7 @@ class Movie extends Model
     use HasFactory;
 
     protected $table = "movies";
+
     protected $fillable = [
         'kinopoisk_id',
         'name',
@@ -39,7 +40,22 @@ class Movie extends Model
 
     public function getActivityName()
     {
-        return $this->name;
+        return $this->name ?? $this->eng_name;
+    }
+    /*accessor*/
+    public function getNameAttribute($value)
+    {
+        return $value ?: $this->eng_name ?: 'Без названия';
+    }
+
+    public function likedByUsers()
+    {
+        return $this->belongsToMany(
+            User::class,
+            'movie_likes',
+            'movie_id',
+            'user_id'
+        );
     }
     public function reviews(): HasMany
     {

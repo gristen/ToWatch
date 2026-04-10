@@ -23,10 +23,12 @@ class ActivityService
 
     public function generateDescription($action, $subject, $actor)
     {
-
+        /*
         $subjectName = method_exists($subject,'getActivityName')
             ? $subject->getActivityName()
-            : class_basename($subject);
+            : class_basename($subject);*/
+
+        $subjectName = $subject->name;
 
         $actorName = $actor->name;
 

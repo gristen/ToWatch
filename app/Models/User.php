@@ -29,6 +29,11 @@ class User extends Authenticatable
         return $this->hasMany(Activity::class);
     }
 
+    public function hasPermission($permission): bool
+    {
+        return $this->role->permissions()->pluck('name')->contains($permission);
+    }
+
     public function likesMovies()
     {
         return $this->belongsToMany(
@@ -37,11 +42,6 @@ class User extends Authenticatable
             'user_id',
             'movie_id',
         );
-    }
-
-    public function hasPermission($permission): bool
-    {
-        return $this->role->permissions()->pluck('name')->contains($permission);
     }
     public function favoriteGenres()
     {
@@ -72,7 +72,10 @@ class User extends Authenticatable
         return $this->likesMovies()->where('movie_id', $movieId)->exists();
     }
 
-
+    public function isWatched(int $movieId): bool
+    {
+      return $this->watchLater()->where('movie_id', '=', $movieId)->exists();
+    }
     public function watchLater() :BelongsToMany
     {
         return $this->belongsToMany(
