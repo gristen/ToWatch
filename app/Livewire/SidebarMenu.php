@@ -8,7 +8,7 @@ class SidebarMenu extends Component
 {
     public $menu = [
         ['title' => 'Главная', 'icon' => 'bi-speedometer2', 'route' => 'admin.dashboard','active_routes' => 'admin.dashboard'],
-//        ['title' => 'Пользователи', 'icon' => 'bi-people', 'route' => 'admin.dashboard', 'active_routes' => 'admin.dashboard.*'],
+        ['title' => 'Пользователи', 'icon' => 'bi-people', 'route' => 'admin.users.index', 'active_routes' => 'admin.users.*'],
 //        ['title' => 'Фильмы', 'icon' => 'bi-film', 'route' => 'admin.dashboard', 'active_routes' => 'admin.dashboard.*'],
         ['title' => 'Роли', 'icon' => 'bi-shield-lock', 'route' => 'admin.roles.index', 'active_routes' => 'admin.roles.*'],
 //        ['title' => 'Категории', 'icon' => 'bi-tags', 'route' => 'admin.categories.index', 'active_routes' => 'admin.categories.*'],

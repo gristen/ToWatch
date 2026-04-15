@@ -7,270 +7,156 @@
 
         <div class="container-fluid">
             <div class="row">
+                <x-admin.header title="Дашборд панель"></x-admin.header>
+                <!-- Статистика в карточках -->
+                <div class="row g-3 mb-4">
+                    <x-admin.stat-card
+                        class="stat-card-primary"
+                        icon="fas fa-users"
+                        label="Пользователи"
+                        :value="$DashboardData['currentMonthUser']['current']"
+                        :change="$DashboardData['currentMonthUser']['percent'].'%'"
+                        changeType="positive"
+                        footer="За последний месяц"
+                    />
+                    <x-admin.stat-card
+                        class="stat-card-success"
+                        icon="fas fa-film"
+                        label="Фильмов"
+                        :value="$DashboardData['totalMovies']"
 
-                <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 main-content">
-                    <!-- Хедер с приветствием -->
-                    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-3 mb-4 header-gradient">
-                        <div>
-                            <h1 class="h2 mb-1">
-                                <i class="fas fa-chart-pie me-2"></i>
-                                Приборная панель
-                            </h1>
-
-                        </div>
-                        {{--exropt btns--}}
-                        <div class="btn-toolbar mb-2 mb-md-0">
-                            <div class="btn-group me-2">
-                                <button type="button" class="btn btn-sm btn-outline-primary">
-                                    <i class="fas fa-share-alt me-1"></i>Поделиться
-                                </button>
-                                <button type="button" class="btn btn-sm btn-outline-success">
-                                    <i class="fas fa-download me-1"></i>Экспорт
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Статистика в карточках -->
-                    <div class="row g-3 mb-4">
-                        <div class="col-xl-3 col-md-6">
-                            <div class="stat-card stat-card-primary">
-                                <div class="stat-card-inner">
-                                    <div class="stat-icon">
-                                        <i class="fas fa-users"></i>
-                                    </div>
-                                    <div class="stat-content">
-                                        <span class="stat-label">Пользователи</span>
-                                        <h3 class="stat-value">{{$DashboardData['currentMonthUser']['current']}}</h3>
-                                        <span class="stat-change positive">
-                                        <i class="fas fa-arrow-up"></i> {{$DashboardData['currentMonthUser']['percent']}} %
-                                    </span>
-                                    </div>
+                        changeType="positive"
+                        footer="Всего фильмов"
+                    />
+                    <div class="col-xl-3 col-md-6">
+                        <div class="stat-card stat-card-info">
+                            <div class="stat-card-inner">
+                                <div class="stat-icon">
+                                    <i class="fas fa-comments"></i>
                                 </div>
-                                <div class="stat-card-footer">
-                                    <span class="text-white-50">За последний месяц</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-xl-3 col-md-6">
-                            <div class="stat-card stat-card-success">
-                                <div class="stat-card-inner">
-                                    <div class="stat-icon">
-                                        <i class="fas fa-film"></i>
-                                    </div>
-                                    <div class="stat-content">
-                                        <span class="stat-label">Фильмы</span>
-                                        <h3 class="stat-value">{{$DashboardData['totalMovies']}}</h3>
-                                        <span class="stat-change positive">
-
-                                    </span>
-                                    </div>
-                                </div>
-                                <div class="stat-card-footer">
-                                    <span class="text-white-50">Активных</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-xl-3 col-md-6">
-                            <div class="stat-card stat-card-info">
-                                <div class="stat-card-inner">
-                                    <div class="stat-icon">
-                                        <i class="fas fa-comments"></i>
-                                    </div>
-                                    <div class="stat-content">
-                                        <span class="stat-label">Комментарии</span>
-                                        <h3 class="stat-value">{{$DashboardData['totalReviews']}}</h3>
-                                        <span class="stat-change positive">
+                                <div class="stat-content">
+                                    <span class="stat-label">Комментарии</span>
+                                    <h3 class="stat-value">{{$DashboardData['totalReviews']}}</h3>
+                                    <span class="stat-change positive">
                                         <i class="fas fa-arrow-up"></i> +23%
                                     </span>
-                                    </div>
-                                </div>
-                                <div class="stat-card-footer">
-                                    <span class="text-white-50">12 новых</span>
                                 </div>
                             </div>
+                            <div class="stat-card-footer">
+                                <span class="text-white-50">12 новых</span>
+                            </div>
                         </div>
-                        <div class="col-xl-3 col-md-6">
-                            <div class="stat-card stat-card-warning">
-                                <div class="stat-card-inner">
-                                    <div class="stat-icon">
-                                        <i class="fas fa-star"></i>
-                                    </div>
-                                    <div class="stat-content">
-                                        <span class="stat-label">Рейтинги</span>
-                                        <h3 class="stat-value">{{$DashboardData['avgRating'] ?? '0'}}</h3>
-                                        <span class="stat-change positive">
+                    </div>
+                    <div class="col-xl-3 col-md-6">
+                        <div class="stat-card stat-card-warning">
+                            <div class="stat-card-inner">
+                                <div class="stat-icon">
+                                    <i class="fas fa-star"></i>
+                                </div>
+                                <div class="stat-content">
+                                    <span class="stat-label">Рейтинги</span>
+                                    <h3 class="stat-value">{{$DashboardData['avgRating'] ?? '0'}}</h3>
+                                    <span class="stat-change positive">
                                         <i class="fas fa-arrow-up"></i> +0.3
                                     </span>
-                                    </div>
                                 </div>
-                                <div class="stat-card-footer">
-                                    <span class="text-white-50">Средний балл</span>
-                                </div>
+                            </div>
+                            <div class="stat-card-footer">
+                                <span class="text-white-50">Средний балл</span>
                             </div>
                         </div>
                     </div>
+                </div>
 
-                    <!-- График и активность -->
-                    <div class="row g-3 mb-4">
-                        <div class="col-lg-8">
-                            <div class="card card-dashboard">
-                                <div class="card-header">
-                                    <div class="d-flex align-items-center">
-                                        <i class="fas fa-chart-line me-2 text-primary"></i>
-                                        <h5 class="card-title mb-0">Статистика регистраций за год</h5>
-                                    </div>
-                                    <div class="card-actions">
-                                        <button class="btn btn-sm btn-outline-secondary" id="refreshChart">
-                                            <i class="fas fa-sync-alt"></i>
-                                        </button>
-                                        <button class="btn btn-sm btn-outline-secondary" data-bs-toggle="dropdown">
-                                            <i class="fas fa-ellipsis-v"></i>
-                                        </button>
-                                        <ul class="dropdown-menu dropdown-menu-end">
-                                            <li><a class="dropdown-item" href="#"><i class="fas fa-download me-2"></i>Скачать</a></li>
-                                            <li><a class="dropdown-item" href="#"><i class="fas fa-print me-2"></i>Печать</a></li>
-                                        </ul>
-                                    </div>
+                <!-- График и активность -->
+                <div class="row g-3 mb-4">
+                    <div class="col-lg-8">
+                        <div class="card card-dashboard">
+                            <div class="card-header">
+                                <div class="d-flex align-items-center">
+                                    <i class="fas fa-chart-line me-2 text-primary"></i>
+                                    <h5 class="card-title mb-0">Статистика регистраций за год</h5>
                                 </div>
-                                <div class="card-body">
-                                    <canvas wire:ignore id="myChart" class="chart-canvas"></canvas> {{----}}
+                                <div class="card-actions">
+                                    <button class="btn btn-sm btn-outline-secondary" id="refreshChart">
+                                        <i class="fas fa-sync-alt"></i>
+                                    </button>
+                                    <button class="btn btn-sm btn-outline-secondary" data-bs-toggle="dropdown">
+                                        <i class="fas fa-ellipsis-v"></i>
+                                    </button>
+                                    <ul class="dropdown-menu dropdown-menu-end">
+                                        <li><a class="dropdown-item" href="#"><i class="fas fa-download me-2"></i>Скачать</a>
+                                        </li>
+                                        <li><a class="dropdown-item" href="#"><i
+                                                    class="fas fa-print me-2"></i>Печать</a></li>
+                                    </ul>
                                 </div>
                             </div>
+                            <div class="card-body">
+                                <canvas wire:ignore id="myChart" class="chart-canvas"></canvas> {{----}}
+                            </div>
                         </div>
-                        <div class="col-lg-4">
-                            <div class="card card-dashboard h-100">
-                                <div class="card-header">
-                                    <div class="d-flex align-items-center">
-                                        <i class="fas fa-bell me-2 text-warning"></i>
-                                        <h5 class="card-title mb-0">Последние активности</h5>
-                                    </div>
-                                    <span class="badge bg-primary">3 новых</span>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="card card-dashboard h-100">
+                            <div class="card-header">
+                                <div class="d-flex align-items-center">
+                                    <i class="fas fa-bell me-2 text-warning"></i>
+                                    <h5 class="card-title mb-0">Последние активности</h5>
                                 </div>
-                                <div class="card-body p-0">
-                                    <div class="activity-timeline">
+                                <span class="badge bg-primary">3 новых</span>
+                            </div>
+                            <div class="card-body p-0">
+                                <div class="activity-timeline">
 
-                                        @foreach($DashboardData['activities'] as $activity)
-                                            <div class="timeline-item">
-                                                <div class="timeline-icon bg-primary">
-                                                    <i class="fas {{$activity->getIcon()}} "></i>
-                                                </div>
-                                                <div class="timeline-content">
-                                                    <p class="mb-1"> {{$activity->description}}</p>
-                                                    <small class="text-muted"><i class="far fa-clock me-1"></i>{{$activity->created_at->diffForHumans()}}</small>
-                                                </div>
+                                    @foreach($DashboardData['activities'] as $activity)
+                                        <div class="timeline-item">
+                                            <div class="timeline-icon bg-primary">
+                                                <i class="fas {{$activity->getIcon()}} "></i>
                                             </div>
-                                        @endforeach
-                                    </div>
-                                </div>
-                                <div class="card-footer bg-transparent text-center">
-                                    <a href="#" class="btn btn-sm btn-link">Все активности <i class="fas fa-arrow-right ms-1"></i></a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Таблица с данными -->
-                    <div class="card card-dashboard">
-                        <div class="card-header">
-                            <div class="d-flex align-items-center">
-                                <i class="fas fa-table me-2 text-success"></i>
-                                <h5 class="card-title mb-0">Последние регистрации</h5>
-                            </div>
-                            <div class="card-actions">
-                                <div class="input-group input-group-sm" style="width: 250px;">
-                                <span class="input-group-text bg-transparent border-end-0">
-                                    <i class="fas fa-search text-muted"></i>
-                                </span>
-                                    <input type="text" class="form-control border-start-0 ps-0" placeholder="Поиск...">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card-body p-0">
-                            <div class="table-responsive">
-                                <table class="table table-hover align-middle mb-0">
-                                    <thead class="bg-light">
-                                    <tr>
-                                        <th class="ps-4" width="50">#</th>
-                                        <th>ID</th>
-                                        <th>Email</th>
-                                        <th>Username</th>
-                                        <th>Role</th>
-                                        <th>Дата регистрации</th>
-                                        <th>Статус</th>
-                                        <th class="text-end pe-4">Действия</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    @foreach($users as $user)
-                                        <tr>
-                                            <td class="ps-4">1</td>
-                                            <td><span class="badge bg-secondary">{{$user->id}}</span></td>
-                                            <td>
-                                                <div class="d-flex align-items-center">
-                                                    <div class="avatar-initial bg-primary rounded-circle me-2">a</div>
-                                                    {{$user->email}}
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="d-flex align-items-center">
-
-                                                    {{$user->name}}
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="d-flex align-items-center">
-
-                                                    {{$user->role->name}}
-                                                </div>
-                                            </td>
-                                            <td>{{$user->created_at}}</td>
-                                            <td><span class="badge badge-soft-success">Активен</span></td>
-                                            <td class="text-end pe-4">
-                                                <button class="btn btn-sm btn-icon btn-outline-primary" title="Редактировать">
-                                                    <i class="fas fa-edit"></i>
-                                                </button>
-                                                <button class="btn btn-sm btn-icon btn-outline-info" title="Просмотр">
-                                                    <i class="fas fa-eye"></i>
-                                                </button>
-                                                <button class="btn btn-sm btn-icon btn-outline-danger" title="Удалить">
-                                                    <i class="fas fa-trash"></i>
-                                                </button>
-                                            </td>
-                                        </tr>
+                                            <div class="timeline-content">
+                                                <p class="mb-1"> {{$activity->description}}</p>
+                                                <small class="text-muted"><i
+                                                        class="far fa-clock me-1"></i>{{$activity->created_at->diffForHumans()}}
+                                                </small>
+                                            </div>
+                                        </div>
                                     @endforeach
-
-                                    </tbody>
-                                </table>
+                                </div>
+                            </div>
+                            <div class="card-footer bg-transparent text-center">
+                                <a href="#" class="btn btn-sm btn-link">Все активности <i
+                                        class="fas fa-arrow-right ms-1"></i></a>
                             </div>
                         </div>
-                        <div class="card-footer bg-transparent">
-                            <nav aria-label="Page navigation">
-                                <ul class="pagination pagination-sm justify-content-center mb-0">
-                                    {{ $users->links(data: ['scrollTo' => false]) }}
-                                </ul>
-                            </nav>
-                        </div>
                     </div>
-                </main>
+                </div>
+                <livewire:admin.components.table
+                    :model="\App\Models\User::class"
+                    title="Пользователи"
+                    :searchColumns="['email','name']"
+                    :actions="[
+                      'delete'=>'admin.user.destroy'
+                    ]"
+                    :columns="[
+                    ['field' => 'email', 'label' => 'Email'],
+                    ['field' => 'name', 'label' => 'Username'],
+                    ['field' => 'created_at', 'label' => 'Дата регистрации'],
+                    [
+                    'field' => 'role.name',
+                    'label' => 'Роль',
+                    'sortable' => true,
+                    'relation' => 'role',
+                    'table' => 'roles',
+                    'foreign_key' => 'role_id'
+                    ]
+                    ]"
+
+                />
             </div>
         </div>
     </div>
 
-    <!-- Тостер уведомлений -->
-    <div class="toast-container position-fixed bottom-0 end-0 p-3">
-        <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
-            <div class="toast-header">
-                <i class="fas fa-check-circle text-success me-2"></i>
-                <strong class="me-auto">Успешно</strong>
-                <small>только что</small>
-                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-            </div>
-            <div class="toast-body">
-                Данные успешно обновлены!
-            </div>
-        </div>
-    </div>
 
     @push('styles')
         <style>
@@ -299,8 +185,12 @@
             }
 
             @keyframes spin {
-                0% { transform: rotate(0deg); }
-                100% { transform: rotate(360deg); }
+                0% {
+                    transform: rotate(0deg);
+                }
+                100% {
+                    transform: rotate(360deg);
+                }
             }
         </style>
     @endpush
@@ -381,7 +271,7 @@
             }
 
             // Инициализация при загрузке страницы
-            document.addEventListener('DOMContentLoaded', function() {
+            document.addEventListener('DOMContentLoaded', function () {
 
                 // Получаем данные из PHP
                 const monthlyData = @json(array_values($DashboardData['monthlyRegistration']));
@@ -391,12 +281,11 @@
             });
 
             // Слушаем события Livewire
-            document.addEventListener('livewire:navigated', function() {
+            document.addEventListener('livewire:navigated', function () {
                 // Переинициализируем график после навигации
-                    const monthlyData = @json(array_values($DashboardData['monthlyRegistration']));
-                    initChart(monthlyData);
+                const monthlyData = @json(array_values($DashboardData['monthlyRegistration']));
+                initChart(monthlyData);
             });
-
 
 
         </script>

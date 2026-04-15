@@ -19,18 +19,37 @@
 </head>
 <body>
 
-@yield('content')
-<div class="toast-container position-fixed top-0 end-0 p-3" >
+<div class="toast-container position-fixed top-0 end-0 p-3 "  style="z-index: 9999999">
     <div id="successToast" class="toast align-items-center text-bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true">
         <div class="d-flex">
             <div class="toast-body">
-                ✅ Задача успешно создана!
+
             </div>
             <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
         </div>
     </div>
 </div>
+<div class="container-fluid py-4">
+    {{-- Флеш сообщение --}}
+    @if(session('success'))
+        <div class="alert alert-success">{{ session('success') }}</div>
+    @endif
+
+    <div class="row mb-4">
+        <div class="col-md-9 ms-sm-auto col-lg-10 px-md-4 main-content">
+            @yield('content')
+        </div>
+    </div>
+</div>
 <livewire:sidebar-menu />
 @stack('scripts')
+<script>
+    const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]')
+    const popoverList = [...popoverTriggerList].map(popoverTriggerEl => new bootstrap.Popover(popoverTriggerEl))
+
+    /*tooltips*/
+    const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+    const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+</script>
 </body>
 </html>

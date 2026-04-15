@@ -1,6 +1,7 @@
 <?php
 
-use App\Http\Controllers\admin\RoleController;
+use App\Http\Controllers\Admin\RoleController;
+use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\LogoutController;
@@ -20,10 +21,13 @@ use Illuminate\Support\Facades\Route;
 Route::prefix('admin')->name('admin.')->middleware(['auth', 'can:admin-or-moder'])->group(function () {
     Route::get('dashboard',[AdminController::class, "index"])->name('dashboard');
     Route::resource('roles', RoleController::class)->except(['create','show']);
-
+    Route::resource('users', UserController::class);
     Route::get('tasks', [TaskController::class, "index"])->name('tasks.index');
     Route::put('/task/{task}',[TaskController::class, "update"])->name('task.update');
     Route::post('/task/store', [TaskController::class, "store"])->name('task.store');
+
+
+    //Route::get('/user/{id}/destroy',[UserController::class,"destroy"])->name('user.destroy');
 
 });
 

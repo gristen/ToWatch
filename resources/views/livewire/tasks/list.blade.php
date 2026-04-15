@@ -158,6 +158,7 @@
                 }
 
                 const toastEl = document.getElementById('successToast');
+                console.log(toastEl)
                 const toast = new bootstrap.Toast(toastEl);
                 const toastBody = toastEl.querySelector('.toast-body');
                 if (toastBody) {

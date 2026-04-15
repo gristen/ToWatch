@@ -21,10 +21,8 @@ class RegisterController extends Controller
             'password' => 'required|min:4|confirmed',
         ]);
 
-
-
         $data['password'] = Hash::make($data['password']);
-        $data['role_id'] = 1;
+        $data['role_id'] = 3;
 
 
         $user = User::query()->create($data);
