@@ -137,6 +137,7 @@
                     :searchColumns="['email','name']"
                     :actions="[
                       'delete'=>'admin.user.destroy'
+                      'edit'=>'admin.user.edit'
                     ]"
                     :columns="[
                     ['field' => 'email', 'label' => 'Email'],
@@ -151,7 +152,6 @@
                     'foreign_key' => 'role_id'
                     ]
                     ]"
-
                 />
             </div>
         </div>

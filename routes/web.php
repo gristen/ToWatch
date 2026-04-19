@@ -27,7 +27,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'can:admin-or-moder'
     Route::post('/task/store', [TaskController::class, "store"])->name('task.store');
 
 
-    //Route::get('/user/{id}/destroy',[UserController::class,"destroy"])->name('user.destroy');
+    Route::get('/user/{id}/destroy',[UserController::class,"destroy"])->name('user.destroy');
 
 });
 

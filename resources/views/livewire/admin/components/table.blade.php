@@ -1,4 +1,4 @@
-<div class="card card-dashboard">
+<div class="card card-dashboard mt-2">
     <div class="card-header">
         <div class="d-flex align-items-center">
             <i class="fas fa-table me-2 text-success"></i>

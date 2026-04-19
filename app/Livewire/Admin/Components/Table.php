@@ -3,7 +3,7 @@
 namespace App\Livewire\Admin\Components;
 
 use App\Models\User;
-use Illuminate\Database\Query\Builder;
+use Illuminate\Database\Eloquent\Builder;
 use Livewire\Component;
 use Livewire\WithPagination;
 use function Laravel\Prompts\select;
@@ -14,6 +14,7 @@ class Table extends Component
 
     public ?string $title = null;
     public $model;
+    public $limit = 10;
     public array $columns = [];
     public array $searchColumns = [];
     public array $actions = [];
@@ -21,15 +22,6 @@ class Table extends Component
     public $sortField = 'name'; // Столбец по умолчанию
     public $sortAsc = true;    // Направление
 
-
-
-
-    public function mount(?string $title = null, array $columns = [], $model)
-    {
-        $this->title = $title;
-        $this->columns = $columns;
-        $this->model = $model;
-    }
     public function sortBy($field)
     {
         if ($this->sortField === $field) {
@@ -65,7 +57,7 @@ class Table extends Component
             }
             )
 
-            ->when($this->sortField, function (\Illuminate\Database\Eloquent\Builder $q, $sort) use ($table) {
+            ->when($this->sortField, function (Builder $q, $sort) use ($table) {
                 debugbar()->info("sort:$sort");
                 if (str_contains($this->sortField, '.')){
 
@@ -90,6 +82,6 @@ class Table extends Component
             });
 
         return view('livewire.admin.components.table',
-            ['rows' => $query->orderByDesc('created_at')->paginate(10)]);
+            ['rows' => $query->orderByDesc('created_at')->paginate($this->limit)]);
     }
 }

@@ -13,10 +13,10 @@ class DashboardService
     public function __construct(protected ActivityService $activityService)
     {}
 
-    public function getDashboardData()
+    public function getDashboardData(?string $period = null): array
     {
         return [
-            'currentMonthUser' => $this->getGrowth(User::class), //User::class return string - "App\Models\user;"
+            'currentMonthUser' => $this->getGrowth(User::class, $period ?? 'month'), //User::class return string - "App\Models\user;"
             'totalMovies' => Movie::query()->count(),
             'totalReviews' => Review::query()->count(),
             'avgRating' => Review::query()->avg('rating'),
@@ -90,12 +90,13 @@ class DashboardService
     {
         $now = now();
 
-        [$currentStart, $currentEnd, $prevStart, $prevEnd] = match ($period) {
+        [$currentStart, $currentEnd, $prevStart, $prevEnd, $field] = match ($period) {
             'month' => [
                 $now->copy()->startOfMonth(),
                 $now->copy()->endOfMonth(),
                 $now->copy()->subMonth()->startOfMonth(),
                 $now->copy()->subMonth()->endOfMonth(),
+                "за месяц"
             ],
             'week' => [
                 $now->copy()->startOfWeek(),
@@ -119,6 +120,7 @@ class DashboardService
             'current' => $current,
             'previous' => $previous,
             'percent' => round($percent, 1),
+            'field' => $field,
         ];
     }
 }
