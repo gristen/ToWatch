@@ -31,38 +31,48 @@
     <div class="container mt-4 profile">
 
         <div class="profile-header d-flex align-items-center mb-4">
-            <img src="{{ asset('assets/' . $user->avatar) }}"
-                 class="rounded-circle me-3 profile-avatar"
-                 width="100" height="100" alt="avatar">
+
+            <!-- ЛЕВАЯ ЧАСТЬ (АВАТАР + РОЛЬ) -->
+            <div class="text-center me-3">
+                <img src="{{ asset('assets/' . $user->avatar) }}"
+                     class="rounded-circle profile-avatar"
+                     width="100" height="100" alt="avatar">
+
+                <!-- РОЛЬ ПОД АВАТАРОМ -->
+                <div class="mt-2">
+            <span class="badge bg-danger w-100">
+                <i class="bi bi-shield-fill"></i> Администратор
+            </span>
+                </div>
+            </div>
+
+            <!-- ИНФА -->
             <div>
                 <h3 class="text-white">{{$user->name}}</h3>
                 <p class="text m-0">{{$user->email}}</p>
-                <div class="d-flex gap-3">
-                    <a class="text-white" href="#"><span><strong>{{$user->followers_count}}</strong> подписчиков</span></a>
-                    <a class="text-white" href="#"><span><strong>{{$user->following_count}}</strong> подписки</span></a>
+
+                <div class="d-flex gap-3 mt-1">
+                    <a class="text-white" href="#">
+                        <strong>{{$user->followers_count}}</strong> подписчиков
+                    </a>
+                    <a class="text-white" href="#">
+                        <strong>{{$user->following_count}}</strong> подписки
+                    </a>
                 </div>
+
+                <!-- ДОП ИНФА (хардкод пока) -->
+                <small class="text-muted d-block mt-2">
+                    на сайте с 2024
+                </small>
             </div>
+
+            <!-- КНОПКА -->
             <div class="ms-auto">
-                @auth
-                    @if(auth()->id() !== $user->id)
-                        <form action="{{ route('users.follow', $user) }}" method="POST">
-                            @csrf
-                            <button class="btn
-                            {{ auth()->user()->isFollowing($user) ? 'btn-secondary' : 'btn-success' }}">
-
-                                {{ auth()->user()->isFollowing($user) ? 'Отписаться' : 'Подписаться' }}
-                            </button>
-                        </form>
-                    @else
-                        <!-- Кнопка-триггер модального окна -->
-                        <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#createModal">
-                            Редактировать профиль
-                        </button>
-
-                    @endif
-                @endauth
-
+                <button class="btn btn-success">
+                    Редактировать профиль
+                </button>
             </div>
+
         </div>
 
         <div class="row mb-4">

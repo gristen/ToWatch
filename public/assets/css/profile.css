@@ -1,0 +1,37 @@
+/* ===== PROFILE HEADER ===== */
+.profile-header {
+    background: linear-gradient(135deg, #161b22, #0d1117);
+    border-radius: 16px;
+    padding: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    transition: 0.3s;
+}
+
+.profile-header:hover {
+    transform: translateY(-2px);
+}
+
+.profile-avatar {
+    border: 3px solid #00f581;
+}
+
+.profile-header .badge {
+    font-size: 11px;
+    padding: 5px 8px;
+    border-radius: 6px;
+}
+
+.profile-avatar:hover {
+    transform: scale(1.05);
+}
+
+.profile a:hover {
+    color: #00f581 !important;
+    text-decoration: none;
+}
+.badge {
+    font-size: 12px;
+    padding: 5px 10px;
+    border-radius: 8px;
+    font-weight: 500;
+}

@@ -42,7 +42,7 @@
                                                    value="{{ $permission->id }}" id="perm{{ $permission->id }}"
                                                 {{ $role->permissions->contains($permission->id) ? 'checked' : '' }}>
                                             <label class="form-check-label" for="perm{{ $permission->id }}">
-                                                {{ $permission->name }}
+                                                {{ __('permissions.' . $permission->name) }}
                                             </label>
                                         </div>
                                     </div>

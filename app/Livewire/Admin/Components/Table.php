@@ -13,7 +13,7 @@ class Table extends Component
     use WithPagination;
 
     public ?string $title = null;
-    public $model;
+    public $handler;
     public $limit = 10;
     public array $columns = [];
     public array $searchColumns = [];
@@ -21,49 +21,94 @@ class Table extends Component
     public string $search = '';
     public $sortField = 'name'; // Столбец по умолчанию
     public $sortAsc = true;    // Направление
+    public ?int $deleteId = null;
+    public ?string $deleteLabel = null;
+    //
+    public $editingId = null;      // ид модели которую редачим
+    public $editingField = null;   // какое поле (email, name)
+    public $editingValue = null;   // текущее значение в input
+    public function startEdit($id, $field, $value)
+    {
+        debugbar()->info("$id, $field, $value");
+        $this->editingId = $id;
+        $this->editingField = $field;
+        $this->editingValue = $value;
+    }
+    public function saveEdit()
+    {
+        $model = $this->handler::find($this->editingId);
 
+        // находим колонку
+        $column = collect($this->columns)
+            ->firstWhere('field', $this->editingField);
+
+        if (isset($column['relation'])) {
+            // 👈 если это relation (role)
+            $model->{$column['relation']} = $this->editingValue;
+        } else {
+            // обычное поле
+            $model->{$this->editingField} = $this->editingValue;
+        }
+        $model->save();
+
+
+        $this->reset(['editingId', 'editingField', 'editingValue']);
+    }
     public function sortBy($field)
     {
         if ($this->sortField === $field) {
-            $this->sortAsc = ! $this->sortAsc;
-        }else{
+            $this->sortAsc = !$this->sortAsc;
+        } else {
             $this->sortAsc = true;
         }
         $this->sortField = $field;
 
     }
+
     public function updatingSearch() // хук от лавваир, без обновления страницы баги с пагинацией
     {
         $this->resetPage();
     }
 
-    public function delete(int $id)
+    public function confirmDelete($id)
     {
-       $res = ($this->model)::query()->findOrFail($id)->delete();
-        $this->dispatch('deleted', ['response' => '✅Удаление прошло успешно', 'id' => $id]);
+        debugbar()->info($id);
+        $item = $this->handler::find($id);
+        $this->dispatch('initDeleteModal');
+        $this->deleteId = $id;
+        $this->deleteLabel = $item->name ?? $item->title ?? "элемент c id = {{$item->id}} ";
+    }
+
+    public function delete()
+    {
+
+        $this->handler::delete($this->deleteId);
+        $this->dispatch('deleted',
+            [
+                'response' => '✅Удаление прошло успешно',
+                'id' => $this->deleteId,
+            ]);
+        $this->deleteId = null;
     }
 
     public function render()
     {
-        $table = (new $this->model)->getTable();
+        $table = $this->handler::table();
 
         debugbar()->info("table: $table");
 
-        $query = ($this->model)::query()
-            ->when($this->search, function (Builder $q, $search){ // when проверяет перевый параметр на falsy
+        $query = ($this->handler)::query()
+            ->when($this->search, function (Builder $q, $search) { // when проверяет перевый параметр на falsy
                 foreach ($this->searchColumns as $column) {
                     $q->orWhere($column, 'LIKE', "%{$search}%");
                 }
             }
             )
-
             ->when($this->sortField, function (Builder $q, $sort) use ($table) {
-                debugbar()->info("sort:$sort");
-                if (str_contains($this->sortField, '.')){
+                debugbar()->info("sort: $sort");
+                if (str_contains($this->sortField, '.')) {
 
                     $config = collect($this->columns)->firstWhere('field', $this->sortField);
-                    debugbar()->info($this->columns);
-                    debugbar()->info("s".$this->sortField);
 
                     $q->leftJoin(
                         $config['table'],                 // roles
@@ -72,8 +117,8 @@ class Table extends Component
                         $table . '.' . $config['foreign_key']
                     )
                         ->orderBy(
-                         $config['table'] . '.' . explode('.', $this->sortField)[1]
-                        ,$this->sortAsc ? 'asc' : 'desc'
+                            $config['table'] . '.' . explode('.', $this->sortField)[1]
+                            , $this->sortAsc ? 'asc' : 'desc'
                         )
                         ->select($table . '.*');
                     return;

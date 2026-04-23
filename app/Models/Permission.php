@@ -10,12 +10,12 @@ class Permission extends Model
         'name',
     ];
     /*аксесор*/
-    public function getNameAttribute($value)
+    /*  public function getNameAttribute($value)
     {
         $key = 'permissions.' . $value;
 
         return Lang::has($key) ? __($key) : $value;
-    }
+    }*/
 
     public function roles()
     {

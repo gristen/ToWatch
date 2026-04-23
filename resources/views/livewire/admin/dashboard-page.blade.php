@@ -132,24 +132,42 @@
                     </div>
                 </div>
                 <livewire:admin.components.table
-                    :model="\App\Models\User::class"
+                    :handler="\App\Handlers\UserHandler::class"
                     title="Пользователи"
                     :searchColumns="['email','name']"
                     :actions="[
-                      'delete'=>'admin.user.destroy'
-                      'edit'=>'admin.user.edit'
+                     [
+                        'type'=>'edit',
+                        'action'=>'admin.user.edit',
+                        'class'=>'btn btn-sm btn-icon btn-outline-primary',
+                        'icon'=>'fas fa-edit',
+                        'title'=>'редактирование',
+                     ],
+                     [
+                         'type'=>'delete',
+                         'action'=>'admin.user.delete',
+                         'class'=>'btn btn-sm btn-icon btn-outline-danger',
+                         'icon'=>'fas fa-trash',
+                         'title'=>'Удалить',
+                         'confirm'=>'true'
+                     ],
                     ]"
-                    :columns="[
-                    ['field' => 'email', 'label' => 'Email'],
-                    ['field' => 'name', 'label' => 'Username'],
-                    ['field' => 'created_at', 'label' => 'Дата регистрации'],
-                    [
-                    'field' => 'role.name',
-                    'label' => 'Роль',
-                    'sortable' => true,
-                    'relation' => 'role',
-                    'table' => 'roles',
-                    'foreign_key' => 'role_id'
+                    :columns="
+                        [
+                        ['field' => 'id', 'label' => 'id'],
+                        ['field' => 'email', 'label' => 'Email'],
+                        ['field' => 'name', 'label' => 'Username'],
+                        ['field' => 'created_at', 'label' => 'Дата регистрации'],
+                        [
+                        'field' => 'role.name',
+                        'label' => 'Роль',
+                        'sortable' => true,
+                        'relation' => 'role',
+                        'table' => 'roles',
+                        'foreign_key' => 'role_id',
+                         'type' => 'select',
+                        'options' => \App\Models\Role::pluck('name', 'id')->toArray(),
+                        'relation' => 'role_id',
                     ]
                     ]"
                 />

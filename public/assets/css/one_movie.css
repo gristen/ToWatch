@@ -124,16 +124,20 @@
 }
 
 .genre-pill {
-    background: rgba(0,245,129,.08);
-    color: var(--text-success);
-    border: 1px solid rgba(0,245,129,.35);
-    font-size: 12px;
-    letter-spacing: 1px;
-    font-weight: 500;
-    transition: linear .1s;
+    background: rgba(0,245,129,0.1);
+    border: 1px solid rgba(0,245,129,0.3);
+    color: #00f581;
+    padding: 6px 12px;
+    margin: 4px;
+    display: inline-block;
+    transition: 0.3s;
 }
 
-.genre-pill:hover { transform: scale(1.2); }
+.genre-pill:hover {
+    background: #00f581;
+    color: #000;
+    transform: scale(1.05);
+}
     /*reviews*/
 .reviews-carousel-container {
             margin-top: 12%;
