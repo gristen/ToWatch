@@ -53,7 +53,6 @@
                                     @php $value = data_get($row, $col['field']); @endphp
 
                                     @if($editingId === $row->id && $editingField === $col['field'])
-                                    @dump("editingId = $editingId , rowID =  $row->id, edit field = $editingField")
                                         @if(($col['type'] ?? null)=== 'select')
 
                                             <select

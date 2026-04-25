@@ -1,23 +1,16 @@
 <div>
     <x-admin.header title="Панель пользователей"></x-admin.header>
-    <div class="position-relative" >
+    <livewire:admin.components.search
+        :handler="\App\Handlers\UserHandler::class"
+        :searchColumns="
+        ['id','email', 'name']
+        "
+        :displayField="[
+            'name',
+        ]"
+        subField="role.name"
 
-        <!-- input -->
-        <input
-            type="text"
-            class="form-control"
-            placeholder="Поиск пользователя..."
-        >
-
-        <!-- dropdown результаты -->
-        <div class="list-group position-absolute w-100 shadow mt-1" style="z-index: 1000;">
-
-            <button class="list-group-item list-group-item-action">
-                <div class="fw-bold">admin@mail.ru</div>
-                <small class="text-muted">Администратор</small>
-            </button>
-        </div>
-    </div>
+    />
 {{--    <x-admin.stat-card--}}
 {{--        class="stat-card-primary"--}}
 {{--        icon="fas fa-users"--}}

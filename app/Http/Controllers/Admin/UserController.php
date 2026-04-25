@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
@@ -36,7 +37,10 @@ class UserController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $user = User::query()->findOrFail($id);
+        $activities = $user->activities()->get();
+
+        return view('admin.users.profile', ['user' => $user, 'activities' => $activities]);
     }
 
     /**

@@ -8,7 +8,7 @@ trait HasSearch
     {
         return $query->where(function (Builder $query) use ($search, $columns) {
             foreach ($columns as $column) {
-                $query->orWhere($column, 'LIKE', "%{$search}%");
+                $query->orWhere($column, 'LIKE', "{$search}%");
             }
         });
     }

@@ -13,9 +13,17 @@ class Role extends Model
 
     protected $fillable = [
         'name',
-
     ];
 
+    public function getBadgeClass()
+    {
+        return match ($this->name) {
+            'admin' => 'bg-danger',
+            'moderator' => 'bg-warning text-dark',
+            'user' => 'bg-primary',
+            default => 'bg-secondary',
+        };
+    }
     public function permissions()
     {
         return $this->belongsToMany(Permission::class,'role_permissions');
