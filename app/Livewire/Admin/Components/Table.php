@@ -29,7 +29,7 @@ class Table extends Component
     public $editingValue = null;   // текущее значение в input
     public function startEdit($id, $field, $value)
     {
-        debugbar()->info("$id, $field, $value");
+        debugbar()->info("start edit field. Data : $id, $field, $value");
         $this->editingId = $id;
         $this->editingField = $field;
         $this->editingValue = $value;
@@ -38,21 +38,29 @@ class Table extends Component
     {
         $model = $this->handler::find($this->editingId);
 
-        // находим колонку
-        $column = collect($this->columns)
-            ->firstWhere('field', $this->editingField);
+        if (!$model) return;
 
-        if (isset($column['relation'])) {
-            // 👈 если это relation (role)
-            $model->{$column['relation']} = $this->editingValue;
+        // 💥 ВАЖНО: если relation
+        if (str_contains($this->editingField, '.')) {
+
+            [$relation, $field] = explode('.', $this->editingField);
+
+            // например role.name → role_id
+            $foreignKey = $relation . '_id';
+
+            $model->{$foreignKey} = $this->editingValue;
+
         } else {
-            // обычное поле
+
             $model->{$this->editingField} = $this->editingValue;
         }
+
         $model->save();
 
-
-        $this->reset(['editingId', 'editingField', 'editingValue']);
+        // сброс режима редактирования
+        $this->editingId = null;
+        $this->editingField = null;
+        $this->editingValue = null;
     }
     public function sortBy($field)
     {
@@ -98,18 +106,16 @@ class Table extends Component
         debugbar()->info("table: $table");
 
         $query = ($this->handler)::query()
-            ->when($this->search, function (Builder $q, $search) { // when проверяет перевый параметр на falsy
-                foreach ($this->searchColumns as $column) {
-                    $q->orWhere($column, 'LIKE', "%{$search}%");
-                }
-            }
-            )
+            ->when($this->search, function ($q) {
+                $q->search($this->search, $this->searchColumns);
+            })
             ->when($this->sortField, function (Builder $q, $sort) use ($table) {
-                debugbar()->info("sort: $sort");
+                debugbar()->info("sortField = : $sort");
                 if (str_contains($this->sortField, '.')) {
 
                     $config = collect($this->columns)->firstWhere('field', $this->sortField);
-
+                    debugbar()->info($this->columns);
+                    debugbar()->info($config);
                     $q->leftJoin(
                         $config['table'],                 // roles
                         $config['table'] . '.id',         // roles.id
@@ -127,6 +133,6 @@ class Table extends Component
             });
 
         return view('livewire.admin.components.table',
-            ['rows' => $query->orderByDesc('created_at')->paginate($this->limit)]);
+            ['rows' => $query->paginate($this->limit)]);
     }
 }

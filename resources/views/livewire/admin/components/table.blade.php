@@ -53,8 +53,8 @@
                                     @php $value = data_get($row, $col['field']); @endphp
 
                                     @if($editingId === $row->id && $editingField === $col['field'])
-
-                                        @if(($col['type'] ?? null) === 'select')
+                                    @dump("editingId = $editingId , rowID =  $row->id, edit field = $editingField")
+                                        @if(($col['type'] ?? null)=== 'select')
 
                                             <select
                                                 wire:model="editingValue"
@@ -81,13 +81,15 @@
 
                                         <span
                                             wire:click="startEdit(
-            {{ $row->id }},
-            '{{ $col['field'] }}',
-            @js(($col['relation'] ?? null) ? $row->{$col['relation']} : $value)
-        )"
-                                        >
-        {{ $value }}
-    </span>
+                                                    {{ $row->id }},
+                                                    '{{ $col['field'] }}',
+                                                    @js(($col['relation'] ?? null)
+                                                    ? $row->{$col['relation']}?->id
+                                                    : $value)
+                                                )"
+                                                                                >
+                                                {{ $value }}
+                                        </span>
 
                                     @endif
                                 </td>

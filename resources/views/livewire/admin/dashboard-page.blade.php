@@ -159,15 +159,13 @@
                         ['field' => 'name', 'label' => 'Username'],
                         ['field' => 'created_at', 'label' => 'Дата регистрации'],
                         [
-                        'field' => 'role.name',
-                        'label' => 'Роль',
-                        'sortable' => true,
-                        'relation' => 'role',
-                        'table' => 'roles',
-                        'foreign_key' => 'role_id',
-                         'type' => 'select',
-                        'options' => \App\Models\Role::pluck('name', 'id')->toArray(),
-                        'relation' => 'role_id',
+                            'field' => 'role.name',
+                            'label' => 'Роль',
+                            'table' => 'roles',
+                            'foreign_key' => 'role_id',
+                             'type' => 'select',
+                            'options' => \App\Models\Role::pluck('name', 'id')->toArray(),
+                           'relation' => 'role',
                     ]
                     ]"
                 />
