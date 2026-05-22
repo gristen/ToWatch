@@ -18,19 +18,34 @@ class MovieFilter extends Component
     public ?int $year = null;
     #[Url]
     public ?int $rating = null;
+    public $search;
+    public $minYear;
+    public $maxYear;
 
-    public function updated($name, $value): void
+    public function updatedGenre($value): void
     {
+
         $this->dispatch(
-            'filter-changed',
+            'genre-changed',
             $value,
         );
     }
 
+    public function mount()
+    {
+        $this->minYear = Movie::query()->min('year');
+        $this->maxYear = Movie::query()->max('year');
+    }
+
     public function render()
     {
+
+        $movies = Movie::query()->when($this->search, function ($q, $search) {
+            $q->search($search, ['name', 'eng_name']);
+        })->take(5)->get();
+
         $genres = Genre::all();
-        return view('livewire.movie.movie-filter', ['genres' => $genres]);
+        return view('livewire.movie.movie-filter', ['genres' => $genres, 'movie' => $movies]);
     }
 
 }

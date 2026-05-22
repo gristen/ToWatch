@@ -30,7 +30,7 @@ class LoginController extends Controller
 
         if (Auth::attempt($data)) {
             app(ActivityService::class)->log('login', auth()->user());
-            return redirect()->intended(route('profile'));
+            return redirect()->intended(route('home'));
 
         }
 

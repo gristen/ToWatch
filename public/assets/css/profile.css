@@ -35,3 +35,26 @@
     border-radius: 8px;
     font-weight: 500;
 }
+.avatar-edit-btn {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    background: #198754; /* bootstrap success */
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.avatar-edit-btn:hover {
+    background: #157347;
+}
+
+.avatar-edit-btn i {
+    color: #fff;
+    font-size: 14px;
+}

@@ -1,5 +1,3 @@
-
-
 <div>
     <div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 9999" wire:ignore>
         <div id="livewireToast" class="toast align-items-center text-bg-success border-0" role="alert">
@@ -10,7 +8,8 @@
         </div>
     </div>
 
-    <div class="modal fade " id="createModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade  " wire:ignore.self id="createModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
         <div class=" modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
@@ -19,13 +18,54 @@
                 </div>
                 <div class="modal-body">
                     <h6 class="mb-3">Выберите любимые жанры</h6>
+                    <div class="mb-4 text-center">
 
+                        <h6 class="mb-3">Аватар</h6>
+
+                        <div class="position-relative d-inline-block">
+
+                            <!-- текущий или preview -->
+                            <img
+                                src="{{ $previewAvatar
+                                ? $previewAvatar->temporaryUrl()
+                                : ($user->avatar
+                                    ? asset('storage/' . $user->avatar)
+                                    : asset('assets/profile.jpg')
+                                )
+                            }}"
+                                class="rounded-circle border"
+                                width="100"
+                                height="100"
+                                style="object-fit: cover;"
+                            >
+
+                            <!-- кнопка поверх -->
+                            <label class="avatar-edit-btn">
+                                <i class="bi bi-pencil-fill"></i>
+                                <input type="file" wire:model="previewAvatar" hidden>
+                            </label>
+
+                        </div>
+
+                        <!-- ошибки -->
+                        @error('avatar')
+                        <div class="text-danger small mt-2">{{ $message }}</div>
+                        @enderror
+
+                    </div>
+                    <input wire:model="about" class="form form-control input-group w-100 mb-3 " type="text" name="about"
+                           placeholder="расскажи о себе...">
+                    <hr>
                     @livewire('user.favorite-genres')
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+                        <button wire:click="saveProfile" type="button" class="btn btn-success">Сохранить изменения
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-
 
 
     <div class="container mt-4 profile">
@@ -34,7 +74,9 @@
 
             <!-- ЛЕВАЯ ЧАСТЬ (АВАТАР + РОЛЬ) -->
             <div class="text-center me-3">
-                <img src="{{ asset('assets/' . $user->avatar) }}"
+                <img src="{{
+                           $user->avatar ? asset('storage/'.$user->avatar) : asset('assets/profile.jpg')
+                             }}"
                      class="rounded-circle profile-avatar"
                      width="100" height="100" alt="avatar">
 
@@ -62,17 +104,20 @@
 
                 <!-- ДОП ИНФА (хардкод пока) -->
                 <small class="text-muted d-block mt-2">
-                    на сайте с 2024
+                    на сайте с {{$user->created_at->format('Y')}} года
                 </small>
             </div>
 
-            <!-- КНОПКА -->
-            <div class="ms-auto">
-                <button class="btn btn-success">
-                    Редактировать профиль
-                </button>
-            </div>
-
+            @if($user->id == Auth::user()->id)
+                <div class="ms-auto">
+                    <button
+                        class="btn btn-success"
+                        data-bs-toggle="modal"
+                        data-bs-target="#createModal">
+                        Редактировать профиль
+                    </button>
+                </div>
+            @endif
         </div>
 
         <div class="row mb-4">
@@ -184,17 +229,12 @@
         </div>
     </div>
     <script>
-
-
-
         document.addEventListener('livewire:init', () => {
+            console.log('✅');
+
             Livewire.on('', () => {
                 console.log('✅');
-
-
             });
-
-
 
             Livewire.on('profile-updated', (data) => {
                 console.log('✅ Задача успешно создана!');
@@ -202,6 +242,7 @@
                 const messageEl = document.getElementById('toastMessage');
 
                 const modalEl = document.getElementById('createModal');
+
                 const modal = bootstrap.Modal.getInstance(modalEl);
                 if (modal) {
                     modal.hide();

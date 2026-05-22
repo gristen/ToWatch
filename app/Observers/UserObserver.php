@@ -4,6 +4,7 @@ namespace App\Observers;
 
 use App\Models\User;
 use App\Services\ActivityService;
+use Illuminate\Support\Facades\Log;
 
 class UserObserver
 {
@@ -32,7 +33,7 @@ class UserObserver
      */
     public function deleted(User $user): void
     {
-        //
+        Log::info("Пользователь удален с ID: {$user->id}");
     }
 
     /**

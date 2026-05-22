@@ -6,10 +6,9 @@
         ['id','email', 'name']
         "
         :displayField="[
-            'name',
+            'name','email'
         ]"
         subField="role.name"
-
     />
 {{--    <x-admin.stat-card--}}
 {{--        class="stat-card-primary"--}}

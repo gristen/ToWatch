@@ -16,22 +16,24 @@ class MovieList extends Component
     public ?int $genre = null;
     public string $type = 'all';
 
+
     #[On('movie-closed')]
     public function updateMovieList()
     {
 
     }
-    #[On('filter-changed')]
-    public function applyFilter($genre = null)
+    #[On('genre-changed')]
+    public function setGenre($genre)
     {
 
         $this->genre = $genre;
         $this->resetPage();
-
     }
+
 
     public function render()
     {
+
 
         $movies = Movie::query()
             ->when($this->genre,

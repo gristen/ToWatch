@@ -12,7 +12,6 @@ class FavoriteGenres extends Component
     public User $user;
     public Collection $genres;
 
-    public string $about;
     public array $selected = [];
 
     public function mount()
@@ -27,20 +26,9 @@ class FavoriteGenres extends Component
             ->toArray();
     }
 
-    public function saveProfile()
-    {
-        $this->user->update(['about' => $this->about,
-        ]);
-        $this->dispatch('profile-updated',
-            type: 'success',
-            message: 'Профиль обновлен'
-        );
-    }
 
     public function toggle(int $genreId):void
     {
-
-
         if (in_array($genreId, $this->selected)) {
             $this->user->favoriteGenres()->detach($genreId);
             $this->selected = array_diff($this->selected, [$genreId]);

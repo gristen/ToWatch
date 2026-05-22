@@ -40,8 +40,8 @@ Route::post('/users/{user}/follow', [FollowController::class, 'toggle'])
 
 Route::get('/login', [LoginController::class, "index"])->name('login');
 Route::get('/register', [RegisterController::class, "show"])->name('register');
-Route::get('/profile', [ProfileController::class, "show"])->name('profile');
-Route::get('/profile/{username?}', [ProfileController::class, "showByUsername"])->name('showByUsername');
+/*Route::get('/profile', [ProfileController::class, "show"])->name('profile');*/
+Route::get('/profile/{value}', [ProfileController::class, "showByUsername"])->name('profile.show');
 
 
 Route::post('/register', [RegisterController::class, "store"])->name('register');

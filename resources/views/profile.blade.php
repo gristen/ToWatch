@@ -3,5 +3,5 @@
 
 
 @section('content')
-    @livewire('user.profile')
+    @livewire('user.profile',['value'=>$value])
 @endsection

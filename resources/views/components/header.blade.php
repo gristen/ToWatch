@@ -47,7 +47,11 @@
                         <img class="profile_link" src=" {{ url('assets/profile.jpg')  }} " alt="">
                     </button>
                     <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="{{route('profile')}}">Профиль</a></li>
+                        <li>
+                            <a href="{{ route('profile.show', ['value' => Auth::user()->name]) }}">
+                                Профиль
+                            </a>
+                        </li>
                         @can('admin-only')
                             <li>
                                 <a href="{{route('admin.tasks.index')}}" class="dropdown-item px-2 text-white d-flex align-items-center column-gap-2">

@@ -17,9 +17,7 @@ class Search extends Component
        debugbar()->info($this->search);
        $query = $this->handler::query()
             ->when($this->search, function ($query, $search) {
-                $query->where(function ($query) use ($search) {
                     $query->search($search, $this->searchColumns);
-                });
             });
         debugbar()->info($query->paginate(10));
         return view('livewire.admin.components.search',[

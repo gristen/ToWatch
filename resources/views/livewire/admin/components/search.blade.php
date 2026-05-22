@@ -16,18 +16,14 @@
                 <a href="{{ route('admin.users.show', $row) }}" class="list-group-item list-group-item-action border-0 py-2 px-3">
 
                     <div class="d-flex align-items-center gap-3">
-
-
                         <!-- text -->
                         <div class="flex-grow-1">
-
-                            <div class="fw-semibold">
-                                {{ data_get($row, 'name') }}
+                            @foreach($displayField as $field)
+                            <div class="fw-semibold
+                            @if($field === 'email') text-muted @endif">
+                                {{ data_get($row, $field) }}
                             </div>
-
-                            <div class="text-muted small">
-                                {{ data_get($row, 'email') }}
-                            </div>
+                            @endforeach
 
                         </div>
 

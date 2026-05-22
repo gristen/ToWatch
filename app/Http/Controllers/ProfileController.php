@@ -10,15 +10,10 @@ use Illuminate\Support\Facades\Auth;
 class ProfileController extends Controller
 {
 
-    public function showByUsername(string $name)
+    public function showByUsername($value)
     {
-        $user = User::findByUsername($name);
 
-        if (!$user) {
-            abort(404);
-        }
-
-        return view('profile', ['user' => $user]);
+        return view('profile',compact('value'));
     }
 
 
