@@ -4,6 +4,7 @@ namespace App\Livewire\User;
 
 use App\Models\User;
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Attributes\On;
 
@@ -21,20 +22,35 @@ class Profile extends Component
     public $previewAvatar;
 
     public $user;
+    public $followers;
 
     public function mount($value = null)
     {
         $this->value = $value;
 
-        $this->user = User::query()
-            ->withCount(['followers', 'following', 'likesMovies', 'favoritesMovies', 'viewedMovies'])
-            ->when(is_numeric($value), function ($query) use ($value) {
-              $query->where('id', $value);
-            })
-            ->when(!is_numeric($this->value), function ($query) {
-                $query->where('name', $this->value);
-            })->firstOrFail();
+        $this->followers = $this->user;
 
+
+
+    }
+
+    public function toggle(User $user)
+    {
+        debugbar()->info("user: $user->id");
+        $authUser = Auth::user();
+        if ($authUser->isFollowing($user)) {
+            debugbar()->info("$authUser->name ($authUser->id) отписался на $user->name ($user->id)");
+            $message = "Вы успешно отписались";
+            $authUser->following()->detach($user);
+        }else{
+            debugbar()->info("$authUser->name подписался на $user->name");
+            $message = "Вы успешно подписались";
+            $authUser->following()->attach($user);
+        }
+        $this->dispatch('toast',
+            type: 'success',
+            message: $message
+        );
     }
     public function saveProfile()
     {
@@ -79,7 +95,15 @@ class Profile extends Component
 
     public function render()
     {
-
+        $this->user = User::query()
+            ->withCount(['followers', 'following', 'likesMovies', 'favoritesMovies', 'viewedMovies'])
+            ->when(is_numeric($this->value), function ($query) {
+                $query->where('id', $this->value);
+            })
+            ->when(!is_numeric($this->value), function ($query) {
+                $query->where('name', $this->value);
+            })->firstOrFail();
+        $this->followers = $this->user->followers;
         return view('livewire.user.profile', [
             'user' => $this->user,
         ]);

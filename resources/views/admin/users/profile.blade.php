@@ -24,9 +24,6 @@
 
                 <!-- Actions -->
                 <div class="d-flex gap-2">
-                    <button class="btn btn-outline-primary btn-sm">
-                        <i class="fas fa-edit"></i> Редактировать
-                    </button>
                     <button class="btn btn-outline-danger btn-sm">
                         <i class="fas fa-ban"></i> Заблокировать
                     </button>
@@ -96,7 +93,7 @@
 
                         <div class="mb-3">
                             <small class="text-muted">Дата регистрации</small>
-                            <div>{{ $user->created_at->format('HH:mm D MMMM YYYY') ?? '—' }}</div>
+                            <div>{{ $user->created_at->isoFormat('D MMMM Y') ?? '—' }}</div>
                         </div>
 
                     </div>

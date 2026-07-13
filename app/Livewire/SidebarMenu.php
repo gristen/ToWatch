@@ -16,7 +16,7 @@ class SidebarMenu extends Component
 //        ['title' => 'Рейтинги', 'icon' => 'bi-star', 'route' => 'admin.ratings.index', 'active_routes' => 'admin.ratings.*'],
 //        ['title' => 'Аналитика просмотров', 'icon' => 'bi-graph-up', 'route' => 'admin.analytics.index', 'active_routes' => 'admin.analytics.*'],
         ['title' => 'Задачи', 'icon' => 'bi-check2-square', 'route' => 'admin.tasks.index', 'active_routes' => 'admin.tasks.*'],
-//        ['title' => 'Логи действий', 'icon' => 'bi-journal-text', 'route' => 'admin.logs.index', 'active_routes' => 'admin.logs.*'],
+        //['title' => 'Логи', 'icon' => '', 'route' => 'log-viewer.index', 'active_routes' => 'admin/log-viewer*'],
     ];
 
 

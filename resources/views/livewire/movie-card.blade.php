@@ -9,7 +9,7 @@
             >
 
             <span class="movie-type">
-                        {{ strtoupper($movie->type ?? 'movie') }}
+                       {{ strtoupper(__("index.{$movie->type}")) }}
                     </span>
             <span class="movie-rating">
                         {{ strtoupper($movie->imdb_rating ?? 'movie') }}

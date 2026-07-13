@@ -24,6 +24,28 @@ class Role extends Model
             default => 'bg-secondary',
         };
     }
+    public function getConfigAttribute()
+    {
+        return config("roles.$this->name");
+    }
+
+
+    public function getBadgeClassAttribute()
+    {
+        return 'bg-' . ($this->config['color'] ?? 'secondary');
+    }
+
+
+    public function getIconClassAttribute()
+    {
+        return $this->config['icon'] ?? 'bi-person';
+    }
+
+
+    public function getDisplayNameAttribute()
+    {
+        return $this->config['name'] ?? $this->name;
+    }
     public function permissions()
     {
         return $this->belongsToMany(Permission::class,'role_permissions');

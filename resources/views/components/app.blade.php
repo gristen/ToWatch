@@ -21,6 +21,14 @@
 <body class="d-flex flex-column min-vh-100">
     @include("components.header")
 
+    <div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 9999" wire:ignore>
+        <div id="livewireToast" class="toast align-items-center text-bg-success border-0" role="alert">
+            <div class="d-flex">
+                <div class="toast-body" id="toastMessage"></div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+            </div>
+        </div>
+    </div>
     <main class=" container flex-grow-1">
         @yield("content")
         @include("components.footer")
@@ -32,6 +40,22 @@
         /*tooltips*/
         const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
         const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+
+
+        document.addEventListener('livewire:init', () => {
+            Livewire.on('toast', (data) => {
+                const toastEl = document.getElementById('livewireToast');
+                const messageEl = document.getElementById('toastMessage');
+
+                toastEl.className = 'toast align-items-center border-0';
+                toastEl.classList.add(`text-bg-${data.type}`);
+
+                messageEl.textContent = data.message;
+
+                const toast = new bootstrap.Toast(toastEl, {delay: 3000});
+                toast.show();
+            });
+        });
     </script>
 
 </body>

@@ -163,7 +163,7 @@
                             'label' => 'Роль',
                             'table' => 'roles',
                             'foreign_key' => 'role_id',
-                             'type' => 'select',
+                            'type' => 'select',
                             'options' => \App\Models\Role::pluck('name', 'id')->toArray(),
                            'relation' => 'role',
                     ]

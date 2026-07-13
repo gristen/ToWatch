@@ -22,16 +22,15 @@ class LoginController extends Controller
     public function login(Request $request)
     {
 
-        $data = $request->validate([
+        $credentials = $request->validate([
             'email' => 'required|email',
             'password' => 'required|string'
         ]);
 
 
-        if (Auth::attempt($data)) {
+        if (Auth::attempt($credentials, true)) {
             app(ActivityService::class)->log('login', auth()->user());
             return redirect()->intended(route('home'));
-
         }
 
         return back()->withErrors(['message' => 'Неверный email или пароль']);

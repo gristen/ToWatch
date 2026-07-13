@@ -23,7 +23,7 @@ class importMovies extends Command
 
     protected $description = 'Импорт фильмов из API кинопоиска и добавление в БД';
 
-    protected int $totalPages = 299743; // todo: Захордкоженное количество страниц это конечно пиздец что могу сказать товарищи
+    protected int $totalPages = 299743; // todo: Захордкоженное количество страниц
 
     //$movie - пришел с апи а нев муви который только что создал
     private function attachRelations($movie, $new_movie)
@@ -84,7 +84,7 @@ class importMovies extends Command
         for ($i = $last_imported_page + 1; $i <= $this->totalPages; $i++) {
 
             try {
-
+                $this->info("1" );
                 $response = Http::withHeaders(['X-API-KEY' => env('APP_IMPORT_KEY')])
                     ->timeout(200)          // 20 секунд
                     ->connectTimeout(10)   // 10 секунд на TCP
@@ -92,7 +92,8 @@ class importMovies extends Command
                     ->get("https://api.kinopoisk.dev/v1.4/movie?selectFields&selectFields=id&selectFields=externalId&selectFields=name&selectFields=enName&selectFields=alternativeName&selectFields=description&selectFields=shortDescription&selectFields=slogan&selectFields=type&selectFields=status&selectFields=year&selectFields=releaseYears&selectFields=rating&selectFields=ageRating&selectFields=votes&selectFields=movieLength&selectFields=genres&selectFields=countries&selectFields=poster&selectFields=videos&selectFields=persons&selectFields=facts&selectFields=fees&selectFields=watchability&page=$i&limit=1&notNullFields=poster.url");
 
             } catch (\Illuminate\Http\Client\RequestException $e) {
-                $status = $e->response->status();
+               
+                $this->info("$status" );
                 $body = $e->response->body();
                 match ($status) {
                     403 => $this->error("Превышен дневной лимит"),

@@ -126,7 +126,6 @@ class User extends Authenticatable
                 'user_id',
                 'followed_user_id'
             );
-
     }
 
     public function isStaff(): bool
@@ -145,7 +144,7 @@ class User extends Authenticatable
             )->withTimestamps();
     }
 
-    public function isFollowing(User $user): bool
+    public function isFollowing(User $user): bool //
     {
         return $this->following()
             ->where('followed_user_id', "=", $user->id)

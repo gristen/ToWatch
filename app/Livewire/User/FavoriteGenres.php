@@ -24,6 +24,7 @@ class FavoriteGenres extends Component
             ->favoriteGenres()
             ->pluck('genres.id')
             ->toArray();
+        debugbar()->info($this->selected);
     }
 
 

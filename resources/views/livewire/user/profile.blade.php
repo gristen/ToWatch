@@ -7,7 +7,86 @@
             </div>
         </div>
     </div>
+    <div class="modal fade  " wire:ignore.self id="subsModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
+        <div class=" modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-body">
 
+                    <h5 class="text-white mb-3">
+                        Подписчики
+                        <span class="text-muted">{{$user->followers_count}}</span>
+                    </h5>
+
+                    <div class="list-group gap-2">
+
+                        @foreach($followers as $follower)
+
+                            <a href="{{ route('profile.show', $follower->name) }}"
+                               class="list-group-item list-group-item-action bg-dark text-white border-secondary rounded-3 p-3">
+
+                                <div class="d-flex align-items-center">
+
+                                    {{-- Аватар + роль --}}
+                                    <div class="text-center me-3">
+
+                                        <img src="{{
+                                            $follower->avatar
+                                            ? asset('storage/'.$follower->avatar)
+                                            : asset('assets/profile.jpg')
+                                        }}"
+                                             class="rounded-circle border border-secondary"
+                                             width="55"
+                                             height="55"
+                                             style="object-fit: cover;">
+
+                                    </div>
+
+
+                                    {{-- Информация --}}
+                                    <div class="flex-grow-1">
+
+                                        <div class="fw-semibold fs-6">
+                                            {{ $follower->name }}
+                                        </div>
+
+                                        <div class="mt-1">
+
+                                   <span class="badge {{ $user->role->badge_class }}">
+
+                                        <i class="bi {{ $user->role->icon_class }}"></i>
+
+                                        {{ $user->role->display_name }}
+
+                                    </span>
+
+                                        </div>
+
+                                    </div>
+
+
+                                    {{-- Действие --}}
+                                    <div>
+
+                                        <button class="btn btn-outline-success btn-sm">
+                                            <i class="bi bi-person-check"></i>
+                                            Подписан
+                                        </button>
+
+                                    </div>
+
+                                </div>
+
+                            </a>
+
+                        @endforeach
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="modal fade  " wire:ignore.self id="createModal" tabindex="-1" aria-labelledby="exampleModalLabel"
          aria-hidden="true">
         <div class=" modal-dialog modal-dialog-centered">
@@ -94,9 +173,12 @@
                 <p class="text m-0">{{$user->email}}</p>
 
                 <div class="d-flex gap-3 mt-1">
-                    <a class="text-white" href="#">
+                    <button
+                        data-bs-toggle="modal"
+                        data-bs-target="#subsModal"
+                        class="text-white btn btn-link text-white p-0 ">
                         <strong>{{$user->followers_count}}</strong> подписчиков
-                    </a>
+                    </button>
                     <a class="text-white" href="#">
                         <strong>{{$user->following_count}}</strong> подписки
                     </a>
@@ -117,6 +199,15 @@
                         Редактировать профиль
                     </button>
                 </div>
+            @else
+                <div class="ms-auto">
+                    <button
+                        wire:click="toggle({{$user}})"
+                        class="btn btn-success">
+                        дейтсвие
+                    </button>
+                </div>
+
             @endif
         </div>
 

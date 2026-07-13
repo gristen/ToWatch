@@ -1,15 +1,6 @@
-<div class="">
+<div>
     <!-- Модальное окно -->
 
-
-    <div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 9999" wire:ignore>
-        <div id="livewireToast" class="toast align-items-center text-bg-success border-0" role="alert">
-            <div class="d-flex">
-                <div class="toast-body" id="toastMessage"></div>
-                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
-            </div>
-        </div>
-    </div>
 
     <div class="modal fade " id="closeModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
@@ -39,7 +30,7 @@
                     >
 
                     <span class="movie-type">
-                 {{ strtoupper(__("index.{$movie->type}")) }}
+                     {{ strtoupper(__("index.{$movie->type}")) }}
                     </span>
                     <span class="movie-rating">
                         {{ strtoupper($movie->imdb_rating ?? 'movie') }}
@@ -103,18 +94,6 @@
 
             });
 
-            Livewire.on('toast', (data) => {
-                const toastEl = document.getElementById('livewireToast');
-                const messageEl = document.getElementById('toastMessage');
-
-                toastEl.className = 'toast align-items-center border-0';
-                toastEl.classList.add(`text-bg-${data.type}`);
-
-                messageEl.textContent = data.message;
-
-                const toast = new bootstrap.Toast(toastEl, {delay: 3000});
-                toast.show();
-            });
 
         });
 

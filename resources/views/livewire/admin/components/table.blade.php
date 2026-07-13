@@ -53,7 +53,8 @@
                                     @php $value = data_get($row, $col['field']); @endphp
 
                                     @if($editingId === $row->id && $editingField === $col['field'])
-                                        @if(($col['type'] ?? null)=== 'select')
+
+                                        @if(($col['type'] ?? null) === 'select')
 
                                             <select
                                                 wire:model="editingValue"
